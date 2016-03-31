@@ -14,7 +14,13 @@
 		0644D1B81CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0644D1B61CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld */; };
 		0644D1BA1CAAEE3100510F19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0644D1B91CAAEE3100510F19 /* Assets.xcassets */; };
 		0644D1BD1CAAEE3100510F19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0644D1BB1CAAEE3100510F19 /* LaunchScreen.storyboard */; };
-		0644D1C61CAAEEED00510F19 /* Secrets.m in Sources */ = {isa = PBXBuildFile; fileRef = 0644D1C51CAAEEED00510F19 /* Secrets.m */; };
+		06738B461CAD77C100E5E692 /* Secrets.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B451CAD77C100E5E692 /* Secrets.m */; };
+		06738B481CAD77EB00E5E692 /* LoginScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06738B471CAD77EB00E5E692 /* LoginScreen.storyboard */; };
+		06738B4B1CAD782200E5E692 /* ZOLLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B4A1CAD782200E5E692 /* ZOLLoginViewController.m */; };
+		06738B4E1CAD793600E5E692 /* ZOLRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B4D1CAD793600E5E692 /* ZOLRegisterViewController.m */; };
+		06738B511CAD9B5600E5E692 /* ZOLDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B501CAD9B5600E5E692 /* ZOLDataStore.m */; };
+		06738B561CADA1B000E5E692 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B531CADA1B000E5E692 /* User+CoreDataProperties.m */; };
+		06738B571CADA1B000E5E692 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B551CADA1B000E5E692 /* User.m */; };
 		2B9563BBCB99DA517B93FBBF /* libPods-HoneymoonApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42870E96C55F7F5E8DB9B4B2 /* libPods-HoneymoonApp.a */; };
 /* End PBXBuildFile section */
 
@@ -31,7 +37,18 @@
 		0644D1BC1CAAEE3100510F19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0644D1BE1CAAEE3100510F19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0644D1C41CAAEEED00510F19 /* Secrets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Secrets.h; sourceTree = "<group>"; };
-		0644D1C51CAAEEED00510F19 /* Secrets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secrets.m; sourceTree = "<group>"; };
+		06738B451CAD77C100E5E692 /* Secrets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secrets.m; sourceTree = "<group>"; };
+		06738B471CAD77EB00E5E692 /* LoginScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginScreen.storyboard; sourceTree = "<group>"; };
+		06738B491CAD782200E5E692 /* ZOLLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLLoginViewController.h; sourceTree = "<group>"; };
+		06738B4A1CAD782200E5E692 /* ZOLLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLLoginViewController.m; sourceTree = "<group>"; };
+		06738B4C1CAD793600E5E692 /* ZOLRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLRegisterViewController.h; sourceTree = "<group>"; };
+		06738B4D1CAD793600E5E692 /* ZOLRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLRegisterViewController.m; sourceTree = "<group>"; };
+		06738B4F1CAD9B5600E5E692 /* ZOLDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLDataStore.h; sourceTree = "<group>"; };
+		06738B501CAD9B5600E5E692 /* ZOLDataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLDataStore.m; sourceTree = "<group>"; };
+		06738B521CADA1B000E5E692 /* User+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "User+CoreDataProperties.h"; sourceTree = "<group>"; };
+		06738B531CADA1B000E5E692 /* User+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "User+CoreDataProperties.m"; sourceTree = "<group>"; };
+		06738B541CADA1B000E5E692 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		06738B551CADA1B000E5E692 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		42870E96C55F7F5E8DB9B4B2 /* libPods-HoneymoonApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HoneymoonApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E51CB7A6399C09E4181A5E2 /* Pods-HoneymoonApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HoneymoonApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HoneymoonApp/Pods-HoneymoonApp.debug.xcconfig"; sourceTree = "<group>"; };
 		F0A86F3D6C647D9FEBB179D9 /* Pods-HoneymoonApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HoneymoonApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-HoneymoonApp/Pods-HoneymoonApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -70,6 +87,10 @@
 		0644D1A91CAAEE3100510F19 /* HoneymoonApp */ = {
 			isa = PBXGroup;
 			children = (
+				06738B521CADA1B000E5E692 /* User+CoreDataProperties.h */,
+				06738B531CADA1B000E5E692 /* User+CoreDataProperties.m */,
+				06738B541CADA1B000E5E692 /* User.h */,
+				06738B551CADA1B000E5E692 /* User.m */,
 				0644D1AD1CAAEE3100510F19 /* AppDelegate.h */,
 				0644D1AE1CAAEE3100510F19 /* AppDelegate.m */,
 				0644D1B01CAAEE3100510F19 /* ViewController.h */,
@@ -81,7 +102,14 @@
 				0644D1B61CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld */,
 				0644D1AA1CAAEE3100510F19 /* Supporting Files */,
 				0644D1C41CAAEEED00510F19 /* Secrets.h */,
-				0644D1C51CAAEEED00510F19 /* Secrets.m */,
+				06738B451CAD77C100E5E692 /* Secrets.m */,
+				06738B471CAD77EB00E5E692 /* LoginScreen.storyboard */,
+				06738B491CAD782200E5E692 /* ZOLLoginViewController.h */,
+				06738B4A1CAD782200E5E692 /* ZOLLoginViewController.m */,
+				06738B4C1CAD793600E5E692 /* ZOLRegisterViewController.h */,
+				06738B4D1CAD793600E5E692 /* ZOLRegisterViewController.m */,
+				06738B4F1CAD9B5600E5E692 /* ZOLDataStore.h */,
+				06738B501CAD9B5600E5E692 /* ZOLDataStore.m */,
 			);
 			path = HoneymoonApp;
 			sourceTree = "<group>";
@@ -173,6 +201,7 @@
 			files = (
 				0644D1BD1CAAEE3100510F19 /* LaunchScreen.storyboard in Resources */,
 				0644D1BA1CAAEE3100510F19 /* Assets.xcassets in Resources */,
+				06738B481CAD77EB00E5E692 /* LoginScreen.storyboard in Resources */,
 				0644D1B51CAAEE3100510F19 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -232,11 +261,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06738B571CADA1B000E5E692 /* User.m in Sources */,
 				0644D1B21CAAEE3100510F19 /* ViewController.m in Sources */,
 				0644D1AF1CAAEE3100510F19 /* AppDelegate.m in Sources */,
+				06738B4B1CAD782200E5E692 /* ZOLLoginViewController.m in Sources */,
+				06738B561CADA1B000E5E692 /* User+CoreDataProperties.m in Sources */,
 				0644D1B81CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld in Sources */,
 				0644D1AC1CAAEE3100510F19 /* main.m in Sources */,
-				0644D1C61CAAEEED00510F19 /* Secrets.m in Sources */,
+				06738B511CAD9B5600E5E692 /* ZOLDataStore.m in Sources */,
+				06738B4E1CAD793600E5E692 /* ZOLRegisterViewController.m in Sources */,
+				06738B461CAD77C100E5E692 /* Secrets.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
