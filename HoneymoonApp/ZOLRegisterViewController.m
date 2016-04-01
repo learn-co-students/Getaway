@@ -14,8 +14,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
 
-@property (nonatomic) BOOL alertControllerDisplayed;
-
 @end
 
 @implementation ZOLRegisterViewController
@@ -30,35 +28,6 @@
     self.usernameTextField.delegate = self;
     self.passwordTextField.delegate = self;
     self.confirmPasswordTextField.delegate = self;
-}
-
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    NSLog(@"GETTING CALLED!!!!");
-    
-    if (_alertControllerDisplayed) {
-        
-        NSLog(@"WE ARE ABOUT TO CALL RESIGN A LOT!");
-        
-        [self.confirmPasswordTextField resignFirstResponder];
-        
-        [self.passwordTextField resignFirstResponder];
-        [self.view resignFirstResponder];
-        [self.view endEditing:YES];
-        [self.confirmPasswordTextField endEditing:YES];
-        [self.passwordTextField endEditing:YES];
-    
-        
-        for (UIView *view in self.view.subviews)
-        {
-            if ([view isKindOfClass:[UITextField class]])
-            {
-                [view resignFirstResponder];
-                [view endEditing:YES];
-            }
-        }
-    }
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -91,6 +60,31 @@
         newUser.password = self.passwordTextField.text;
         
         [self.dataStore saveContext];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        NSMutableString *errorString = [NSMutableString new];
+        
+        BOOL usernameValid = [self usernameValid];
+        if (!usernameValid)
+        {
+            [errorString appendString:@"Usernames must be at least 1 character and cannot begin with a space\n"];
+        }
+        
+        BOOL passwordValid = [self passwordValid];
+        if (!passwordValid)
+        {
+            [errorString appendString:@"\nPasswords must be at least 8 characters in length\n"];
+        }
+        
+        BOOL confirmPasswordValid = [self confirmPasswordValid];
+        if(!confirmPasswordValid)
+        {
+            [errorString appendString:@"\nPasswords do not match"];
+        }
+        
+        [self createAlertWithTitle:@"Please Resolve Issues:" andMessage:errorString];
     }
 }
 
@@ -104,25 +98,8 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if ([self.passwordTextField isEqual:textField])
+    if ([self.usernameTextField isEqual:textField])
     {
-        BOOL valid = [self passwordValid];
-        if (!valid)
-        {
-            NSLog(@"about to create alert invalid password.");
-            _alertControllerDisplayed = YES;
-            [self createAlertWithTitle:@"Invalid Password!" andMessage:@"Passwords must be at least 8 characters in length"];
-        }
-    }
-    else if ([self.usernameTextField isEqual:textField])
-    {
-        BOOL valid = [self usernameValid];
-        if (!valid)
-        {
-            NSLog(@"about to create alert, invalid usernaem");
-            [self createAlertWithTitle:@"Invalid Username!" andMessage:@"Usernames must be at least 1 character and cannot begin with a space"];
-        }
-        
         for (User *user in self.dataStore.users)
         {
             NSString *name = user.username;
@@ -133,15 +110,6 @@
                 
                 self.usernameTextField.text = @"";
             }
-        }
-    }
-    else if ([self.confirmPasswordTextField isEqual:textField])
-    {
-        BOOL valid = [self confirmPasswordValid];
-        if (!valid)
-        {
-            NSLog(@"about to create alert, confirm apassword failed.");
-            [self createAlertWithTitle:@"Confirm Password Failed" andMessage:@"Passwords do not match"];
         }
     }
 }
@@ -212,29 +180,13 @@
 
 -(void)createAlertWithTitle: (NSString *)title andMessage: (NSString *)message
 {
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *okButton = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
     
     [alertController addAction:okButton];
-    
-    [self.view endEditing:YES];
-    [self.view resignFirstResponder];
-    
-    for (UIView *view in self.view.subviews)
-    {
-        if ([view isKindOfClass:[UITextField class]])
-        {
-            [view resignFirstResponder];
-            [view endEditing:YES];
-        }
-    }
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-    
 
-    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 /*
 #pragma mark - Navigation
