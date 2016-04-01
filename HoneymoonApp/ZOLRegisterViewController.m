@@ -35,16 +35,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    for (UIView *view in self.view.subviews)
-    {
-        if ([view isKindOfClass:[UITextField class]])
-        {
-            [view resignFirstResponder];
-        }
-    }
-}
+
 
 - (IBAction)cancelTapped:(id)sender
 {
@@ -88,6 +79,17 @@
     }
 }
 
+-(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    for (UIView *view in self.view.subviews)
+    {
+        if ([view isKindOfClass:[UITextField class]])
+        {
+            [view resignFirstResponder];
+        }
+    }
+}
+
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
@@ -105,7 +107,6 @@
             NSString *name = user.username;
             if ([name isEqualToString:self.usernameTextField.text])
             {
-                NSLog(@"about to create alert, username taken.");
                 [self createAlertWithTitle:@"Username Taken!" andMessage:@"The Username you selected is already taken, please select another one"];
                 
                 self.usernameTextField.text = @"";
