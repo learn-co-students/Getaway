@@ -3,24 +3,142 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Camera View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ZOLCameraViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eVK-0H-Wd5">
+                                <rect key="frame" x="133" y="439" width="54" height="30"/>
+                                <state key="normal" title="Camera"/>
+                                <connections>
+                                    <action selector="cameraButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="svX-7u-4bR"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AOn-yV-7jk">
+                                <rect key="frame" x="108" y="482" width="105" height="30"/>
+                                <state key="normal" title="Camera Library"/>
+                                <connections>
+                                    <action selector="showCameraLibraryButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YGB-5g-GcF"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="eVK-0H-Wd5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="58u-Hy-99J"/>
+                            <constraint firstItem="eVK-0H-Wd5" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.6" id="A8z-1K-spe"/>
+                            <constraint firstItem="AOn-yV-7jk" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.75" id="NZu-1T-S3r"/>
+                            <constraint firstItem="AOn-yV-7jk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kPj-oi-mUh"/>
+                        </constraints>
                     </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="cameraOverlayView" destination="GxN-P1-plO" id="gQV-k1-CB5"/>
+                        <outlet property="flashButtonIcon" destination="leh-fc-UVx" id="mVQ-hp-rej"/>
+                        <outlet property="openCameraButton" destination="eVK-0H-Wd5" id="40X-Gk-W3f"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="GxN-P1-plO">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F47-AW-hWB">
+                            <rect key="frame" x="125" y="348" width="70" height="65"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="qUO-3F-GyE"/>
+                                <constraint firstAttribute="height" constant="65" id="s44-hx-5ew"/>
+                            </constraints>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal" image="CapturePhoto2">
+                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="captureButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LZl-qY-HOK"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vg8-js-eyg">
+                            <rect key="frame" x="258" y="427" width="54" height="45"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="8ON-ZR-AQF"/>
+                                <constraint firstAttribute="width" constant="54" id="D6G-2E-oqX"/>
+                            </constraints>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal" title="Photo Library" image="PhotoLibrary"/>
+                            <connections>
+                                <action selector="photoLibraryButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y0G-9i-b6V"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NFk-nJ-tRP">
+                            <rect key="frame" x="266" y="8" width="46" height="37"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="37" id="5K2-jb-2tm"/>
+                                <constraint firstAttribute="width" constant="46" id="E0q-3t-nt5"/>
+                            </constraints>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal" title="Switch Camera" image="CameraReverse"/>
+                            <connections>
+                                <action selector="switchCameraButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kmT-iW-lFi"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D67-aP-xfZ">
+                            <rect key="frame" x="8" y="422" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="kka-Ft-kve"/>
+                                <constraint firstAttribute="height" constant="50" id="l0A-vf-iTW"/>
+                            </constraints>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal" title="Cancel" image="BackButton"/>
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nVG-sQ-qLv"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="leh-fc-UVx">
+                            <rect key="frame" x="16" y="16" width="35" height="34"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="35" id="4vU-gc-hlH"/>
+                                <constraint firstAttribute="height" constant="34" id="dru-8B-uNf"/>
+                            </constraints>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal" title="Flash" image="FlashActive"/>
+                            <connections>
+                                <action selector="flashButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gz7-Y3-Nk9"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="D67-aP-xfZ" secondAttribute="bottom" constant="8" id="23W-qu-fC1"/>
+                        <constraint firstItem="leh-fc-UVx" firstAttribute="top" secondItem="GxN-P1-plO" secondAttribute="top" constant="16" id="6HT-Xb-76Q" userLabel="Flash.top = top  + 8"/>
+                        <constraint firstItem="F47-AW-hWB" firstAttribute="centerX" secondItem="GxN-P1-plO" secondAttribute="centerX" id="Bx0-Od-kvh"/>
+                        <constraint firstItem="D67-aP-xfZ" firstAttribute="leading" secondItem="GxN-P1-plO" secondAttribute="leading" constant="8" id="HIi-fr-jHN"/>
+                        <constraint firstItem="NFk-nJ-tRP" firstAttribute="top" secondItem="GxN-P1-plO" secondAttribute="top" constant="8" id="Hkl-hD-evl"/>
+                        <constraint firstAttribute="bottom" secondItem="vg8-js-eyg" secondAttribute="bottom" constant="8" id="MM4-lk-Huu"/>
+                        <constraint firstAttribute="trailing" secondItem="vg8-js-eyg" secondAttribute="trailing" constant="8" id="TQw-fs-JhN"/>
+                        <constraint firstItem="leh-fc-UVx" firstAttribute="leading" secondItem="GxN-P1-plO" secondAttribute="leading" constant="16" id="fcQ-Mg-z5m"/>
+                        <constraint firstAttribute="trailing" secondItem="NFk-nJ-tRP" secondAttribute="trailing" constant="8" id="gP3-Ld-v4C"/>
+                        <constraint firstItem="vg8-js-eyg" firstAttribute="top" secondItem="F47-AW-hWB" secondAttribute="bottom" constant="14" id="tca-GO-hsR"/>
+                    </constraints>
+                </view>
             </objects>
+            <point key="canvasLocation" x="176" y="316"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="BackButton" width="700" height="584"/>
+        <image name="CameraReverse" width="700" height="582"/>
+        <image name="CapturePhoto2" width="64" height="64"/>
+        <image name="FlashActive" width="324" height="452"/>
+        <image name="PhotoLibrary" width="700" height="599"/>
+    </resources>
 </document>
