@@ -1,10 +1,13 @@
 PODS:
+  - Firebase (2.5.1)
   - Masonry (0.6.4)
 
 DEPENDENCIES:
+  - Firebase (>= 2.5.1)
   - Masonry
 
 SPEC CHECKSUMS:
+  Firebase: 3565ea88b830f28f2c77ecc524622bc71a20d085
   Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
 
 COCOAPODS: 0.39.0
