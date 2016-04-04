@@ -14,6 +14,38 @@
 
 @implementation AppDelegate
 
+//Notification Tiiime!
+//CKDatabase *public = [[CKContainer defaultContainer] publicCloudDatabase];
+
+#pragma Do we want a notification for new feeds via location?
+//Below are meths to CREATE notifications...
+
+/*NSPredicate *predicate = [NSPredicate predicateWithFormat:@"description CONTAINS 'NewFeedFrom%@'", name.location.text];
+
+CKSubscription *subscription = [[CKSubscription alloc] initWithRecordType:@"NewPublicFeed"
+    predicate:predicate
+    options:CKSubscriptionOptionsFiresOnRecordCreation];
+
+CKNotificationInfo *newPublicFeedInfo = [CKNotificationInfo new];
+info.alertLocalizationKey = @"NewFeedForLocation_X";
+info.soundName = @"NewAlert.aiff";
+info.shouldBadge = YES;
+
+subscription.notificationInfo = info;
+
+[publicDatabase saveSubscription:subscription
+         completionHandler:^(CKSubscription *subscription, NSError *error) {
+             NSLog(@"Could not save subscription Notification in AppDelegate");
+         }];
+ 
+//WE STILL NEED TO SET UP HOW TO PERCEIVE THE NOTIFICATION- aka the 'LISTENER'
+     
+     */
+
+
+
+
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
