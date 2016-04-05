@@ -22,7 +22,7 @@
 		06738B511CAD9B5600E5E692 /* ZOLDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B501CAD9B5600E5E692 /* ZOLDataStore.m */; };
 		06738B561CADA1B000E5E692 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B531CADA1B000E5E692 /* User+CoreDataProperties.m */; };
 		06738B571CADA1B000E5E692 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B551CADA1B000E5E692 /* User.m */; };
-		2B9563BBCB99DA517B93FBBF /* libPods-HoneymoonApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42870E96C55F7F5E8DB9B4B2 /* libPods-HoneymoonApp.a */; };
+		2B9563BBCB99DA517B93FBBF /* libPods-HoneymoonApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42870E96C55F7F5E8DB9B4B2 /* libPods-HoneymoonApp.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		4BEA016A1CAD76B4003F219B /* ZOLCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEA01691CAD76B4003F219B /* ZOLCameraViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -405,7 +405,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HoneymoonApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = learn.co.HoneymoonApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -422,7 +422,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HoneymoonApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = learn.co.HoneymoonApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
