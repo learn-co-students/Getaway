@@ -12,10 +12,10 @@
 @interface CloudKitDataBase : NSObject
 
 
-+(void)savePublicFeed:(NSString *)feedName;
-
-+(void)savePrivateRecord:(CKDatabase *)database record:(CKRecord *)record;
-
-+(void)fetchRecordID:(CKRecordID *)recordID getTheRecord: (CKRecord *)record;
+//+(void)savePublicRecord:(CKDatabase *)publicDataBase record:(CKRecord *)record;
+//
+//+(void)savePrivateRecord:(CKDatabase *)database record:(CKRecord *)record;
+//
+//+(void)fetchRecordID:(CKRecordID *)recordID getTheRecord: (CKRecord *)record;
 
 @end

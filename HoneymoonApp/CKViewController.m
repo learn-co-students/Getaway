@@ -35,15 +35,15 @@
 
 //public feed setup
     CKRecordID *publicFeedID = [[CKRecordID alloc]initWithRecordName:@"publicFeedID"];
-    CKRecord *publicFeed = [[CKRecord alloc]initWithRecordType:@"publicFeed" recordID:publicFeedID];
+    CKRecord *publicRecord = [[CKRecord alloc]initWithRecordType:@"publicFeed" recordID:publicFeedID];
     
     
     
 //creating Private feed setup
     CKRecordID *privateID = [[CKRecordID alloc] initWithRecordName:@"privateFeed"];
-    CKRecord *privateFeed = [[CKRecord alloc] initWithRecordType:@"privateFeed" recordID:privateID];
+    CKRecord *privateRecord = [[CKRecord alloc] initWithRecordType:@"privateFeed" recordID:privateID];
     
-    [CloudKitDataBase savePrivateRecord: self.privateDatabase record:privateFeed];
+    [CloudKitDataBase savePrivateRecord: self.privateDatabase record:privateRecord];
     
     
     
@@ -65,7 +65,7 @@
     [self. publicDatabase fetchRecordWithID:publicFeedID
                           completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
        
-                              NSLog(@"There was an error fetching the publicFeed. Error type: %@", error);
+                              NSLog(@"There was an error fetching the publicFeed. Error type: %@", error.localizedDescription);
         
         
         /*
@@ -83,10 +83,10 @@
 
     
 //saving a PUBLIC record
-    [self.publicDatabase saveRecord:publicFeed
+    [self.publicDatabase saveRecord:publicRecord
              completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
                 
-                 NSLog(@"The public record data could not be saved. Error type : %@", error);
+                 NSLog(@"The public record data could not be saved. Error type : %@", error.localizedDescription);
                  
                  if (CKErrorNetworkUnavailable) {
                      NSLog(@"The public data could not be saved due to a bad network connection");
@@ -106,9 +106,9 @@
              }];
     
 //saving a Private record
-    [self.privateDatabase saveRecord:privateFeed
+    [self.privateDatabase saveRecord:privateRecord
                    completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
-        NSLog(@"The private record data could not be saved. Error type : %@", error);
+        NSLog(@"The private record data could not be saved. Error type : %@", error.localizedDescription);
         
         if (CKErrorNetworkUnavailable) {
             NSLog(@"The private data could not be saved due to a bad network connection");
@@ -134,14 +134,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

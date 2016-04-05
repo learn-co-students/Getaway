@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0644D1AC1CAAEE3100510F19 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0644D1AB1CAAEE3100510F19 /* main.m */; };
 		0644D1AF1CAAEE3100510F19 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0644D1AE1CAAEE3100510F19 /* AppDelegate.m */; };
-		0644D1B21CAAEE3100510F19 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0644D1B11CAAEE3100510F19 /* ViewController.m */; };
 		0644D1B51CAAEE3100510F19 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0644D1B31CAAEE3100510F19 /* Main.storyboard */; };
 		0644D1B81CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0644D1B61CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld */; };
 		0644D1BA1CAAEE3100510F19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0644D1B91CAAEE3100510F19 /* Assets.xcassets */; };
@@ -27,8 +26,6 @@
 		0644D1AB1CAAEE3100510F19 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0644D1AD1CAAEE3100510F19 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0644D1AE1CAAEE3100510F19 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		0644D1B01CAAEE3100510F19 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		0644D1B11CAAEE3100510F19 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		0644D1B41CAAEE3100510F19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0644D1B71CAAEE3100510F19 /* HoneymoonApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HoneymoonApp.xcdatamodel; sourceTree = "<group>"; };
 		0644D1B91CAAEE3100510F19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -90,8 +87,6 @@
 				2B86367E1CB2A84E00909683 /* CloudKitDataBase.m */,
 				2B8636761CB01A6D00909683 /* CKViewController.h */,
 				2B8636771CB01A6D00909683 /* CKViewController.m */,
-				0644D1B01CAAEE3100510F19 /* ViewController.h */,
-				0644D1B11CAAEE3100510F19 /* ViewController.m */,
 				2B1170491CAECACB00FD7C1F /* FireViewController.h */,
 				2B11704A1CAECACB00FD7C1F /* FireViewController.m */,
 				0644D1B31CAAEE3100510F19 /* Main.storyboard */,
@@ -261,7 +256,6 @@
 			files = (
 				2B8636781CB01A6D00909683 /* CKViewController.m in Sources */,
 				2B86367F1CB2A84E00909683 /* CloudKitDataBase.m in Sources */,
-				0644D1B21CAAEE3100510F19 /* ViewController.m in Sources */,
 				0644D1AF1CAAEE3100510F19 /* AppDelegate.m in Sources */,
 				0644D1B81CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld in Sources */,
 				0644D1AC1CAAEE3100510F19 /* main.m in Sources */,
