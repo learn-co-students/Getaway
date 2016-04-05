@@ -35,8 +35,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-
 - (IBAction)cancelTapped:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -51,6 +49,16 @@
         newUser.password = self.passwordTextField.text;
         
         [self.dataStore saveContext];
+        
+        CKRecordID *userID = [[CKRecordID alloc] initWithRecordName:self.usernameTextField.text];
+        CKRecord *newUserRecord = [[CKRecord alloc] initWithRecordType:@"User" recordID:userID];
+        
+        [newUserRecord setObject:self.passwordTextField.text forKey:@"Password"];
+        
+        [self.dataStore.database saveRecord:newUserRecord completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+            NSLog(@"%@, and also: %ld", error, error.code);
+        }];
+        
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     else

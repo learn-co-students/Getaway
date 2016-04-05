@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZOLDataStore.h"
 
 @interface ZOLLoginViewController : UIViewController
 

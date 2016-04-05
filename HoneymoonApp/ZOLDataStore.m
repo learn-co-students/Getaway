@@ -23,6 +23,19 @@
     return _sharedDataStore;
 }
 
+-(instancetype)init
+{
+    self = [super init];
+    
+    if (self)
+    {
+        _database = [[CKContainer defaultContainer] privateCloudDatabase];
+        _users = [NSArray new];
+    }
+    
+    return self;
+}
+
 # pragma mark - Core Data stack
 
 @synthesize managedObjectContext = _managedObjectContext;
