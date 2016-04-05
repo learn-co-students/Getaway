@@ -7,6 +7,7 @@
 //
 
 #import "ZOLCameraViewController.h"
+#import "ZOLAcceptPhotoViewController.h"
 
 @interface ZOLCameraViewController ()
 
@@ -15,9 +16,7 @@
 @property (strong, nonatomic) IBOutlet UIView *cameraOverlayView;
 @property (strong, nonatomic) IBOutlet UIButton *openCameraButton;
 
-
 @property (nonatomic)BOOL isCameraModeOn;
-@property(nonatomic, strong)NSMutableArray *photosArray;
 
 @property(nonatomic)UIImagePickerControllerCameraDevice cameraDevice;
 @property(nonatomic)UIImagePickerControllerCameraFlashMode flashMode;
@@ -32,17 +31,9 @@
 {
     [super viewDidLoad];
     
-    self.photosArray = [[NSMutableArray alloc] init];
-    
     [self.flashButtonIcon setImage:[UIImage imageNamed:@"FlashInactive"] forState:UIControlStateNormal];
     
     self.flashMode = -1;
-    
-    //self.openCameraButton sendActionsForControlEvents: UIControlEventTouchUpInside];
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
     
 }
 
@@ -70,7 +61,6 @@
     self.isCameraModeOn = YES;
 
 }
-
 
 - (IBAction)photoLibraryButtonTapped:(UIButton *)sender
 {
@@ -138,7 +128,6 @@
     self.flashMode++;
 }
 
-
 - (IBAction)showCameraLibraryButtonTapped:(UIButton *)sender
 {
     UIImagePickerController *libraryController = [[UIImagePickerController alloc] init];
@@ -147,52 +136,27 @@
     [self presentViewController:libraryController animated:NO completion:nil];
 }
 
-
 - (void)imagePickerController:(UIImagePickerController *)picker
-        didFinishPickingImage:(UIImage *)image
-                  editingInfo:(NSDictionary *)editingInfo
+didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
+                               id> *)info
 {
-    
-    
-    [self.photosArray addObject:image];
+    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
     
     if (self.isCameraModeOn)
     {
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-
     }
-    //    [self dismissViewControllerAnimated:NO completion:nil];
-
+    
+    [ self dismissViewControllerAnimated:NO completion:^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        
+        ZOLAcceptPhotoViewController *acceptViewController = [storyboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
+        
+        acceptViewController.currentImage = image;
+        
+        [self presentViewController:acceptViewController animated:NO completion:nil];
+    }];
 }
-
-
-
-
-
-
-
-
-
-
-//This is for adding the image to the array or to the library_______________
-
-//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-//{
-//    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-//    
-//    [self.capturedImages addObject:image];
-//    
-////    if ([self.cameraTimer isValid])
-////    {
-////        return;
-////    }
-//    
-//    [self finishAndUpdate];
-//}
-
-
-
-
 
 @end
 

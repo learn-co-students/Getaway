@@ -23,6 +23,8 @@
 		06738B561CADA1B000E5E692 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B531CADA1B000E5E692 /* User+CoreDataProperties.m */; };
 		06738B571CADA1B000E5E692 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B551CADA1B000E5E692 /* User.m */; };
 		2B9563BBCB99DA517B93FBBF /* libPods-HoneymoonApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42870E96C55F7F5E8DB9B4B2 /* libPods-HoneymoonApp.a */; };
+		4B23AF0C1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B23AF0B1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m */; };
+		4B23AF181CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B23AF171CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m */; };
 		4BEA016A1CAD76B4003F219B /* ZOLCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEA01691CAD76B4003F219B /* ZOLCameraViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +56,10 @@
 		06738B541CADA1B000E5E692 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		06738B551CADA1B000E5E692 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		42870E96C55F7F5E8DB9B4B2 /* libPods-HoneymoonApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HoneymoonApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B23AF0A1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLAcceptPhotoViewController.h; sourceTree = "<group>"; };
+		4B23AF0B1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLAcceptPhotoViewController.m; sourceTree = "<group>"; };
+		4B23AF161CB2EA0B005A45C8 /* ZOLEditPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLEditPhotoViewController.h; sourceTree = "<group>"; };
+		4B23AF171CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLEditPhotoViewController.m; sourceTree = "<group>"; };
 		4BEA01681CAD76B4003F219B /* ZOLCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLCameraViewController.h; sourceTree = "<group>"; };
 		4BEA01691CAD76B4003F219B /* ZOLCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLCameraViewController.m; sourceTree = "<group>"; };
 		5E51CB7A6399C09E4181A5E2 /* Pods-HoneymoonApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HoneymoonApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HoneymoonApp/Pods-HoneymoonApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -105,6 +111,10 @@
 				0644D1B11CAAEE3100510F19 /* ViewController.m */,
 				4BEA01681CAD76B4003F219B /* ZOLCameraViewController.h */,
 				4BEA01691CAD76B4003F219B /* ZOLCameraViewController.m */,
+				4B23AF0A1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.h */,
+				4B23AF0B1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m */,
+				4B23AF161CB2EA0B005A45C8 /* ZOLEditPhotoViewController.h */,
+				4B23AF171CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m */,
 				0644D1B31CAAEE3100510F19 /* Main.storyboard */,
 				0644D1B91CAAEE3100510F19 /* Assets.xcassets */,
 				0644D1BB1CAAEE3100510F19 /* LaunchScreen.storyboard */,
@@ -278,6 +288,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B23AF181CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m in Sources */,
 				06738B571CADA1B000E5E692 /* User.m in Sources */,
 				0644D1B21CAAEE3100510F19 /* ViewController.m in Sources */,
 				4BEA016A1CAD76B4003F219B /* ZOLCameraViewController.m in Sources */,
@@ -285,6 +296,7 @@
 				06738B4B1CAD782200E5E692 /* ZOLLoginViewController.m in Sources */,
 				06738B561CADA1B000E5E692 /* User+CoreDataProperties.m in Sources */,
 				0644D1B81CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld in Sources */,
+				4B23AF0C1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m in Sources */,
 				0644D1AC1CAAEE3100510F19 /* main.m in Sources */,
 				06738B511CAD9B5600E5E692 /* ZOLDataStore.m in Sources */,
 				06738B4E1CAD793600E5E692 /* ZOLRegisterViewController.m in Sources */,
