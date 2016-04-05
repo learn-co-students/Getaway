@@ -27,9 +27,13 @@
     if (self) {
         _imageArray = [[NSMutableArray alloc] init];
         _textArray = [[NSMutableArray alloc]init];
+        _textArray2 =[[NSMutableArray alloc]init];
+        _imageArray2 = [[NSMutableArray alloc]init];
+        _mainTextArray =[[NSMutableArray alloc]init];
+        _mainImageArray = [[NSMutableArray alloc]init];
         
     }
-    //generate simulated feed
+    //generate simulated array 1
     UIImage *img1 = [UIImage imageNamed:@"img1.png"];
     UIImage *img2 = [UIImage imageNamed:@"img2.png"];
     UIImage *img3 = [UIImage imageNamed:@"img3.png"];
@@ -40,7 +44,7 @@
     [self.imageArray addObject:img3];
     [self.imageArray addObject:img4];
     
-    NSString *str1 = @"this is picture 1.this is picture 1.this is picture 1.this is picture 1.this is picture 1";
+    NSString *str1 = @"HEADLINE TEXT 1";
     NSString *str2 = @"this is picture 2.this is picture 2.this is picture 2.this is picture 2.this is picture 2.";
     NSString *str3 = @"this is picture 3. this is picture 3.this is picture 3.this is picture 3.this is picture 3";
     NSString *str4 = @"this is picture 4. this is picture 4.this is picture 4.this is picture 4.this is picture 4";
@@ -49,6 +53,37 @@
     [self.textArray addObject:str2];
     [self.textArray addObject:str3];
     [self.textArray addObject:str4];
+    
+    //generate simulated array 2
+
+    
+    UIImage *A2img1 = [UIImage imageNamed:@"A2 img1.png"];
+    UIImage *A2img2 = [UIImage imageNamed:@"A2 img2.png"];
+    UIImage *A2img3 = [UIImage imageNamed:@"A2 img3.png"];
+    UIImage *A2img4 = [UIImage imageNamed:@"A2 img4.png"];
+    
+    [self.imageArray2 addObject:A2img1];
+    [self.imageArray2 addObject:A2img2];
+    [self.imageArray2 addObject:A2img3];
+    [self.imageArray2 addObject:A2img4];
+    
+    NSString *A2str1 = @"HEADLINE TEXT 2";
+    NSString *A2str2 = @"this is picture 2.this is picture 2.this is picture 2.this is picture 2.this is picture 2.";
+    NSString *A2str3 = @"this is picture 3. this is picture 3.this is picture 3.this is picture 3.this is picture 3";
+    NSString *A2str4 = @"this is picture 4. this is picture 4.this is picture 4.this is picture 4.this is picture 4";
+    
+    [self.textArray2 addObject:A2str1];
+    [self.textArray2 addObject:A2str2];
+    [self.textArray2 addObject:A2str3];
+    [self.textArray2 addObject:A2str4];
+    
+    [self.mainImageArray addObject:self.imageArray];
+    [self.mainImageArray addObject:self.imageArray2];
+    
+    [self.mainTextArray addObject:self.textArray];
+    [self.mainTextArray addObject:self.textArray2];
+
+    
     
     return self;
 }

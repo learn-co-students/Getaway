@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface ZOLDetailTableViewController : UITableViewController
-
+@property (nonatomic,strong) NSMutableArray *localImageArray;
+@property (nonatomic,strong) NSMutableArray *localTextArray;
 @end

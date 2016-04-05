@@ -12,7 +12,16 @@
 @interface ZOLSimulatedFeedData : NSObject
 
 @property (nonatomic, strong) NSMutableArray *imageArray;
+@property (nonatomic, strong) NSMutableArray *imageArray2;
+
 @property (nonatomic, strong) NSMutableArray *textArray;
+@property (nonatomic, strong) NSMutableArray *textArray2;
+
+@property (nonatomic, strong) NSMutableArray *mainImageArray;
+@property (nonatomic, strong) NSMutableArray *mainTextArray;
+
+
+
 
 
 + (instancetype)sharedDatastore;

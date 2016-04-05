@@ -14,8 +14,7 @@
 
 @interface ZOLDetailTableViewController ()
 
-@property (nonatomic,strong) NSMutableArray *localImageArray;
-@property (nonatomic,strong) NSMutableArray *localTextArray;
+
 
 @end
 
@@ -24,9 +23,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
-    self.localImageArray = sharedDatastore.imageArray;
-    self.localTextArray = sharedDatastore.textArray;
+//    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
+//    self.localImageArray = sharedDatastore.imageArray;
+//    self.localTextArray = sharedDatastore.textArray;
 }
 
 - (void)didReceiveMemoryWarning {

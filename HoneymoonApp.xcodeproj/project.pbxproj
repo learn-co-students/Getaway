@@ -32,6 +32,11 @@
 		2D37590E1CB410A3001BD7AE /* img2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D37590A1CB410A3001BD7AE /* img2.png */; };
 		2D37590F1CB410A3001BD7AE /* img1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D37590B1CB410A3001BD7AE /* img1.png */; };
 		2D62061A1CB421BF00C5D231 /* ZOLDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6206191CB421BF00C5D231 /* ZOLDetailCell.m */; };
+		2D62061D1CB426A000C5D231 /* ZOLMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D62061C1CB426A000C5D231 /* ZOLMainCell.m */; };
+		2D6206221CB4351900C5D231 /* A2 img4.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D62061E1CB4351900C5D231 /* A2 img4.png */; };
+		2D6206231CB4351900C5D231 /* A2 img3.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D62061F1CB4351900C5D231 /* A2 img3.png */; };
+		2D6206241CB4351900C5D231 /* A2 img2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D6206201CB4351900C5D231 /* A2 img2.png */; };
+		2D6206251CB4351900C5D231 /* A2 img1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D6206211CB4351900C5D231 /* A2 img1.png */; };
 		4BEA016A1CAD76B4003F219B /* ZOLCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEA01691CAD76B4003F219B /* ZOLCameraViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +80,12 @@
 		2D37590B1CB410A3001BD7AE /* img1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img1.png; sourceTree = "<group>"; };
 		2D6206181CB421BF00C5D231 /* ZOLDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZOLDetailCell.h; path = ../ZOLDetailCell.h; sourceTree = "<group>"; };
 		2D6206191CB421BF00C5D231 /* ZOLDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZOLDetailCell.m; path = ../ZOLDetailCell.m; sourceTree = "<group>"; };
+		2D62061B1CB426A000C5D231 /* ZOLMainCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLMainCell.h; sourceTree = "<group>"; };
+		2D62061C1CB426A000C5D231 /* ZOLMainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLMainCell.m; sourceTree = "<group>"; };
+		2D62061E1CB4351900C5D231 /* A2 img4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "A2 img4.png"; sourceTree = "<group>"; };
+		2D62061F1CB4351900C5D231 /* A2 img3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "A2 img3.png"; sourceTree = "<group>"; };
+		2D6206201CB4351900C5D231 /* A2 img2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "A2 img2.png"; sourceTree = "<group>"; };
+		2D6206211CB4351900C5D231 /* A2 img1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "A2 img1.png"; sourceTree = "<group>"; };
 		42870E96C55F7F5E8DB9B4B2 /* libPods-HoneymoonApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HoneymoonApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BEA01681CAD76B4003F219B /* ZOLCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLCameraViewController.h; sourceTree = "<group>"; };
 		4BEA01691CAD76B4003F219B /* ZOLCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLCameraViewController.m; sourceTree = "<group>"; };
@@ -146,6 +157,8 @@
 				2D3759001CB40CED001BD7AE /* ZOLMainTableViewController.m */,
 				2D3759021CB40D02001BD7AE /* ZOLDetailTableViewController.h */,
 				2D3759031CB40D02001BD7AE /* ZOLDetailTableViewController.m */,
+				2D62061B1CB426A000C5D231 /* ZOLMainCell.h */,
+				2D62061C1CB426A000C5D231 /* ZOLMainCell.m */,
 				2D6206181CB421BF00C5D231 /* ZOLDetailCell.h */,
 				2D6206191CB421BF00C5D231 /* ZOLDetailCell.m */,
 				2D3759051CB40E56001BD7AE /* ZOLSimulatedFeedData.h */,
@@ -154,6 +167,10 @@
 				2D3759091CB410A3001BD7AE /* img3.png */,
 				2D37590A1CB410A3001BD7AE /* img2.png */,
 				2D37590B1CB410A3001BD7AE /* img1.png */,
+				2D62061E1CB4351900C5D231 /* A2 img4.png */,
+				2D62061F1CB4351900C5D231 /* A2 img3.png */,
+				2D6206201CB4351900C5D231 /* A2 img2.png */,
+				2D6206211CB4351900C5D231 /* A2 img1.png */,
 				0644D1BB1CAAEE3100510F19 /* LaunchScreen.storyboard */,
 			);
 			path = HoneymoonApp;
@@ -251,8 +268,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D6206221CB4351900C5D231 /* A2 img4.png in Resources */,
+				2D6206231CB4351900C5D231 /* A2 img3.png in Resources */,
 				0644D1BD1CAAEE3100510F19 /* LaunchScreen.storyboard in Resources */,
 				0644D1BA1CAAEE3100510F19 /* Assets.xcassets in Resources */,
+				2D6206251CB4351900C5D231 /* A2 img1.png in Resources */,
+				2D6206241CB4351900C5D231 /* A2 img2.png in Resources */,
 				2D37590F1CB410A3001BD7AE /* img1.png in Resources */,
 				2D37590E1CB410A3001BD7AE /* img2.png in Resources */,
 				2D37590C1CB410A3001BD7AE /* img4.png in Resources */,
@@ -320,6 +341,7 @@
 			files = (
 				06738B571CADA1B000E5E692 /* User.m in Sources */,
 				0644D1B21CAAEE3100510F19 /* ViewController.m in Sources */,
+				2D62061D1CB426A000C5D231 /* ZOLMainCell.m in Sources */,
 				2D3759041CB40D02001BD7AE /* ZOLDetailTableViewController.m in Sources */,
 				4BEA016A1CAD76B4003F219B /* ZOLCameraViewController.m in Sources */,
 				0644D1AF1CAAEE3100510F19 /* AppDelegate.m in Sources */,
