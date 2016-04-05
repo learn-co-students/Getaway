@@ -54,6 +54,7 @@
 - (IBAction)backgroundTapped:(UITapGestureRecognizer *)sender
 {
     [self.descriptionTextField resignFirstResponder];
+    [self.locationTextField resignFirstResponder];
 }
 
 - (IBAction)cancelButtonTapped:(UIButton *)sender
