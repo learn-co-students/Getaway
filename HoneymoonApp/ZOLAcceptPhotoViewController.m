@@ -20,7 +20,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissVC) name:@"Dismiss AcceptVC" object:nil];
     
    self.currentImageView.image = self.currentImage;
@@ -29,6 +29,8 @@
 -(void)dismissVC {
     NSLog(@"dismiss VC");
     [self dismissViewControllerAnimated:NO completion:nil];
+    
+    
 }
 
 - (IBAction)cancelButtonTapped:(UIButton *)sender

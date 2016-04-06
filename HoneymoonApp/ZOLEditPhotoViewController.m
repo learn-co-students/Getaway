@@ -8,6 +8,9 @@
 
 #import "ZOLEditPhotoViewController.h"
 #import "ViewController.h"
+#import "ZOLMainTableViewController.h"
+#import "ZOLSimulatedFeedData.h"
+
 
 @interface ZOLEditPhotoViewController ()
 
@@ -72,8 +75,22 @@
     NSLog(@"Photo description: %@",photoDescription);
     NSLog(@"Photo location: %@", photoLocation);
     
-    [self dismissViewControllerAnimated:NO completion:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Dismiss AcceptVC" object:nil];
+    
+    
+    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
+   
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+    
+    UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
+    
+    [sharedDatastore.imageArray3 addObject:self.acceptedImage];
+        
+    [self presentViewController:navController animated:NO completion:nil];
+    
+    
+    //[self dismissViewControllerAnimated:NO completion:nil];
+    
+   // [[NSNotificationCenter defaultCenter] postNotificationName:@"Dismiss AcceptVC" object:nil];
 }
 
 /*

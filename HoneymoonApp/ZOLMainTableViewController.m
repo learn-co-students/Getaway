@@ -13,8 +13,7 @@
 
 @interface ZOLMainTableViewController ()
 
-@property (nonatomic,strong) NSMutableArray *localImageArray;
-@property (nonatomic,strong) NSMutableArray *localTextArray;
+
 
 
 @end
@@ -50,7 +49,7 @@
     ZOLMainCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellMain" forIndexPath:indexPath];
     
     cell.image.image = self.localImageArray[indexPath.row][0];
-    cell.headlineLabel.text = self.localTextArray[indexPath.row][0];
+   // cell.headlineLabel.text = self.localTextArray[indexPath.row][0];
     
     return cell;
 }

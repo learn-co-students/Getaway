@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+
+
 @interface ZOLEditPhotoViewController : UIViewController
 
 @property (nonatomic, strong)UIImage *acceptedImage;

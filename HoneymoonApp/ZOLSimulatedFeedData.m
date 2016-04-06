@@ -29,6 +29,9 @@
         _textArray = [[NSMutableArray alloc]init];
         _textArray2 =[[NSMutableArray alloc]init];
         _imageArray2 = [[NSMutableArray alloc]init];
+        
+        _imageArray3 = [NSMutableArray new];
+
         _mainTextArray =[[NSMutableArray alloc]init];
         _mainImageArray = [[NSMutableArray alloc]init];
         
@@ -77,8 +80,12 @@
     [self.textArray2 addObject:A2str3];
     [self.textArray2 addObject:A2str4];
     
+   //generate main array
+    
+    
     [self.mainImageArray addObject:self.imageArray];
     [self.mainImageArray addObject:self.imageArray2];
+    [self.mainImageArray addObject:self.imageArray3];
     
     [self.mainTextArray addObject:self.textArray];
     [self.mainTextArray addObject:self.textArray2];
