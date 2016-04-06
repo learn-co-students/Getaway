@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSArray *users;
 
 @property (nonatomic) CKDatabase *database;
+@property (nonatomic, strong) CKDatabase *privateDB;
 
 - (void)saveContext;
 - (void)fetchData;

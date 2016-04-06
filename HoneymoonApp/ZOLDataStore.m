@@ -29,7 +29,8 @@
     
     if (self)
     {
-        _database = [[CKContainer defaultContainer] privateCloudDatabase];
+        _database = [[CKContainer defaultContainer] publicCloudDatabase];
+        _privateDB = [[CKContainer defaultContainer] privateCloudDatabase];
         _users = [NSArray new];
     }
     

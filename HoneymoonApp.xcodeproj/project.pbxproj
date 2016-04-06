@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		061C85311CAED0B500F32FDA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 061C85301CAED0B500F32FDA /* CloudKit.framework */; };
+		0620A3ED1CB42A3D002D6CE2 /* MainFeed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0620A3EC1CB42A3D002D6CE2 /* MainFeed.storyboard */; };
+		0620A3F01CB42A6B002D6CE2 /* ZOLMainFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0620A3EF1CB42A6B002D6CE2 /* ZOLMainFeedTableViewController.m */; };
 		0644D1AC1CAAEE3100510F19 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0644D1AB1CAAEE3100510F19 /* main.m */; };
 		0644D1AF1CAAEE3100510F19 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0644D1AE1CAAEE3100510F19 /* AppDelegate.m */; };
 		0644D1B21CAAEE3100510F19 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0644D1B11CAAEE3100510F19 /* ViewController.m */; };
@@ -28,6 +30,9 @@
 /* Begin PBXFileReference section */
 		061C852D1CAECDAD00F32FDA /* HoneymoonApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HoneymoonApp.entitlements; sourceTree = "<group>"; };
 		061C85301CAED0B500F32FDA /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		0620A3EC1CB42A3D002D6CE2 /* MainFeed.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainFeed.storyboard; sourceTree = "<group>"; };
+		0620A3EE1CB42A6B002D6CE2 /* ZOLMainFeedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLMainFeedTableViewController.h; sourceTree = "<group>"; };
+		0620A3EF1CB42A6B002D6CE2 /* ZOLMainFeedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLMainFeedTableViewController.m; sourceTree = "<group>"; };
 		0644D1A71CAAEE3100510F19 /* HoneymoonApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoneymoonApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0644D1AB1CAAEE3100510F19 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0644D1AD1CAAEE3100510F19 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -115,6 +120,9 @@
 				06738B4D1CAD793600E5E692 /* ZOLRegisterViewController.m */,
 				06738B4F1CAD9B5600E5E692 /* ZOLDataStore.h */,
 				06738B501CAD9B5600E5E692 /* ZOLDataStore.m */,
+				0620A3EC1CB42A3D002D6CE2 /* MainFeed.storyboard */,
+				0620A3EE1CB42A6B002D6CE2 /* ZOLMainFeedTableViewController.h */,
+				0620A3EF1CB42A6B002D6CE2 /* ZOLMainFeedTableViewController.m */,
 			);
 			path = HoneymoonApp;
 			sourceTree = "<group>";
@@ -215,6 +223,7 @@
 				0644D1BA1CAAEE3100510F19 /* Assets.xcassets in Resources */,
 				06738B481CAD77EB00E5E692 /* LoginScreen.storyboard in Resources */,
 				0644D1B51CAAEE3100510F19 /* Main.storyboard in Resources */,
+				0620A3ED1CB42A3D002D6CE2 /* MainFeed.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +287,7 @@
 				0644D1AF1CAAEE3100510F19 /* AppDelegate.m in Sources */,
 				06738B4B1CAD782200E5E692 /* ZOLLoginViewController.m in Sources */,
 				06738B561CADA1B000E5E692 /* User+CoreDataProperties.m in Sources */,
+				0620A3F01CB42A6B002D6CE2 /* ZOLMainFeedTableViewController.m in Sources */,
 				0644D1B81CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld in Sources */,
 				0644D1AC1CAAEE3100510F19 /* main.m in Sources */,
 				06738B511CAD9B5600E5E692 /* ZOLDataStore.m in Sources */,

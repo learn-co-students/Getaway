@@ -11,4 +11,6 @@
 
 @interface ZOLLoginViewController : UIViewController
 
+@property (nonatomic, strong) ZOLDataStore *dataStore;
+
 @end
