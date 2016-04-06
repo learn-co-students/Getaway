@@ -11,11 +11,20 @@
 
 @interface CloudKitDataBase : NSObject
 
+@property (strong, nonatomic) CKContainer *zolContainer;
+@property (strong, nonatomic) CKDatabase *privateDatabase;
+@property (strong, nonatomic) CKDatabase *publicDatabase;
+@property (strong, nonatomic) CKRecord *userRecord;
+@property (strong, nonatomic) CKRecord *ImageRecord;
+@property (strong, nonatomic) CKRecord *HoneyMoonRecord;
 
-//+(void)savePublicRecord:(CKDatabase *)publicDataBase record:(CKRecord *)record;
-//
-//+(void)savePrivateRecord:(CKDatabase *)database record:(CKRecord *)record;
-//
-//+(void)fetchRecordID:(CKRecordID *)recordID getTheRecord: (CKRecord *)record;
+
++ (instancetype)sharedData;
+
+-(void)savePublicRecord:(CKDatabase *)publicDatabase record:(CKRecord *)record;
+
+-(void)savePrivateRecord:(CKDatabase *)privateDatabase record:(CKRecord *)record;
+
+-(void)fetchRecordID:(CKRecordID *)recordID getTheRecord: (CKRecord *)record;
 
 @end

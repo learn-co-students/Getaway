@@ -22,10 +22,12 @@
 
 /*NSPredicate *predicate = [NSPredicate predicateWithFormat:@"description CONTAINS 'NewFeedFrom%@'", name.location.text];
 
+ 
 CKSubscription *subscription = [[CKSubscription alloc] initWithRecordType:@"NewPublicFeed"
     predicate:predicate
     options:CKSubscriptionOptionsFiresOnRecordCreation];
 
+ 
 CKNotificationInfo *newPublicFeedInfo = [CKNotificationInfo new];
 info.alertLocalizationKey = @"NewFeedForLocation_X";
 info.soundName = @"NewAlert.aiff";

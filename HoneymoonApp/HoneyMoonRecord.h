@@ -1,21 +1,20 @@
 //
-//  CKViewController.h
+//  HoneyMoonRecord.h
 //  HoneymoonApp
 //
-//  Created by Alicia Marisal on 4/2/16.
+//  Created by Alicia Marisal on 4/5/16.
 //  Copyright © 2016 Team Yam. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <CloudKit/CloudKit.h>
 #import "CloudKitDataBase.h"
-#import "CKViewController.h"
 
-@interface CKViewController : UIViewController
+@interface HoneyMoonRecord : CKRecord
 
 @property (strong, nonatomic) CloudKitDataBase *datastore;
 
-//+(void)setup;
+
+-(void)fetchHoneyRecord:(CKDatabase *)HMDatabase;
 
 
 @end
