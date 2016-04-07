@@ -75,7 +75,7 @@
             </objects>
             <point key="canvasLocation" x="1167.5" y="393.5"/>
         </scene>
-        <!--Detail Table View Controller-->
+        <!--Title-->
         <scene sceneID="O7F-Yw-UjG">
             <objects>
                 <tableViewController id="j6e-PR-rSE" customClass="ZOLDetailTableViewController" sceneMemberID="viewController">
@@ -97,7 +97,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZgX-8L-UHP">
                                             <rect key="frame" x="0.0" y="503" width="375" height="128"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -123,11 +123,131 @@
                             <outlet property="delegate" destination="j6e-PR-rSE" id="sun-pH-Tww"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Title" id="Lz8-CP-yFb">
+                        <barButtonItem key="rightBarButtonItem" title="Publish" id="7Dq-Dd-vxc">
+                            <connections>
+                                <segue destination="vMN-Hz-GF8" kind="show" id="rK7-7m-T9y"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wKt-PQ-4aZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1654.5" y="393.5"/>
+        </scene>
+        <!--Title-->
+        <scene sceneID="XdI-oj-tSb">
+            <objects>
+                <viewController id="vMN-Hz-GF8" customClass="ZOLRatingViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TrZ-RL-5Xi"/>
+                        <viewControllerLayoutGuide type="bottom" id="qYb-GJ-yNT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Fhg-TM-bwF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="img1.png" translatesAutoresizingMaskIntoConstraints="NO" id="QOR-wX-woy">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.4914748733108108" colorSpace="calibratedRGB"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FWH-hn-hyV">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How did you like your honeymoon?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VGa-nd-iil">
+                                        <rect key="frame" x="32" y="103" width="311" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="311" id="OKt-pf-j7l"/>
+                                            <constraint firstAttribute="height" constant="56" id="uct-Tu-9mV"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="VGa-nd-iil" secondAttribute="bottom" constant="508" id="2i5-rp-MFq"/>
+                                    <constraint firstItem="VGa-nd-iil" firstAttribute="top" secondItem="FWH-hn-hyV" secondAttribute="top" constant="103" id="3hG-Vd-EVd"/>
+                                    <constraint firstAttribute="trailing" secondItem="VGa-nd-iil" secondAttribute="trailing" constant="32" id="bXW-JN-bX0"/>
+                                    <constraint firstItem="VGa-nd-iil" firstAttribute="leading" secondItem="FWH-hn-hyV" secondAttribute="leading" constant="32" id="vRV-YS-uCa"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="FWH-hn-hyV" firstAttribute="centerY" secondItem="Fhg-TM-bwF" secondAttribute="centerY" id="7zj-71-EZS"/>
+                            <constraint firstItem="FWH-hn-hyV" firstAttribute="width" secondItem="Fhg-TM-bwF" secondAttribute="width" id="Dcb-IT-Gqf"/>
+                            <constraint firstItem="FWH-hn-hyV" firstAttribute="height" secondItem="Fhg-TM-bwF" secondAttribute="height" id="G6c-f3-0Ae"/>
+                            <constraint firstItem="FWH-hn-hyV" firstAttribute="centerX" secondItem="Fhg-TM-bwF" secondAttribute="centerX" id="zef-fa-RGs"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="brd-gB-IbQ">
+                        <barButtonItem key="rightBarButtonItem" title="next &gt;" id="8EE-DY-HZ8">
+                            <connections>
+                                <segue destination="NDL-9w-gkP" kind="show" id="1FF-8c-Co8"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="subview" destination="FWH-hn-hyV" id="wRf-lc-sRF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BLk-94-bHj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2130.5" y="393.5"/>
+        </scene>
+        <!--Headline Edit View Controller-->
+        <scene sceneID="vHw-cn-4Zn">
+            <objects>
+                <viewController id="NDL-9w-gkP" customClass="ZOLHeadlineEditViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SZ8-zJ-WaB"/>
+                        <viewControllerLayoutGuide type="bottom" id="9Tc-oJ-Qfn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YTA-OR-cOf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Describe your exprience in 300 words..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eB4-rW-no1">
+                                <rect key="frame" x="31" y="90" width="312" height="286"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="312" id="XQ4-x9-MQv"/>
+                                    <constraint firstAttribute="height" constant="286" id="fiK-wK-yeI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="9Tc-oJ-Qfn" firstAttribute="top" secondItem="eB4-rW-no1" secondAttribute="bottom" constant="247" id="9le-Yh-oyi"/>
+                            <constraint firstItem="eB4-rW-no1" firstAttribute="top" secondItem="SZ8-zJ-WaB" secondAttribute="bottom" constant="26" id="E5W-5g-rEW"/>
+                            <constraint firstAttribute="trailing" secondItem="eB4-rW-no1" secondAttribute="trailing" constant="32" id="bRb-L4-4ca"/>
+                            <constraint firstItem="eB4-rW-no1" firstAttribute="leading" secondItem="YTA-OR-cOf" secondAttribute="leading" constant="31" id="eci-KH-XUQ"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="efj-ja-iua" appends="YES" id="AiD-JD-qu1"/>
+                        </connections>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="textField" destination="eB4-rW-no1" id="4en-rf-HrN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2jU-u6-EXF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="efj-ja-iua">
+                    <connections>
+                        <action selector="backgroundTapped:" destination="NDL-9w-gkP" id="BeT-RZ-fmi"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="2570.5" y="393.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="IBm-kI-pTC">
@@ -149,4 +269,7 @@
             <point key="canvasLocation" x="696.5" y="393.5"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="img1.png" width="538" height="796"/>
+    </resources>
 </document>

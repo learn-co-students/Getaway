@@ -85,12 +85,14 @@
     
     [self.mainImageArray addObject:self.imageArray];
     [self.mainImageArray addObject:self.imageArray2];
-    [self.mainImageArray addObject:self.imageArray3];
+   // [self.mainImageArray addObject:self.imageArray3];
     
     [self.mainTextArray addObject:self.textArray];
     [self.mainTextArray addObject:self.textArray2];
 
-    
+   
+   // NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:filePath];
+
     
     return self;
 }
