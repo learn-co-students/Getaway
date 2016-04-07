@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -17,7 +16,6 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -44,7 +42,6 @@
                             <constraint firstItem="AOn-yV-7jk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kPj-oi-mUh"/>
                         </constraints>
                     </view>
-
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="cameraOverlayView" destination="GxN-P1-plO" id="gQV-k1-CB5"/>
@@ -135,7 +132,6 @@
                     </constraints>
                 </view>
             </objects>
-
             <point key="canvasLocation" x="176" y="316"/>
         </scene>
         <!--Accept Photo View Controller-->
