@@ -12,7 +12,7 @@
 #import "ZOLSimulatedFeedData.h"
 
 
-@interface ZOLEditPhotoViewController ()
+@interface ZOLEditPhotoViewController () <UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (strong, nonatomic) IBOutlet UITextField *locationTextField;
@@ -31,7 +31,24 @@
     self.photosArray = [[NSMutableArray alloc] init];
     
     self.acceptedImageView.image = self.acceptedImage;
+    
+    NSAttributedString *locationPlaceholder = [[NSAttributedString alloc] initWithString:@"Add location..." attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
+    
+    NSAttributedString *descriptionPlaceholder = [[NSAttributedString alloc] initWithString:@"Add photo description..." attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
+    
+    self.locationTextField.attributedPlaceholder = locationPlaceholder;
+    self.descriptionTextField.attributedPlaceholder = descriptionPlaceholder;
+    
+    self.locationTextField.delegate = self;
+    self.descriptionTextField.delegate = self;
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+
 
 - (IBAction)descriptionEditingBegan:(UITextField *)sender
 {

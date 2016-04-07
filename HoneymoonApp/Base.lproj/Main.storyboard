@@ -210,9 +210,9 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eCx-ia-GNa">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vT9-Hs-4CE">
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vT9-Hs-4CE">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="YRG-0O-qSA">
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="YRG-0O-qSA">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -235,7 +235,7 @@
                                 <rect key="frame" x="56" y="75" width="228" height="21"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" keyboardAppearance="alert" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                 <connections>
@@ -261,7 +261,7 @@
                                     <constraint firstAttribute="height" constant="44" id="fgg-X6-dJL"/>
                                     <constraint firstAttribute="width" constant="48" id="il9-01-evg"/>
                                 </constraints>
-                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Save" image="SavePhoto"/>
                                 <connections>
                                     <action selector="saveButtonTapped:" destination="8Ip-gV-OL1" eventType="touchUpInside" id="fxh-14-QBO"/>
@@ -274,7 +274,7 @@
                                     <constraint firstAttribute="height" constant="50" id="5Lb-Rg-yeE"/>
                                     <constraint firstAttribute="width" constant="50" id="Tmw-mB-Rkf"/>
                                 </constraints>
-                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Cancel" image="BackButton"/>
                                 <connections>
                                     <action selector="cancelButtonTapped:" destination="8Ip-gV-OL1" eventType="touchUpInside" id="0zh-82-5Za"/>
@@ -288,13 +288,17 @@
                             <constraint firstItem="co0-PT-Rof" firstAttribute="centerX" secondItem="WdW-hB-NYU" secondAttribute="centerX" multiplier="1.5" id="6Nz-mV-BDU"/>
                             <constraint firstItem="co0-PT-Rof" firstAttribute="centerY" secondItem="WdW-hB-NYU" secondAttribute="centerY" multiplier="0.8" id="EDm-q4-apz"/>
                             <constraint firstItem="QZ6-5H-vEF" firstAttribute="trailing" secondItem="WdW-hB-NYU" secondAttribute="trailingMargin" constant="-20" id="KRi-ef-qJz"/>
+                            <constraint firstItem="vT9-Hs-4CE" firstAttribute="centerY" secondItem="eCx-ia-GNa" secondAttribute="centerY" id="L0K-v6-7l2"/>
                             <constraint firstItem="cFR-05-ZJB" firstAttribute="trailing" secondItem="QZ6-5H-vEF" secondAttribute="trailing" id="Li1-wY-Txa"/>
                             <constraint firstItem="cFR-05-ZJB" firstAttribute="leading" secondItem="QZ6-5H-vEF" secondAttribute="leading" id="MG4-7U-Ddh"/>
                             <constraint firstItem="QZ6-5H-vEF" firstAttribute="centerY" secondItem="WdW-hB-NYU" secondAttribute="centerY" multiplier="0.3" id="UFZ-hY-DOB"/>
                             <constraint firstItem="eCx-ia-GNa" firstAttribute="width" secondItem="WdW-hB-NYU" secondAttribute="width" id="Xp9-Pj-XNf"/>
+                            <constraint firstItem="vT9-Hs-4CE" firstAttribute="width" secondItem="eCx-ia-GNa" secondAttribute="width" id="Zc2-Q1-T0j"/>
                             <constraint firstItem="QZ6-5H-vEF" firstAttribute="leading" secondItem="WdW-hB-NYU" secondAttribute="leadingMargin" constant="40" id="as9-rX-td5"/>
+                            <constraint firstItem="vT9-Hs-4CE" firstAttribute="height" secondItem="eCx-ia-GNa" secondAttribute="height" id="dSs-XI-WvS"/>
                             <constraint firstItem="eCx-ia-GNa" firstAttribute="centerX" secondItem="WdW-hB-NYU" secondAttribute="centerX" id="gGY-yq-ZmE"/>
                             <constraint firstItem="eCx-ia-GNa" firstAttribute="centerY" secondItem="WdW-hB-NYU" secondAttribute="centerY" id="gbw-fv-b6T"/>
+                            <constraint firstItem="vT9-Hs-4CE" firstAttribute="centerX" secondItem="eCx-ia-GNa" secondAttribute="centerX" id="ivL-2g-6jH"/>
                             <constraint firstItem="cFR-05-ZJB" firstAttribute="top" secondItem="QZ6-5H-vEF" secondAttribute="bottom" constant="45" id="kpC-di-kMV"/>
                             <constraint firstItem="ItG-zr-cbd" firstAttribute="centerY" secondItem="WdW-hB-NYU" secondAttribute="centerY" multiplier="0.8" id="mZ6-O6-e69"/>
                             <constraint firstItem="eCx-ia-GNa" firstAttribute="height" secondItem="WdW-hB-NYU" secondAttribute="height" id="non-fI-FIk"/>
