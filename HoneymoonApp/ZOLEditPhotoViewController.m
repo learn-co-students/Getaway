@@ -76,15 +76,24 @@
     NSLog(@"Photo location: %@", photoLocation);
     
     
-    
-    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
+//    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
+    ZOLDataStore *sharedDatastore = [ZOLDataStore dataStore];
    
+    CKRecord *newImageRecord = [[CKRecord alloc] initWithRecordType:@"Image"];
+    CKAsset *newImageAsset = [[CKAsset alloc] initWithFileURL:self.acceptedImageURL];
+    
+    [newImageRecord setObject:newImageAsset forKey:@"Picture"];
+    [newImageRecord setObject:photoDescription forKey:@"Caption"];
+    
+    [sharedDatastore saveRecord:newImageRecord toDataBase:sharedDatastore.database];
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
     
     UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
     
-    [sharedDatastore.imageArray3 addObject:self.acceptedImage];
-        
+    [sharedDatastore.feed addObject:self.acceptedImage];
+//    [sharedDatastore.imageArray3 addObject:self.acceptedImage];
+    
     [self presentViewController:navController animated:NO completion:nil];
     
     

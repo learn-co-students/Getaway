@@ -23,14 +23,13 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissVC) name:@"Dismiss AcceptVC" object:nil];
     
-   self.currentImageView.image = self.currentImage;
+    self.currentImageView.image = self.currentImage;
 }
 
--(void)dismissVC {
+-(void)dismissVC
+{
     NSLog(@"dismiss VC");
     [self dismissViewControllerAnimated:NO completion:nil];
-    
-    
 }
 
 - (IBAction)cancelButtonTapped:(UIButton *)sender
@@ -40,15 +39,16 @@
 
 - (IBAction)acceptButtonTapped:(UIButton *)sender
 {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    ZOLEditPhotoViewController *editViewController = [storyboard instantiateViewControllerWithIdentifier:@"editPhotoViewController"];
+    
+    editViewController.acceptedImage = self.currentImage;
+    editViewController.acceptedImageURL = self.currentImageURL;    
+    
+    [self presentViewController:editViewController animated:NO completion:^{
         
-        ZOLEditPhotoViewController *editViewController = [storyboard instantiateViewControllerWithIdentifier:@"editPhotoViewController"];
-        
-        editViewController.acceptedImage = self.currentImage;
-        
-        [self presentViewController:editViewController animated:NO completion:^{
-            
-        }];
+    }];
 }
 
 

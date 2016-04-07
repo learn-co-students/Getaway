@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-
+#import <Photos/Photos.h>
 
 @interface ZOLCameraViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 

@@ -19,8 +19,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yeK-da-Z9w">
-                                <rect key="frame" x="281" y="285" width="38" height="30"/>
-                                <state key="normal" title="Login"/>
+                                <rect key="frame" x="241" y="285" width="118" height="30"/>
+                                <state key="normal" title="Login with iCloud"/>
                                 <connections>
                                     <action selector="loginTapped:" destination="oxB-wh-Leb" eventType="touchUpInside" id="GoL-ni-AlS"/>
                                     <segue destination="u9x-IL-zzX" kind="show" identifier="LoggedIn" id="KvC-VT-vmI"/>
@@ -30,7 +30,7 @@
                                 <rect key="frame" x="290" y="323" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" red="0.67741737565445026" green="0.50440848482139256" blue="0.34904231200186048" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.38635352253913879" green="0.86177140474319458" blue="0.75946849584579468" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="yeK-da-Z9w" firstAttribute="centerY" secondItem="o3J-F1-Zwb" secondAttribute="centerY" id="6r3-3g-f1v"/>
                             <constraint firstItem="yeK-da-Z9w" firstAttribute="centerX" secondItem="o3J-F1-Zwb" secondAttribute="centerX" id="gkV-qf-Hin"/>

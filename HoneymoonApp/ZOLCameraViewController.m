@@ -140,19 +140,35 @@
 didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
                                id> *)info
 {
-    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+//    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    ZOLDataStore *dataStore = [ZOLDataStore dataStore];
     
+    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+    NSURL *imageURL = [dataStore writeImage:image toTemporaryDirectoryWithQuality:0.5];
+
     if (self.isCameraModeOn)
     {
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+        PHPhotoLibrary *photoLibrary = [PHPhotoLibrary sharedPhotoLibrary];
+        
+        [photoLibrary performChanges:^
+        {
+            [PHAssetChangeRequest creationRequestForAssetFromImage:image];
+        }
+                   completionHandler:^(BOOL success, NSError * _Nullable error)
+        {
+            NSLog(@"Error?: %@, Success?: %d", error, success);
+//            dispatch_semaphore_signal(semaphore);
+        }];
     }
     
-    [ self dismissViewControllerAnimated:NO completion:^{
+//    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    [self dismissViewControllerAnimated:NO completion:^{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         
         ZOLAcceptPhotoViewController *acceptViewController = [storyboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
         
         acceptViewController.currentImage = image;
+        acceptViewController.currentImageURL = imageURL;
         
         [self presentViewController:acceptViewController animated:NO completion:nil];
     }];

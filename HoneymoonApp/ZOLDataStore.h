@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import <CloudKit/CloudKit.h>
+#import <UIKit/UIKit.h>
 #import "User.h"
 
 @interface ZOLDataStore : NSObject
@@ -16,7 +17,9 @@
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, strong) NSArray *users;
+
+@property (nonatomic, strong) NSMutableArray *feed;
+@property (nonatomic, strong) CKRecordID *userID;
 
 @property (nonatomic) CKDatabase *database;
 @property (nonatomic, strong) CKDatabase *privateDB;
@@ -27,5 +30,10 @@
 
 + (instancetype) dataStore;
 
+-(void)saveRecord: (CKRecord *)record toDataBase: (CKDatabase *)database;
+
+-(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID;
+
+-(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality;
 
 @end

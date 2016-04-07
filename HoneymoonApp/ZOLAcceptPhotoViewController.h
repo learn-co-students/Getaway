@@ -11,6 +11,7 @@
 
 @interface ZOLAcceptPhotoViewController : UIViewController
 
-@property(nonatomic,strong)UIImage *currentImage;
+@property (nonatomic,strong) UIImage *currentImage;
+@property (nonatomic, strong) NSURL *currentImageURL;
 
 @end

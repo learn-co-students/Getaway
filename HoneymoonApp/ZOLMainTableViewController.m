@@ -14,8 +14,6 @@
 @interface ZOLMainTableViewController ()
 
 
-
-
 @end
 
 @implementation ZOLMainTableViewController

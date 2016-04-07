@@ -31,11 +31,140 @@
     {
         _database = [[CKContainer defaultContainer] publicCloudDatabase];
         _privateDB = [[CKContainer defaultContainer] privateCloudDatabase];
-        _users = [NSArray new];
     }
     
     return self;
 }
+
+-(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality
+{
+    NSString *path = [NSTemporaryDirectory() stringByAppendingString:@"newImageUpload.tmp"];
+    
+    NSURL *tempFile = [NSURL fileURLWithPath:path];
+    
+    NSData *imageData = UIImageJPEGRepresentation(image, compressionQuality);
+    
+    [imageData writeToURL:tempFile atomically:YES];
+    
+    return tempFile;
+}
+
+-(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID
+{
+    __block CKRecord *recordToFetch;
+    
+    [self.database fetchRecordWithID:recordID completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+        if (error)
+        {
+            NSLog(@"There was an error fetching the HoneyMoon public record. Error type: %@", error.localizedDescription);
+
+        }
+        else
+        {
+            recordToFetch = record;
+        }
+    }];
+    
+    return recordToFetch;
+};
+
+//OR
+/*      NSPredicate *predicate = [NSPredicate predicateWithValue:YES];
+ CKQuery *query =[[CKQuery alloc]initWithRecordType: publicRecord predicate:predicate];
+ [self.publicDatabase preformQuery: query inZoneWithID: self.publicZone.inZoneWithID
+ completionHandler: ^(NSArray *results, NSError *error){
+ 
+ LOG_ERROR(@"fetching records");
+ 
+ if (results) {
+ NSMutableArray *queryArray = [[NSMutableArray alloc]init];
+ 
+ for(CKRecord *ARecord in results){
+ //blah blah
+ }
+ }
+ }
+ 
+ ]
+ 
+ */
+
+
+// if we want to write a file:
+-(void)writeARecord:(CKDatabase *)publicDatabase{
+    
+    CKRecordID *publicRecordID = [[CKRecordID alloc]initWithRecordName:@""];
+    [self.database fetchRecordWithID:publicRecordID completionHandler:^(CKRecord *publicRecord, NSError *error) {
+        if (publicRecord != nil) {
+            NSString *name = publicRecord[@"ARecord"];
+            publicRecord[@"name"] = [name stringByAppendingString:@"aNewRecordItem"];
+            
+            [publicDatabase saveRecord:publicRecord completionHandler:^(CKRecord *savedPlace, NSError *savedError) {
+                NSLog(@"Could not edit public database");
+            }];
+        }
+    }];
+}
+
+-(void)saveRecord:(CKRecord *)record toDataBase:(CKDatabase *)database
+{
+    [database saveRecord:record completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+        
+        if (error)
+        {
+            NSLog(@"The public record data could not be saved. Error type: %@", error.localizedDescription);
+            
+            if (CKErrorNetworkUnavailable) {
+                NSLog(@"The public data could not be saved due to a bad network connection");
+                double retryAfterValue = [error.userInfo[CKErrorRetryAfterKey] doubleValue];
+                NSDate *retryAfterDate = [NSDate dateWithTimeIntervalSinceNow:retryAfterValue];
+                
+            }
+            
+            if (CKErrorNetworkFailure) {
+                NSLog(@"The public data could not be saved because of a Network Failure");
+                double retryAfterValue = [error.userInfo[CKErrorRetryAfterKey] doubleValue];
+                NSDate *retryAfterDate = [NSDate dateWithTimeIntervalSinceNow:retryAfterValue];
+                
+            }
+            if (error == nil) {
+                NSLog(@"We saved some data! What did we save you ask? This thing:%@", record.description);
+            }
+        }
+        
+    }];
+}
+
+//we may not want to implement private data (maybe save userName for next login?? and email?)
+//saving private feed-->after iCloud signin is verified :p
+
+
+//grab an image from CloudKit
+-(void)fetchCKAsset{
+    
+    CKQuery *imageQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate: [NSPredicate predicateWithFormat:@"Caption = %@", @"fakeImage"]];
+    
+    [self.database performQuery:imageQuery inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * _Nullable results, NSError * _Nullable error) {
+        
+        if (error){
+            NSLog(@"ERROR for querying the public DB. Error type: %@", error.localizedDescription);
+        }
+        
+        NSArray *newImageArray = [[NSArray alloc]init];
+        [newImageArray arrayByAddingObject:results];
+        
+        
+        CKRecord *firstImage = newImageArray[0];
+        CKAsset *imageOne = firstImage[@"Picture"];
+        
+        NSData *data = [NSData dataWithContentsOfURL:imageOne.fileURL];
+//        UIImage *anActulPicture =[UIImage imageWithData:data];
+        //self.testImage.image = anActulPicture;
+        
+    }];
+    
+}
+
 
 # pragma mark - Core Data stack
 
@@ -118,18 +247,18 @@
 
 #pragma mark - Core Data Fetch
 
--(void)fetchData
-{
-    NSFetchRequest *requestData = [NSFetchRequest fetchRequestWithEntityName:@"User"];
-    self.users = [self.managedObjectContext executeFetchRequest:requestData error:nil];
-    if (self.users.count == 0)
-    {
-        User *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.managedObjectContext];
-        newUser.username = @"Sam";
-        newUser.password = @"1234567";
-        
-        [self saveContext];
-    }
-}
+//-(void)fetchData
+//{
+//    NSFetchRequest *requestData = [NSFetchRequest fetchRequestWithEntityName:@"User"];
+//    self.users = [self.managedObjectContext executeFetchRequest:requestData error:nil];
+//    if (self.users.count == 0)
+//    {
+//        User *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.managedObjectContext];
+//        newUser.username = @"Sam";
+//        newUser.password = @"1234567";
+//        
+//        [self saveContext];
+//    }
+//}
 
 @end

@@ -30,24 +30,6 @@
     // Dispose of any resources that can be recreated.
 }
 
--(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality
-{
-    //TODO: check out AssetLibrary framework - saves images to phone and give URLs
-    
-    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-    
-    // we need some garbage (but unique!) name for the file
-    NSString *filename = [[NSUUID UUID].UUIDString stringByAppendingString:@".jpg"];
-    
-    NSURL *tempFile = [tempDirectory URLByAppendingPathComponent:filename];
-    
-    NSData *imageData = UIImageJPEGRepresentation(image, compressionQuality);
-    
-    [imageData writeToURL:tempFile atomically:YES];
-    
-    return tempFile;
-}
-
 - (IBAction)loginTapped:(id)sender
 {
 //    CKRecordID *userID = [[CKRecordID alloc] init];

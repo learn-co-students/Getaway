@@ -107,22 +107,22 @@
 
 #pragma mark - Validate text fields
 
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
-    if ([self.usernameTextField isEqual:textField])
-    {
-        for (User *user in self.dataStore.users)
-        {
-            NSString *name = user.username;
-            if ([name isEqualToString:self.usernameTextField.text])
-            {
-                [self createAlertWithTitle:@"Username Taken!" andMessage:@"The Username you selected is already taken, please select another one"];
-                
-                self.usernameTextField.text = @"";
-            }
-        }
-    }
-}
+//-(void)textFieldDidEndEditing:(UITextField *)textField
+//{
+//    if ([self.usernameTextField isEqual:textField])
+//    {
+//        for (User *user in self.dataStore.users)
+//        {
+//            NSString *name = user.username;
+//            if ([name isEqualToString:self.usernameTextField.text])
+//            {
+//                [self createAlertWithTitle:@"Username Taken!" andMessage:@"The Username you selected is already taken, please select another one"];
+//                
+//                self.usernameTextField.text = @"";
+//            }
+//        }
+//    }
+//}
 
 -(BOOL)usernameValid
 {
