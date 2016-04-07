@@ -7,12 +7,8 @@
 //
 
 #import <CloudKit/CloudKit.h>
-#import "CloudKitDataBase.h"
 
 @interface HoneyMoonRecord : CKRecord
-
-@property (strong, nonatomic) CloudKitDataBase *datastore;
-
 
 -(void)fetchHoneyRecord:(CKDatabase *)HMDatabase;
 

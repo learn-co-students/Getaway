@@ -14,9 +14,10 @@
 
 @interface ZOLDataStore : NSObject
 
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+//CORE DATA
+//@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+//@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+//@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 @property (nonatomic, strong) NSMutableArray *feed;
 @property (nonatomic, strong) CKRecordID *userID;
@@ -24,9 +25,10 @@
 @property (nonatomic) CKDatabase *database;
 @property (nonatomic, strong) CKDatabase *privateDB;
 
-- (void)saveContext;
-- (void)fetchData;
-- (NSURL *)applicationDocumentsDirectory;
+//CORE DATA
+//- (void)saveContext;
+//- (void)fetchData;
+//- (NSURL *)applicationDocumentsDirectory;
 
 + (instancetype) dataStore;
 

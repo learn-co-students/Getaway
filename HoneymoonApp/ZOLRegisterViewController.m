@@ -23,7 +23,7 @@
     [super viewDidLoad];
     
     self.dataStore = [ZOLDataStore dataStore];
-    [self.dataStore fetchData];
+//    [self.dataStore fetchData];
     
     self.usernameTextField.delegate = self;
     self.passwordTextField.delegate = self;
@@ -43,49 +43,49 @@
 
 - (IBAction)registerTapped:(id)sender
 {
-    if ([self usernameValid] && [self passwordValid] && [self confirmPasswordValid])
-    {
-        User *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.dataStore.managedObjectContext];
-        newUser.username = self.usernameTextField.text;
-        newUser.password = self.passwordTextField.text;
-        
-        [self.dataStore saveContext];
-        
-        CKRecordID *userID = [[CKRecordID alloc] initWithRecordName:self.usernameTextField.text];
-        CKRecord *newUserRecord = [[CKRecord alloc] initWithRecordType:@"User" recordID:userID];
-        
-        [newUserRecord setObject:self.passwordTextField.text forKey:@"Password"];
-        
-        [self.dataStore.database saveRecord:newUserRecord completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
-            NSLog(@"%@, and also: %ld", error, error.code);
-        }];
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else
-    {
-        NSMutableString *errorString = [NSMutableString new];
-        
-        BOOL usernameValid = [self usernameValid];
-        if (!usernameValid)
-        {
-            [errorString appendString:@"Usernames must be at least 1 character and cannot begin with a space\n"];
-        }
-        
-        BOOL passwordValid = [self passwordValid];
-        if (!passwordValid)
-        {
-            [errorString appendString:@"\nPasswords must be at least 8 characters in length\n"];
-        }
-        
-        BOOL confirmPasswordValid = [self confirmPasswordValid];
-        if(!confirmPasswordValid)
-        {
-            [errorString appendString:@"\nPasswords do not match"];
-        }
-        
-        [self createAlertWithTitle:@"Please Resolve Issues:" andMessage:errorString];
-    }
+//    if ([self usernameValid] && [self passwordValid] && [self confirmPasswordValid])
+//    {
+//        User *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.dataStore.managedObjectContext];
+//        newUser.username = self.usernameTextField.text;
+//        newUser.password = self.passwordTextField.text;
+//        
+//        [self.dataStore saveContext];
+//        
+//        CKRecordID *userID = [[CKRecordID alloc] initWithRecordName:self.usernameTextField.text];
+//        CKRecord *newUserRecord = [[CKRecord alloc] initWithRecordType:@"User" recordID:userID];
+//        
+//        [newUserRecord setObject:self.passwordTextField.text forKey:@"Password"];
+//        
+//        [self.dataStore.database saveRecord:newUserRecord completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+//            NSLog(@"%@, and also: %ld", error, error.code);
+//        }];
+//        
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    }
+//    else
+//    {
+//        NSMutableString *errorString = [NSMutableString new];
+//        
+//        BOOL usernameValid = [self usernameValid];
+//        if (!usernameValid)
+//        {
+//            [errorString appendString:@"Usernames must be at least 1 character and cannot begin with a space\n"];
+//        }
+//        
+//        BOOL passwordValid = [self passwordValid];
+//        if (!passwordValid)
+//        {
+//            [errorString appendString:@"\nPasswords must be at least 8 characters in length\n"];
+//        }
+//        
+//        BOOL confirmPasswordValid = [self confirmPasswordValid];
+//        if(!confirmPasswordValid)
+//        {
+//            [errorString appendString:@"\nPasswords do not match"];
+//        }
+//        
+//        [self createAlertWithTitle:@"Please Resolve Issues:" andMessage:errorString];
+//    }
 }
 
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event

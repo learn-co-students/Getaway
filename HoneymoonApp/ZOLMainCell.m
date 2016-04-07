@@ -10,9 +10,6 @@
 
 @implementation ZOLMainCell
 
-
-
-
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
