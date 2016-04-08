@@ -10,6 +10,7 @@
 #import "ViewController.h"
 #import "ZOLMainTableViewController.h"
 #import "ZOLSimulatedFeedData.h"
+#import "ZOLScrollViewController.h"
 
 
 @interface ZOLEditPhotoViewController ()
@@ -89,13 +90,13 @@
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
     
-    UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
-    
+    UINavigationController *navigationViewController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
+//
     [sharedDatastore.feed addObject:self.acceptedImage];
 //    [sharedDatastore.imageArray3 addObject:self.acceptedImage];
     
-    [self presentViewController:navController animated:NO completion:nil];
-    
+    [self presentViewController:navigationViewController animated:NO completion:nil];
+//
     
     //[self dismissViewControllerAnimated:NO completion:nil];
     
