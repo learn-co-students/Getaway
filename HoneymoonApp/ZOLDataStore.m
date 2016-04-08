@@ -31,7 +31,10 @@
     {
         _database = [[CKContainer defaultContainer] publicCloudDatabase];
         _privateDB = [[CKContainer defaultContainer] privateCloudDatabase];
+
         _fetchedRecords = [[NSMutableArray alloc]init];
+
+        _user = [[ZOLUser alloc]init];
     }
     
     return self;
@@ -108,31 +111,40 @@
 
 -(void)saveRecord:(CKRecord *)record toDataBase:(CKDatabase *)database
 {
-    [database saveRecord:record completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
-        
-        if (error)
+//    dispatch_semaphore_t saveSem = dispatch_semaphore_create(0);
+    CKModifyRecordsOperation *saveRecordOp = [[CKModifyRecordsOperation alloc]initWithRecordsToSave:@[record] recordIDsToDelete:nil];
+    saveRecordOp.modifyRecordsCompletionBlock = ^(NSArray <CKRecord *> *savedRecords, NSArray <CKRecordID *> *deletedRecordIDs, NSError *operationError){
+        if (operationError)
         {
-            NSLog(@"The public record data could not be saved. Error type: %@", error.localizedDescription);
-            
-            if (CKErrorNetworkUnavailable) {
-                NSLog(@"The public data could not be saved due to a bad network connection");
-                double retryAfterValue = [error.userInfo[CKErrorRetryAfterKey] doubleValue];
-                NSDate *retryAfterDate = [NSDate dateWithTimeIntervalSinceNow:retryAfterValue];
-                
-            }
-            
-            if (CKErrorNetworkFailure) {
-                NSLog(@"The public data could not be saved because of a Network Failure");
-                double retryAfterValue = [error.userInfo[CKErrorRetryAfterKey] doubleValue];
-                NSDate *retryAfterDate = [NSDate dateWithTimeIntervalSinceNow:retryAfterValue];
-                
-            }
-            if (error == nil) {
-                NSLog(@"We saved some data! What did we save you ask? This thing:%@", record.description);
-            }
+            NSLog(@"%@", operationError.localizedDescription);
         }
-        
-    }];
+//        dispatch_semaphore_signal(saveSem);
+    };
+    
+    [database addOperation:saveRecordOp];
+//    dispatch_semaphore_wait(saveSem, DISPATCH_TIME_FOREVER);
+    
+//    [database saveRecord:record completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+//        
+//        if (error)
+//        {
+//            NSLog(@"The public record data could not be saved. Error type: %@", error.localizedDescription);
+//            
+//            if (CKErrorNetworkUnavailable) {
+//                NSLog(@"The public data could not be saved due to a bad network connection");
+//                double retryAfterValue = [error.userInfo[CKErrorRetryAfterKey] doubleValue];
+//                NSDate *retryAfterDate = [NSDate dateWithTimeIntervalSinceNow:retryAfterValue];
+//            }
+//            if (CKErrorNetworkFailure) {
+//                NSLog(@"The public data could not be saved because of a Network Failure");
+//                double retryAfterValue = [error.userInfo[CKErrorRetryAfterKey] doubleValue];
+//                NSDate *retryAfterDate = [NSDate dateWithTimeIntervalSinceNow:retryAfterValue];
+//            }
+//            if (error == nil) {
+//                NSLog(@"We saved some data! What did we save you ask? This thing:%@", record.description);
+//            }
+//        }
+//    }];
 }
 
 

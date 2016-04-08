@@ -136,7 +136,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
     ZOLDataStore *dataStore = [ZOLDataStore dataStore];
     
     UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-    NSURL *imageURL = [dataStore writeImage:image toTemporaryDirectoryWithQuality:0.5];
+    NSURL *imageURL = [dataStore writeImage:image toTemporaryDirectoryWithQuality:0];
 
     if (self.isCameraModeOn)
     {
