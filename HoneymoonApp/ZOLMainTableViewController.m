@@ -53,8 +53,8 @@
             NSLog(@"%@", error.localizedDescription);
         }
         
-        [self.localImageArray addObject:capturedImageArray];
-        [self.localTextArray addObject:capturedTextArray];
+//        [self.localImageArray addObject:capturedImageArray];
+//        [self.localTextArray addObject:capturedTextArray];
         dispatch_semaphore_signal(imageSem);
     };
     
@@ -158,11 +158,12 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
-    ZOLDetailTableViewController *destinationVC = [segue destinationViewController];
+    UINavigationController *destinationVC = [segue destinationViewController];
+    ZOLDetailTableViewController *tableVC = (ZOLDetailTableViewController*)destinationVC.topViewController;
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
   
-    destinationVC.localImageArray = self.localImageArray[selectedIndexPath.row];
-    destinationVC.localTextArray = self.localTextArray[selectedIndexPath.row];
+    tableVC.localImageArray = self.localImageArray[selectedIndexPath.row];
+    tableVC.localTextArray = self.localTextArray[selectedIndexPath.row];
 }
 
 

@@ -138,10 +138,10 @@
             </objects>
             <point key="canvasLocation" x="1355" y="1252"/>
         </scene>
-        <!--Main-->
+        <!--FeedStoryboard-->
         <scene sceneID="bS1-vs-9MD">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" id="u9x-IL-zzX" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="FeedStoryboard" id="u9x-IL-zzX" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kd8-DW-BjM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1821" y="472"/>

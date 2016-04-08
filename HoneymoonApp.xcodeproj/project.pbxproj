@@ -41,6 +41,7 @@
 		2D6206241CB4351900C5D231 /* A2 img2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D6206201CB4351900C5D231 /* A2 img2.png */; };
 		2D6206251CB4351900C5D231 /* A2 img1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D6206211CB4351900C5D231 /* A2 img1.png */; };
 		2DB4CEB41CB59A80002DB3B9 /* ZOLHeadlineEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DB4CEB31CB59A80002DB3B9 /* ZOLHeadlineEditViewController.m */; };
+		2DE6273B1CB8409E00A48F64 /* ZOLTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE6273A1CB8409E00A48F64 /* ZOLTabBarViewController.m */; };
 		2DF8B98F1CB58A15002533F0 /* ZOLRatingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF8B98E1CB58A15002533F0 /* ZOLRatingViewController.m */; };
 		4B23AF0C1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B23AF0B1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m */; };
 		4B23AF181CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B23AF171CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m */; };
@@ -100,6 +101,8 @@
 		2D6206211CB4351900C5D231 /* A2 img1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "A2 img1.png"; sourceTree = "<group>"; };
 		2DB4CEB21CB59A80002DB3B9 /* ZOLHeadlineEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLHeadlineEditViewController.h; sourceTree = "<group>"; };
 		2DB4CEB31CB59A80002DB3B9 /* ZOLHeadlineEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLHeadlineEditViewController.m; sourceTree = "<group>"; };
+		2DE627391CB8409E00A48F64 /* ZOLTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLTabBarViewController.h; sourceTree = "<group>"; };
+		2DE6273A1CB8409E00A48F64 /* ZOLTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLTabBarViewController.m; sourceTree = "<group>"; };
 		2DF8B98D1CB58A15002533F0 /* ZOLRatingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLRatingViewController.h; sourceTree = "<group>"; };
 		2DF8B98E1CB58A15002533F0 /* ZOLRatingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLRatingViewController.m; sourceTree = "<group>"; };
 		42870E96C55F7F5E8DB9B4B2 /* libPods-HoneymoonApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HoneymoonApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -223,6 +226,8 @@
 		06191C4F1CB6B2E60029F7F6 /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
+				2DE627391CB8409E00A48F64 /* ZOLTabBarViewController.h */,
+				2DE6273A1CB8409E00A48F64 /* ZOLTabBarViewController.m */,
 				06738B491CAD782200E5E692 /* ZOLLoginViewController.h */,
 				06738B4A1CAD782200E5E692 /* ZOLLoginViewController.m */,
 				06738B4C1CAD793600E5E692 /* ZOLRegisterViewController.h */,
@@ -446,6 +451,7 @@
 				06738B571CADA1B000E5E692 /* User.m in Sources */,
 				2D62061D1CB426A000C5D231 /* ZOLMainCell.m in Sources */,
 				2DF8B98F1CB58A15002533F0 /* ZOLRatingViewController.m in Sources */,
+				2DE6273B1CB8409E00A48F64 /* ZOLTabBarViewController.m in Sources */,
 				2D3759041CB40D02001BD7AE /* ZOLDetailTableViewController.m in Sources */,
 				4BEA016A1CAD76B4003F219B /* ZOLCameraViewController.m in Sources */,
 				0644D1AF1CAAEE3100510F19 /* AppDelegate.m in Sources */,
