@@ -42,24 +42,16 @@
     UIImagePickerController *cameraController = [[UIImagePickerController alloc] init];
     cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
     cameraController.delegate = self;
-    
     cameraController.cameraDevice = self.cameraDevice;
-    
     cameraController.showsCameraControls = NO;
     cameraController.toolbarHidden = YES;
-    
-    cameraController.cameraViewTransform = CGAffineTransformMakeScale(1.7, 1.7);
+    cameraController.cameraViewTransform = CGAffineTransformConcat(CGAffineTransformMakeScale(1.38, 1.38), CGAffineTransformMakeTranslation(0, 80));
     cameraController.cameraFlashMode = self.flashMode;
     self.cameraOverlayView.frame = cameraController.cameraOverlayView.frame;
-    
     cameraController.cameraOverlayView = self.cameraOverlayView;
-    
     self.imagePickerController = cameraController;
-    
     [self presentViewController:cameraController animated:NO completion:nil];
-    
     self.isCameraModeOn = YES;
-
 }
 
 - (IBAction)photoLibraryButtonTapped:(UIButton *)sender
