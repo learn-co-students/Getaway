@@ -81,9 +81,11 @@
    
     CKRecord *newImageRecord = [[CKRecord alloc] initWithRecordType:@"Image"];
     CKAsset *newImageAsset = [[CKAsset alloc] initWithFileURL:self.acceptedImageURL];
+    CKReference *honeymoonReference = [[CKReference alloc]initWithRecordID:sharedDatastore.user.honeymoonID action:CKReferenceActionDeleteSelf];
     
     [newImageRecord setObject:newImageAsset forKey:@"Picture"];
     [newImageRecord setObject:photoDescription forKey:@"Caption"];
+    [newImageRecord setObject:honeymoonReference forKey:@"Honeymoon"];
     
     [sharedDatastore saveRecord:newImageRecord toDataBase:sharedDatastore.database];
     
@@ -91,7 +93,7 @@
     
     UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
     
-    [sharedDatastore.feed addObject:self.acceptedImage];
+//    [sharedDatastore.feed addObject:self.acceptedImage];
 //    [sharedDatastore.imageArray3 addObject:self.acceptedImage];
     
     [self presentViewController:navController animated:NO completion:nil];

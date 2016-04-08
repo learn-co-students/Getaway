@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import <CloudKit/CloudKit.h>
 #import <UIKit/UIKit.h>
-#import "User.h"
+#import "ZOLUser.h"
 
 @interface ZOLDataStore : NSObject
 
@@ -20,10 +20,10 @@
 //@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 @property (nonatomic, strong) NSMutableArray *feed;
-@property (nonatomic, strong) CKRecordID *userID;
 
 @property (nonatomic) CKDatabase *database;
 @property (nonatomic, strong) CKDatabase *privateDB;
+@property (nonatomic, strong) ZOLUser *user;
 
 //CORE DATA
 //- (void)saveContext;
