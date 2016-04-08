@@ -31,6 +31,7 @@
     {
         _database = [[CKContainer defaultContainer] publicCloudDatabase];
         _privateDB = [[CKContainer defaultContainer] privateCloudDatabase];
+        _fetchedRecords = [[NSMutableArray alloc]init];
     }
     
     return self;
@@ -39,9 +40,7 @@
 -(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality
 {
     NSString *path = [NSTemporaryDirectory() stringByAppendingString:@"newImageUpload.tmp"];
-    
     NSURL *tempFile = [NSURL fileURLWithPath:path];
-    
     NSData *imageData = UIImageJPEGRepresentation(image, compressionQuality);
     
     [imageData writeToURL:tempFile atomically:YES];
@@ -51,7 +50,7 @@
 
 -(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID
 {
-    __block CKRecord *recordToFetch;
+    __block CKRecord *fetchedRecord;
     
     [self.database fetchRecordWithID:recordID completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
         if (error)
@@ -61,11 +60,11 @@
         }
         else
         {
-            recordToFetch = record;
+            fetchedRecord = record;
         }
     }];
     
-    return recordToFetch;
+    return fetchedRecord;
 };
 
 //OR
@@ -92,6 +91,7 @@
 
 // if we want to write a file:
 -(void)writeARecord:(CKDatabase *)publicDatabase{
+    
     
     CKRecordID *publicRecordID = [[CKRecordID alloc]initWithRecordName:@""];
     [self.database fetchRecordWithID:publicRecordID completionHandler:^(CKRecord *publicRecord, NSError *error) {
@@ -140,6 +140,8 @@
 
 
 //grab an image from CloudKit
+//In order to incorporate smooth loading, we should probably incorporate the CKQueryOperation to pass along batches of asset data at a time so we don't run risk of crashing our app.
+
 -(void)fetchCKAsset{
     
     CKQuery *imageQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate: [NSPredicate predicateWithFormat:@"Caption = %@", @"fakeImage"]];
@@ -158,13 +160,65 @@
         CKAsset *imageOne = firstImage[@"Picture"];
         
         NSData *data = [NSData dataWithContentsOfURL:imageOne.fileURL];
-//        UIImage *anActulPicture =[UIImage imageWithData:data];
-        //self.testImage.image = anActulPicture;
+        UIImage *anActulPicture =[UIImage imageWithData:data];
+//        self.testImage.image = anActulPicture;
+        //'test image' was a UIview used to practice fething one image
         
     }];
     
+    
 }
 
+- (void)readRecords_Resurs:(CKDatabase *)database
+                     query:(CKQuery *)query
+                    cursor:(CKQueryCursor *)cursor {
+    
+CKQueryOperation *operation;
+ 
+//(1)first time through we are passing in a query and will enter the else statement:
+    if (query != nil) {
+        operation = [[CKQueryOperation alloc] initWithQuery: query];
+        
+    } else {
+        operation = [[CKQueryOperation alloc] initWithCursor: cursor];
+    }
+//(we enter the block below, fetch the record)
+    operation.recordFetchedBlock = ^(CKRecord *record) {
+        
+        [self.fetchedRecords addObject:record];
+    };
+    operation.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *error) {
+        BOOL noMoreCursorsAvailable = cursor == nil;
+        BOOL weHaveAnError = error != nil;
+        
+        if (noMoreCursorsAvailable || weHaveAnError) {
+            
+// We're done in the event that there are no more crusors or an error occured
+            dispatch_async(dispatch_get_main_queue(), ^{ [self readRecordsDone: error == nil ? nil : [error localizedDescription]]; });
+        }
+        else {
+// If we don't have an error and there is another cursor, get next batch (using cursors until crusor == nil)
+            dispatch_async(dispatch_get_main_queue(), ^{ [self readRecords_Resurs: database query: nil cursor: cursor]; });
+        }
+    };
+    
+    [database addOperation: operation]; // when we FIRST hit this method, this is when the cursor first comes into play, until this line of code, we are only dealing with the fetching the query. Afeter we hit this line, we begin using the cursor.
+ 
+}
+
+- (void) readRecordsDone: (NSString *) errorMsg {
+    
+    if (errorMsg) {
+        NSLog(@"Error: %@", errorMsg); //OR errorMesg.description OR errorMesg.debugDescription
+    }
+    
+    else{
+        
+        NSLog(@"all batches are finished!");
+    }
+    
+    //Do we need to set up a NSNotification to let the tableview know the record is finished/fully loaded?
+}
 
 # pragma mark - Core Data stack
 

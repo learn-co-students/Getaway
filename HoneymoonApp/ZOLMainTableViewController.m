@@ -46,8 +46,35 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ZOLMainCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellMain" forIndexPath:indexPath];
     
+    
+    
     cell.image.image = self.localImageArray[indexPath.row][0];
+    
+//IF WE WANT TO DEAL WITH WHAT TO DO WHEN ASSETS ARE NOT LOADED IN THE CELLS:
    // cell.headlineLabel.text = self.localTextArray[indexPath.row][0];
+    
+    // kick off the CKQuery for the first image asset for the corresponding honeymoon record
+    // in the completion block for that query, set the image view to the image in the CKAsset
+    //  * but... you need to make sure that the cell hasn't been reused in the meantime
+    
+    /*
+     
+     HoneymoonRecord *theHoneymoon = [... whatever ...: indexPath.row];
+     cell.honeymoon = theHoneymoon;
+     cell.image.image = [some placehold image];
+     
+     [CKQuery querySomeStuffWithCompletion:^(CKRecord *imageRecord) {
+        if(cell.honeymoon != theHoneymoon) {
+            // the cell got reused, and we should *not* set the image we just got on it,
+            // since the cell not represents another honeymoon.
+            return;
+        }
+     
+        cell.image = [imageRecord];
+     }];
+     
+     
+     */
     
     return cell;
 }

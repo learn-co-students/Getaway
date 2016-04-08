@@ -7,10 +7,12 @@
 //
 
 #import <CloudKit/CloudKit.h>
+#import "ZOLDataStore.h"
 
 @interface HoneyMoonRecord : CKRecord
 
 -(void)fetchHoneyRecord:(CKDatabase *)HMDatabase;
+
 
 
 @end
