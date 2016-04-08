@@ -32,7 +32,9 @@
         _database = [[CKContainer defaultContainer] publicCloudDatabase];
         _privateDB = [[CKContainer defaultContainer] privateCloudDatabase];
 
+
         _fetchedRecords = [[NSMutableArray alloc]init];
+
 
         _user = [[ZOLUser alloc]init];
     }
