@@ -18,9 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
-    
+    //initialize star-rating view
     HCSStarRatingView *starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(45, 300, 300, 60)];
     starRatingView.maximumValue = 5;
     starRatingView.minimumValue = 0;

@@ -19,9 +19,15 @@
     [self.textField resignFirstResponder];
 }
 
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
         [self.textField resignFirstResponder];
     return YES;
+}
+
+- (IBAction)mainFeedButtonTapped:(UIBarButtonItem *)sender
+{
+    [self.navigationController popToRootViewControllerAnimated:NO];
 }
 
 - (void)viewDidLoad {

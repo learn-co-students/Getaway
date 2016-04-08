@@ -10,9 +10,10 @@
 #import "ViewController.h"
 #import "ZOLMainTableViewController.h"
 #import "ZOLSimulatedFeedData.h"
+#import "ZOLScrollViewController.h"
 
 
-@interface ZOLEditPhotoViewController ()
+@interface ZOLEditPhotoViewController () <UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (strong, nonatomic) IBOutlet UITextField *locationTextField;
@@ -31,7 +32,24 @@
     self.photosArray = [[NSMutableArray alloc] init];
     
     self.acceptedImageView.image = self.acceptedImage;
+    
+    NSAttributedString *locationPlaceholder = [[NSAttributedString alloc] initWithString:@"Add location..." attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
+    
+    NSAttributedString *descriptionPlaceholder = [[NSAttributedString alloc] initWithString:@"Add photo description..." attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
+    
+    self.locationTextField.attributedPlaceholder = locationPlaceholder;
+    self.descriptionTextField.attributedPlaceholder = descriptionPlaceholder;
+    
+    self.locationTextField.delegate = self;
+    self.descriptionTextField.delegate = self;
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+
 
 - (IBAction)descriptionEditingBegan:(UITextField *)sender
 {
@@ -91,13 +109,13 @@
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
     
-    UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
-    
 //    [sharedDatastore.feed addObject:self.acceptedImage];
+    UINavigationController *navigationViewController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
+
 //    [sharedDatastore.imageArray3 addObject:self.acceptedImage];
     
-    [self presentViewController:navController animated:NO completion:nil];
-    
+    [self presentViewController:navigationViewController animated:NO completion:nil];
+//
     
     //[self dismissViewControllerAnimated:NO completion:nil];
     

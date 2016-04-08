@@ -44,6 +44,7 @@
 		2DF8B98F1CB58A15002533F0 /* ZOLRatingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF8B98E1CB58A15002533F0 /* ZOLRatingViewController.m */; };
 		4B23AF0C1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B23AF0B1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m */; };
 		4B23AF181CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B23AF171CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m */; };
+		4B2BC4CA1CB6FFC700984844 /* ZOLScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2BC4C91CB6FFC700984844 /* ZOLScrollViewController.m */; };
 		4BEA016A1CAD76B4003F219B /* ZOLCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEA01691CAD76B4003F219B /* ZOLCameraViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -106,6 +107,8 @@
 		4B23AF0B1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLAcceptPhotoViewController.m; sourceTree = "<group>"; };
 		4B23AF161CB2EA0B005A45C8 /* ZOLEditPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLEditPhotoViewController.h; sourceTree = "<group>"; };
 		4B23AF171CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLEditPhotoViewController.m; sourceTree = "<group>"; };
+		4B2BC4C81CB6FFC700984844 /* ZOLScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLScrollViewController.h; sourceTree = "<group>"; };
+		4B2BC4C91CB6FFC700984844 /* ZOLScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLScrollViewController.m; sourceTree = "<group>"; };
 		4BEA01681CAD76B4003F219B /* ZOLCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLCameraViewController.h; sourceTree = "<group>"; };
 		4BEA01691CAD76B4003F219B /* ZOLCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLCameraViewController.m; sourceTree = "<group>"; };
 		5E51CB7A6399C09E4181A5E2 /* Pods-HoneymoonApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HoneymoonApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HoneymoonApp/Pods-HoneymoonApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -228,6 +231,8 @@
 				2DF8B98E1CB58A15002533F0 /* ZOLRatingViewController.m */,
 				2DB4CEB21CB59A80002DB3B9 /* ZOLHeadlineEditViewController.h */,
 				2DB4CEB31CB59A80002DB3B9 /* ZOLHeadlineEditViewController.m */,
+				4B2BC4C81CB6FFC700984844 /* ZOLScrollViewController.h */,
+				4B2BC4C91CB6FFC700984844 /* ZOLScrollViewController.m */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
@@ -452,6 +457,7 @@
 				0644D1B81CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld in Sources */,
 				4B23AF0C1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m in Sources */,
 				2D3759071CB40E56001BD7AE /* ZOLSimulatedFeedData.m in Sources */,
+				4B2BC4CA1CB6FFC700984844 /* ZOLScrollViewController.m in Sources */,
 				0644D1AC1CAAEE3100510F19 /* main.m in Sources */,
 				2B8636881CB49B7D00909683 /* HoneyMoonRecord.m in Sources */,
 				2D3759011CB40CED001BD7AE /* ZOLMainTableViewController.m in Sources */,
@@ -573,7 +579,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HoneymoonApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -595,7 +601,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HoneymoonApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
