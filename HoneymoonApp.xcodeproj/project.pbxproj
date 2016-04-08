@@ -23,6 +23,7 @@
 		06738B511CAD9B5600E5E692 /* ZOLDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B501CAD9B5600E5E692 /* ZOLDataStore.m */; };
 		06738B561CADA1B000E5E692 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B531CADA1B000E5E692 /* User+CoreDataProperties.m */; };
 		06738B571CADA1B000E5E692 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B551CADA1B000E5E692 /* User.m */; };
+		06E73DBD1CB85CDB000E860A /* ZOLHoneymoon.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E73DBC1CB85CDB000E860A /* ZOLHoneymoon.m */; };
 		2B8636751CAEF7FE00909683 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8636741CAEF7FE00909683 /* CloudKit.framework */; };
 		2B8636881CB49B7D00909683 /* HoneyMoonRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8636871CB49B7D00909683 /* HoneyMoonRecord.m */; };
 		2B9563BBCB99DA517B93FBBF /* libPods-HoneymoonApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42870E96C55F7F5E8DB9B4B2 /* libPods-HoneymoonApp.a */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -75,6 +76,8 @@
 		06738B531CADA1B000E5E692 /* User+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "User+CoreDataProperties.m"; sourceTree = "<group>"; };
 		06738B541CADA1B000E5E692 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		06738B551CADA1B000E5E692 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		06E73DBB1CB85CDB000E860A /* ZOLHoneymoon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLHoneymoon.h; sourceTree = "<group>"; };
+		06E73DBC1CB85CDB000E860A /* ZOLHoneymoon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLHoneymoon.m; sourceTree = "<group>"; };
 		2B8636731CAEF7F700909683 /* HoneymoonApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HoneymoonApp.entitlements; sourceTree = "<group>"; };
 		2B8636741CAEF7FE00909683 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		2B8636861CB49B7D00909683 /* HoneyMoonRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HoneyMoonRecord.h; sourceTree = "<group>"; };
@@ -170,6 +173,8 @@
 				06191C471CB6AFE50029F7F6 /* Secrets.m */,
 				06191C501CB6CC6E0029F7F6 /* ZOLUser.h */,
 				06191C511CB6CC6E0029F7F6 /* ZOLUser.m */,
+				06E73DBB1CB85CDB000E860A /* ZOLHoneymoon.h */,
+				06E73DBC1CB85CDB000E860A /* ZOLHoneymoon.m */,
 				06191C491CB6B0180029F7F6 /* CoreData */,
 			);
 			name = Models;
@@ -454,6 +459,7 @@
 				2D62061A1CB421BF00C5D231 /* ZOLDetailCell.m in Sources */,
 				06738B561CADA1B000E5E692 /* User+CoreDataProperties.m in Sources */,
 				2DB4CEB41CB59A80002DB3B9 /* ZOLHeadlineEditViewController.m in Sources */,
+				06E73DBD1CB85CDB000E860A /* ZOLHoneymoon.m in Sources */,
 				0644D1B81CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld in Sources */,
 				4B23AF0C1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m in Sources */,
 				2D3759071CB40E56001BD7AE /* ZOLSimulatedFeedData.m in Sources */,

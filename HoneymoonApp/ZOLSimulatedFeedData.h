@@ -15,15 +15,11 @@
 @property (nonatomic, strong) NSMutableArray *imageArray2;
 @property (nonatomic, strong) NSMutableArray *imageArray3;
 
-
 @property (nonatomic, strong) NSMutableArray *textArray;
 @property (nonatomic, strong) NSMutableArray *textArray2;
 
 @property (nonatomic, strong) NSMutableArray *mainImageArray;
 @property (nonatomic, strong) NSMutableArray *mainTextArray;
-
-
-
 
 
 + (instancetype)sharedDatastore;

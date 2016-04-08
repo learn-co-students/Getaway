@@ -71,8 +71,6 @@
     
 }
 
-
-
 - (void)handleTap:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Choose cover photo"
@@ -92,9 +90,6 @@
     UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
                                                          
     [self presentViewController:navController animated:NO completion:nil];
-                                                         
-                                                         
-                                                         
                                                      }];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
