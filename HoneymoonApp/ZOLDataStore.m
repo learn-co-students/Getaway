@@ -135,9 +135,6 @@
     }];
 }
 
-//we may not want to implement private data (maybe save userName for next login?? and email?)
-//saving private feed-->after iCloud signin is verified :p
-
 
 //grab an image from CloudKit
 //In order to incorporate smooth loading, we should probably incorporate the CKQueryOperation to pass along batches of asset data at a time so we don't run risk of crashing our app.
