@@ -29,7 +29,7 @@
     
     ZOLDataStore *dataStore = [ZOLDataStore dataStore];
     
-    CKReference *honeymoonImages = [[CKReference alloc]initWithRecordID:dataStore.user.honeymoonID action:CKReferenceActionDeleteSelf];
+    CKReference *honeymoonImages = [[CKReference alloc]initWithRecordID:dataStore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
     NSPredicate *findImages = [NSPredicate predicateWithFormat:@"Honeymoon == %@", honeymoonImages];
     CKQuery *imageQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
     
@@ -58,7 +58,7 @@
         dispatch_semaphore_signal(imageSem);
     };
     
-    [dataStore.database addOperation:imageFindOp];
+    [dataStore.client.database addOperation:imageFindOp];
     dispatch_semaphore_wait(imageSem, DISPATCH_TIME_FOREVER);
 }
 

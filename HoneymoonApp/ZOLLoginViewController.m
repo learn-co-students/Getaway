@@ -65,49 +65,39 @@
     {
         self.dataStore = [ZOLDataStore dataStore];
         
-        CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.dataStore.user.userID action:CKReferenceActionDeleteSelf];
-        NSPredicate *userSearch = [NSPredicate predicateWithFormat:@"User == %@", referenceToUser];
-        CKQuery *findHoneymoon = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:userSearch];
-        CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findHoneymoon];
-        findHMOp.resultsLimit = 1;
-        
-        dispatch_semaphore_t loginSemaphore = dispatch_semaphore_create(0);
-        findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError){
-            
-            if (operationError)
-            {
-                NSLog(@"Obviously this is an error, but heres the description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
-            }
-            
-            dispatch_semaphore_signal(loginSemaphore);
-        };
-        
-        __block CKRecord *userHoneyMoon;
-        findHMOp.recordFetchedBlock = ^(CKRecord *record){
-            userHoneyMoon = record;
-            self.dataStore.user.honeymoonID = record.recordID;
-        };
-        
-        [self.dataStore.database addOperation:findHMOp];
-        dispatch_semaphore_wait(loginSemaphore, DISPATCH_TIME_FOREVER);
-        
-        if (!userHoneyMoon)
-        {
-            [self createBlankHoneyMoon];
-        }
+//        CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.dataStore.user.userID action:CKReferenceActionDeleteSelf];
+//        NSPredicate *userSearch = [NSPredicate predicateWithFormat:@"User == %@", referenceToUser];
+//        CKQuery *findHoneymoon = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:userSearch];
+//        CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findHoneymoon];
+//        findHMOp.resultsLimit = 1;
+//        
+//        dispatch_semaphore_t loginSemaphore = dispatch_semaphore_create(0);
+//        findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError){
+//            
+//            if (operationError)
+//            {
+//                NSLog(@"Obviously this is an error, but heres the description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
+//            }
+//            
+//            dispatch_semaphore_signal(loginSemaphore);
+//        };
+//        
+//        __block CKRecord *userHoneyMoon;
+//        findHMOp.recordFetchedBlock = ^(CKRecord *record){
+//            userHoneyMoon = record;
+//            self.dataStore.user.honeymoonID = record.recordID;
+//        };
+//        
+//        [self.dataStore.database addOperation:findHMOp];
+//        dispatch_semaphore_wait(loginSemaphore, DISPATCH_TIME_FOREVER);
+//        
+//        if (!userHoneyMoon)
+//        {
+//            [self createBlankHoneyMoon];
+//        }
     }
     
     [self.activityIndicator stopAnimating];
-}
-
--(void)createBlankHoneyMoon
-{
-    CKRecord *newHoneyMoon = [[CKRecord alloc]initWithRecordType:@"Honeymoon"];
-    CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.dataStore.user.userID action:CKReferenceActionDeleteSelf];
-    newHoneyMoon[@"User"] = referenceToUser;
-    
-    [self.dataStore saveRecord:newHoneyMoon toDataBase:self.dataStore.database];
-    self.dataStore.user.honeymoonID = newHoneyMoon.recordID;
 }
 
 #pragma mark - Navigation

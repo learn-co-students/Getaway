@@ -10,20 +10,17 @@
 
 @implementation ZOLHoneymoon
 
-//-(instancetype)init
-//{
-//    self = [super init];
-//    
-//    datastore = [ZOLDataStore dataStore];
-//    
-//    //find honeymoon id from user id in data store
-//    
-//    if (self)
-//    {
-//        _honeymoonID = datastore
-//    }
-//    
-//    return self;
-//}
+-(instancetype)init
+{
+    self = [super init];
+    
+    if (self)
+    {
+        _honeymoonID = [[CKRecordID alloc]initWithRecordName:@"Honeymoon"];
+        _honeymoonImages = [[NSMutableArray alloc]init];
+    }
+    
+    return self;
+}
 
 @end

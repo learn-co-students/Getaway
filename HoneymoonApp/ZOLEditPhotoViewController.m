@@ -99,13 +99,13 @@
    
     CKRecord *newImageRecord = [[CKRecord alloc] initWithRecordType:@"Image"];
     CKAsset *newImageAsset = [[CKAsset alloc] initWithFileURL:self.acceptedImageURL];
-    CKReference *honeymoonReference = [[CKReference alloc]initWithRecordID:sharedDatastore.user.honeymoonID action:CKReferenceActionDeleteSelf];
+    CKReference *honeymoonReference = [[CKReference alloc]initWithRecordID:sharedDatastore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
     
     [newImageRecord setObject:newImageAsset forKey:@"Picture"];
     [newImageRecord setObject:photoDescription forKey:@"Caption"];
     [newImageRecord setObject:honeymoonReference forKey:@"Honeymoon"];
     
-    [sharedDatastore saveRecord:newImageRecord toDataBase:sharedDatastore.database];
+    [sharedDatastore.client saveRecord:newImageRecord toDataBase:sharedDatastore.client.database];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
     

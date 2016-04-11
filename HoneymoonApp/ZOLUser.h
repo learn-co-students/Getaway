@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <CloudKit/CloudKit.h>
 #import "ZOLHoneymoon.h"
+#import "ZOLCloudKitClient.h"
 
 @interface ZOLUser : NSObject
 
 @property (nonatomic, strong) CKRecordID *userID;
 @property (nonatomic, strong) ZOLHoneymoon *userHoneymoon;
-@property (nonatomic, strong) CKRecordID *honeymoonID;
+@property (nonatomic, strong) ZOLCloudKitClient *client;
 
 @end
