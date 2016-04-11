@@ -11,13 +11,9 @@
 @interface ZOLScrollViewController () <UIScrollViewDelegate>
 
 @property(strong, nonatomic) NSMutableArray *imagesArray;
-
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-
 @property (strong, nonatomic) IBOutlet UIStackView *stackViewOutlet;
-
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *widthConstraint;
-
 @property (strong, nonatomic) UIImage *selectedImage;
 
 @end
@@ -87,11 +83,8 @@
                                                          
                                                          //Go to next publish option.
                                                          
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
                                                          
-    UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
-                                                         
-    [self presentViewController:navController animated:NO completion:nil];
+    [self performSegueWithIdentifier:@"ratingSegue" sender:self];
                                                          
                                                          
                                                          

@@ -30,15 +30,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self.flashButtonIcon setImage:[UIImage imageNamed:@"FlashInactive"] forState:UIControlStateNormal];
-    
     self.flashMode = -1;
     
 }
 
-- (IBAction)cameraButtonTapped:(UIButton *)sender
-{
+-(void)viewDidAppear:(BOOL)animated {
+    
+    animated = NO;
     UIImagePickerController *cameraController = [[UIImagePickerController alloc] init];
     cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
     cameraController.delegate = self;
@@ -52,6 +51,11 @@
     self.imagePickerController = cameraController;
     [self presentViewController:cameraController animated:NO completion:nil];
     self.isCameraModeOn = YES;
+  
+}
+
+- (IBAction)cameraButtonTapped:(UIButton *)sender
+{
 }
 
 - (IBAction)photoLibraryButtonTapped:(UIButton *)sender
@@ -73,7 +77,11 @@
 
 - (IBAction)cancelButtonTapped:(UIButton *)sender
 {
-    [self dismissViewControllerAnimated:NO completion:nil];
+    
+    [self.tabBarController setSelectedIndex:0];
+    
+    [self.tabBarController dismissViewControllerAnimated:NO completion:nil];
+    
 }
 
 - (IBAction)switchCameraButtonTapped:(UIButton *)sender
