@@ -38,7 +38,7 @@
     CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findHoneymoon];
     findHMOp.resultsLimit = 1;
     
-    dispatch_semaphore_t loginSemaphore = dispatch_semaphore_create(0);
+    dispatch_semaphore_t honeymoonSemaphore = dispatch_semaphore_create(0);
     findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError){
         
         if (operationError)
@@ -46,7 +46,7 @@
             NSLog(@"Obviously this is an error, but heres the description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
         }
         
-        dispatch_semaphore_signal(loginSemaphore);
+        dispatch_semaphore_signal(honeymoonSemaphore);
     };
     
     __block CKRecord *userHoneyMoon;
@@ -56,7 +56,7 @@
     };
     
     [[[CKContainer defaultContainer] publicCloudDatabase] addOperation:findHMOp];
-    dispatch_semaphore_wait(loginSemaphore, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(honeymoonSemaphore, DISPATCH_TIME_FOREVER);
     
     if (!userHoneyMoon)
     {

@@ -37,9 +37,7 @@
     CKQueryOperation *imageFindOp = [[CKQueryOperation alloc]initWithQuery:imageQuery];
     imageFindOp.recordFetchedBlock = ^(CKRecord *record){
         CKAsset *image = record[@"Picture"];
-        NSURL *imageURL = image.fileURL;
-        NSData *imageData = [NSData dataWithContentsOfFile:imageURL.path];
-        UIImage *picture = [UIImage imageWithData:imageData];
+        UIImage *picture = [dataStore.client retrieveUIImageFromAsset:image];
         
         NSString *captionText = record[@"Caption"];
         

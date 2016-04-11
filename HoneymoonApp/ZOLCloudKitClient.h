@@ -18,5 +18,6 @@
 -(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality;
 -(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID;
 -(void)saveRecord:(CKRecord *)record toDataBase:(CKDatabase *)database;
+-(UIImage *)retrieveUIImageFromAsset: (CKAsset *)asset;
 
 @end

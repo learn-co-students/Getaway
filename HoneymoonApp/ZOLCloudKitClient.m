@@ -36,6 +36,15 @@
     return tempFile;
 }
 
+-(UIImage *)retrieveUIImageFromAsset:(CKAsset *)asset
+{
+    NSURL *imageURL = asset.fileURL;
+    NSData *imageData = [NSData dataWithContentsOfFile:imageURL.path];
+    UIImage *picture = [UIImage imageWithData:imageData];
+    
+    return picture;
+}
+
 -(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID
 {
     __block CKRecord *recordToFetch;
