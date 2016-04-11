@@ -32,6 +32,7 @@
         _database = [[CKContainer defaultContainer] publicCloudDatabase];
         _privateDB = [[CKContainer defaultContainer] privateCloudDatabase];
         _user = [[ZOLUser alloc]init];
+//        _honeymoonID
     }
     
     return self;
@@ -58,7 +59,6 @@
         if (error)
         {
             NSLog(@"There was an error fetching the HoneyMoon public record. Error type: %@", error.localizedDescription);
-
         }
         else
         {
@@ -69,30 +69,9 @@
     return recordToFetch;
 };
 
-//OR
-/*      NSPredicate *predicate = [NSPredicate predicateWithValue:YES];
- CKQuery *query =[[CKQuery alloc]initWithRecordType: publicRecord predicate:predicate];
- [self.publicDatabase preformQuery: query inZoneWithID: self.publicZone.inZoneWithID
- completionHandler: ^(NSArray *results, NSError *error){
- 
- LOG_ERROR(@"fetching records");
- 
- if (results) {
- NSMutableArray *queryArray = [[NSMutableArray alloc]init];
- 
- for(CKRecord *ARecord in results){
- //blah blah
- }
- }
- }
- 
- ]
- 
- */
-
-
 // if we want to write a file:
--(void)writeARecord:(CKDatabase *)publicDatabase{
+-(void)writeARecord:(CKDatabase *)publicDatabase
+{
     
     CKRecordID *publicRecordID = [[CKRecordID alloc]initWithRecordName:@""];
     [self.database fetchRecordWithID:publicRecordID completionHandler:^(CKRecord *publicRecord, NSError *error) {
@@ -175,7 +154,7 @@
     
 }
 
-
+//CORE DATA
 # pragma mark - Core Data stack
 
 //@synthesize managedObjectContext = _managedObjectContext;

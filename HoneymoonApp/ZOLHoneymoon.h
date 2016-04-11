@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CloudKit/CloudKit.h>
+
 
 @interface ZOLHoneymoon : NSObject
+
+@property (nonatomic, strong) CKRecordID *honeymoonID;
+@property (nonatomic, strong) NSMutableArray *honeymoonImages;
 
 @end

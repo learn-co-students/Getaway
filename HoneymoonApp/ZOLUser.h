@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <CloudKit/CloudKit.h>
+#import "ZOLHoneymoon.h"
 
 @interface ZOLUser : NSObject
 
 @property (nonatomic, strong) CKRecordID *userID;
+@property (nonatomic, strong) ZOLHoneymoon *userHoneymoon;
 @property (nonatomic, strong) CKRecordID *honeymoonID;
 
 @end
