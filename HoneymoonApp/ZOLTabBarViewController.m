@@ -30,9 +30,8 @@
     tabFrame.size.height = 35;
     tabFrame.origin.y = self.view.frame.size.height - 35;
     self.tabBar.frame = tabFrame;
+    self.tabBar.barTintColor = [UIColor colorWithRed:255 green:255 blue:255 alpha:0.5];
     
-    [[self.tabBarController.tabBar.items objectAtIndex:0 ] setTitle:NSLocalizedString(@"BotonMapas", @"comment")];
-
     
 }
 

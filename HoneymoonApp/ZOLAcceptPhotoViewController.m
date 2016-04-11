@@ -39,7 +39,7 @@
 
 - (IBAction)acceptButtonTapped:(UIButton *)sender
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
     
     ZOLEditPhotoViewController *editViewController = [storyboard instantiateViewControllerWithIdentifier:@"editPhotoViewController"];
     
