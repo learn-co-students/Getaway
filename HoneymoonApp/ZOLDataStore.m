@@ -48,6 +48,9 @@
     return tempFile;
 }
 
+
+
+
 -(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID
 {
     __block CKRecord *fetchedRecord;
@@ -60,6 +63,8 @@
         }
         else
         {
+            
+            
             fetchedRecord = record;
         }
     }];
@@ -67,26 +72,6 @@
     return fetchedRecord;
 };
 
-//OR
-/*      NSPredicate *predicate = [NSPredicate predicateWithValue:YES];
- CKQuery *query =[[CKQuery alloc]initWithRecordType: publicRecord predicate:predicate];
- [self.publicDatabase preformQuery: query inZoneWithID: self.publicZone.inZoneWithID
- completionHandler: ^(NSArray *results, NSError *error){
- 
- LOG_ERROR(@"fetching records");
- 
- if (results) {
- NSMutableArray *queryArray = [[NSMutableArray alloc]init];
- 
- for(CKRecord *ARecord in results){
- //blah blah
- }
- }
- }
- 
- ]
- 
- */
 
 
 // if we want to write a file:
@@ -115,16 +100,22 @@
             NSLog(@"The public record data could not be saved. Error type: %@", error.localizedDescription);
             
             if (CKErrorNetworkUnavailable) {
+                self.doubleValue = 60;
                 NSLog(@"The public data could not be saved due to a bad network connection");
-                double retryAfterValue = [error.userInfo[CKErrorRetryAfterKey] doubleValue];
-                NSDate *retryAfterDate = [NSDate dateWithTimeIntervalSinceNow:retryAfterValue];
+               // double retryAfterValue = [error.userInfo[CKErrorRetryAfterKey] doubleValue];
+                //NSDate *retryAfterDate = [NSDate dateWithTimeIntervalSinceNow:retryAfterValue];
+                //NSNumber *secondsToRetry = error.userInfo[CKErrorRetryAfterKey];
+                [self retryUpdatingWebServiceSettingsAfter: self.doubleValue];
+
                 
             }
             
             if (CKErrorNetworkFailure) {
                 NSLog(@"The public data could not be saved because of a Network Failure");
-                double retryAfterValue = [error.userInfo[CKErrorRetryAfterKey] doubleValue];
-                NSDate *retryAfterDate = [NSDate dateWithTimeIntervalSinceNow:retryAfterValue];
+                self.doubleValue =60;
+                //double retryAfterValue = [error.userInfo[CKErrorRetryAfterKey] doubleValue];
+                //NSDate *retryAfterDate = [NSDate dateWithTimeIntervalSinceNow:retryAfterValue];
+                [self retryUpdatingWebServiceSettingsAfter:self.doubleValue];
                 
             }
             if (error == nil) {
@@ -159,7 +150,7 @@
         NSData *data = [NSData dataWithContentsOfURL:imageOne.fileURL];
         UIImage *anActulPicture =[UIImage imageWithData:data];
 //        self.testImage.image = anActulPicture;
-        //'test image' was a UIview used to practice fething one image
+//'test image' was a UIview used to practice fething one image
         
     }];
     
@@ -196,17 +187,20 @@ CKQueryOperation *operation;
         else {
 // If we don't have an error and there is another cursor, get next batch (using cursors until crusor == nil)
             dispatch_async(dispatch_get_main_queue(), ^{ [self readRecords_Resurs: database query: nil cursor: cursor]; });
+            
+            //at this point we need to send the batch to the TVC...
         }
     };
     
     [database addOperation: operation]; // when we FIRST hit this method, this is when the cursor first comes into play, until this line of code, we are only dealing with the fetching the query. Afeter we hit this line, we begin using the cursor.
  
+    
 }
 
 - (void) readRecordsDone: (NSString *) errorMsg {
     
     if (errorMsg) {
-        NSLog(@"Error: %@", errorMsg); //OR errorMesg.description OR errorMesg.debugDescription
+        NSLog(@"Error: %@", errorMsg.description); //OR errorMesg OR errorMesg.debugDescription
     }
     
     else{

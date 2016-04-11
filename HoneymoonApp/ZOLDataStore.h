@@ -26,7 +26,10 @@
 @property (nonatomic, strong) CKDatabase *privateDB;
 
 @property (nonatomic, strong) NSMutableArray *fetchedRecords;
-//@property(nonatomic, assign) NSUInteger cursorLimit; only implement this if the auto limit doesn't do the job. 
+//@property(nonatomic, assign) NSUInteger cursorLimit; only implement this if the auto limit doesn't do the job.
+@property (readwrite) double doubleValue;
+
+
 
 //CORE DATA
 //- (void)saveContext;
@@ -37,10 +40,14 @@
 
 -(void)saveRecord: (CKRecord *)record toDataBase: (CKDatabase *)database;
 
--(void)fetchCKAssetWithCompletion:(void(^)(void))sendToCurser;
+//-(void)fetchCKAssetWithCompletion:(void(^)(void))sendToCurser;
 
 -(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID;
+-(CKRecord *)fetchRecordWithID:(CKRecordID *)recordID completionHandler:(void(^)(void))CKRecord;
+
 
 -(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality;
+
+-(void)retryUpdatingWebServiceSettingsAfter:(double) secondsToRetry;
 
 @end

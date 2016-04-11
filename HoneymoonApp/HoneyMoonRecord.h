@@ -11,7 +11,7 @@
 
 @interface HoneyMoonRecord : CKRecord
 
--(void)fetchHoneyRecord:(CKDatabase *)HMDatabase;
+//-(void)fetchHoneyRecord:(CKDatabase *)HMDatabase;
 
 
 
