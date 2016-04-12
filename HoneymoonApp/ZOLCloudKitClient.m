@@ -23,6 +23,7 @@
     return self;
 }
 
+//Write an image to a temp file to facilitate creating a CKAsset
 -(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality
 {
     NSString *path = [NSTemporaryDirectory() stringByAppendingString:@"newImageUpload.tmp"];
@@ -36,6 +37,7 @@
     return tempFile;
 }
 
+//Create a UIImage object from a fetched CKAsset
 -(UIImage *)retrieveUIImageFromAsset:(CKAsset *)asset
 {
     NSURL *imageURL = asset.fileURL;
@@ -45,6 +47,7 @@
     return picture;
 }
 
+//Fetch and return the object with the given CKRecordID
 -(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID
 {
     __block CKRecord *recordToFetch;
@@ -63,6 +66,7 @@
     return recordToFetch;
 };
 
+//Save a CKRecord to the CloudKit database
 -(void)saveRecord:(CKRecord *)record toDataBase:(CKDatabase *)database
 {
     CKModifyRecordsOperation *saveRecordOp = [[CKModifyRecordsOperation alloc]initWithRecordsToSave:@[record] recordIDsToDelete:nil];

@@ -7,6 +7,7 @@
 //
 
 #import "ZOLLoginViewController.h"
+#import "ZOLCameraViewController.h"
 
 @interface ZOLLoginViewController ()
 
@@ -28,56 +29,55 @@
     // Dispose of any resources that can be recreated.
 }
 
+//Handle the Login With iCloud button being tapped
 - (IBAction)loginTapped:(id)sender
 {
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ZOLCameraViewController *cameraVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"MainStoryboard"];
+    
     NSLog(@"Login Tapped");
-    
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    
+        
     [self.activityIndicator startAnimating];
-    self.activityIndicator.hidden = NO;
     
+    NSLog(@"%d", [self.activityIndicator isAnimating]);
+    
+    //Verify that the user is logged in to their iCloud account
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError *error) {
-        if (accountStatus == CKAccountStatusNoAccount)
-        {
-            self.shouldLogin = NO;
-        }
-        else
+        if (accountStatus == CKAccountStatusAvailable)
         {
             self.shouldLogin = YES;
         }
-        dispatch_semaphore_signal(semaphore);
+        else
+        {
+            self.shouldLogin = NO;
+        }
+        if (self.shouldLogin == NO)
+        {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Sign in to iCloud"
+                                                                           message:@"Sign in to your iCloud account to use this app. On the Home screen, launch Settings, tap iCloud, and enter your Apple ID. Turn iCloud Drive on. If you don't have an iCloud account, tap 'Create a new Apple ID'."
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"Okay"
+                                                      style:UIAlertActionStyleCancel
+                                                    handler:nil]];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self presentViewController:alert animated:YES completion:nil];
+            }];
+        }
+        else
+        {
+            //TODO: Polish up this transition
+            [self.activityIndicator stopAnimating];
+            
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                self.dataStore = [ZOLDataStore dataStore];
+                [self presentViewController:cameraVC animated:YES completion:nil];
+            }];
+        }
+        
     }];
-    
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    
-    if (!self.shouldLogin)
-    {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Sign in to iCloud"
-                                                                       message:@"Sign in to your iCloud account to use this app. On the Home screen, launch Settings, tap iCloud, and enter your Apple ID. Turn iCloud Drive on. If you don't have an iCloud account, tap 'Create a new Apple ID'."
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Okay"
-                                                  style:UIAlertActionStyleCancel
-                                                handler:nil]];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else
-    {
-        self.dataStore = [ZOLDataStore dataStore];
-    }
-    
-    [self.activityIndicator stopAnimating];
 }
 
 #pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
--(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
-{
-    NSLog(@"shouldPerformSegue");
-    
-    return self.shouldLogin;
-}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].

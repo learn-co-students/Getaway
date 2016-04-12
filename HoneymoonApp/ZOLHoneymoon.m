@@ -24,6 +24,7 @@
     return self;
 }
 
+//Fetch all the images associated with a user's honeymoon from CloudKit, make them into ZOLImage objects and add them to the ZOLHoneymoon for this user
 -(void)populateHoneymoonImages
 {
     CKReference *referenceToHoneymoon = [[CKReference alloc]initWithRecordID:self.honeymoonID action:CKReferenceActionDeleteSelf];
@@ -62,6 +63,8 @@
 
 }
 
+//Take the data gathered from the user and save their updated honeymoon to CloudKit
+//TODO: Polish this to work with user flow (required: full version of 'publish' VC flow)
 -(void)publishHoneymoon
 {
     CKRecord *honeymoonRecord = [self.client fetchRecordWithRecordID:self.honeymoonID];
