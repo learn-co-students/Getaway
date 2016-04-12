@@ -52,7 +52,6 @@
 
    self.scrollView.delegate = self;
     
-    
     // Set up arrows to indicate more content
     self.rightArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow.png"]];
     self.leftArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LeftArrow.png"]];
@@ -71,7 +70,7 @@
     [self.view addSubview:self.rightArrow];
     [self.view addSubview:self.leftArrow];
 
-    // constrain right arrow
+    // Constrain right arrow
     self.rightArrow.translatesAutoresizingMaskIntoConstraints = NO;
     [self.rightArrow.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-20.0].active = YES;
     [self.rightArrow.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor].active = YES;
@@ -79,7 +78,7 @@
     self.rightArrow.contentMode = UIViewContentModeScaleAspectFit;
     self.rightArrow.clipsToBounds = YES;
     
-    // constrain left arrow
+    // Constrain left arrow
     self.leftArrow.translatesAutoresizingMaskIntoConstraints = NO;
     [self.leftArrow.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:20.0].active = YES;
     [self.leftArrow.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor].active = YES;
@@ -87,7 +86,7 @@
     self.leftArrow.contentMode = UIViewContentModeScaleAspectFit;
     self.leftArrow.clipsToBounds = YES;
     
-    // constrain aspect ratio
+    // Constrain aspect ratio
     UIImage *arrowImage = [UIImage imageNamed:@"LeftArrow.png"];
     CGFloat arrowAspectRatio = (arrowImage.size.width / arrowImage.size.height);
     NSLog(@"aspect ratio: %f",arrowAspectRatio);
@@ -120,7 +119,6 @@
     }else {
         self.leftArrow.hidden = YES;
     }
-    
 }
 
 - (void)handleTap:(UITapGestureRecognizer *)tapGestureRecognizer
