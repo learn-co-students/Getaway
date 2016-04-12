@@ -7,7 +7,7 @@
 //
 
 #import "ZOLLoginViewController.h"
-#import "ZOLCameraViewController.h"
+#import "ZOLTabBarViewController.h"
 
 @interface ZOLLoginViewController ()
 
@@ -32,8 +32,8 @@
 //Handle the Login With iCloud button being tapped
 - (IBAction)loginTapped:(id)sender
 {
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ZOLCameraViewController *cameraVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"MainStoryboard"];
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
     
     NSLog(@"Login Tapped");
         
@@ -70,7 +70,7 @@
             
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 self.dataStore = [ZOLDataStore dataStore];
-                [self presentViewController:cameraVC animated:YES completion:nil];
+                [self presentViewController:mainVC animated:YES completion:nil];
             }];
         }
         

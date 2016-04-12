@@ -21,6 +21,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yeK-da-Z9w">
                                 <rect key="frame" x="241" y="285" width="118" height="30"/>
                                 <state key="normal" title="Login with iCloud"/>
+                                <connections>
+                                    <action selector="loginTapped:" destination="oxB-wh-Leb" eventType="touchUpInside" id="rBV-82-eWi"/>
+                                </connections>
                             </button>
                             <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="9gj-Xu-ThQ">
                                 <rect key="frame" x="282" y="314" width="37" height="37"/>
@@ -38,7 +41,6 @@
                     <navigationItem key="navigationItem" id="aA2-1r-aOF"/>
                     <connections>
                         <outlet property="activityIndicator" destination="9gj-Xu-ThQ" id="tVA-h5-gto"/>
-                        <segue destination="u9x-IL-zzX" kind="show" identifier="LogIn" id="RGZ-6T-36q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SYs-wZ-kag" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -137,14 +139,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y3M-g8-5ic" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1355" y="1252"/>
-        </scene>
-        <!--FeedStoryboard-->
-        <scene sceneID="bS1-vs-9MD">
-            <objects>
-                <viewControllerPlaceholder storyboardName="FeedStoryboard" id="u9x-IL-zzX" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kd8-DW-BjM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1821" y="472"/>
         </scene>
     </scenes>
 </document>
