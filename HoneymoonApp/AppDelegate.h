@@ -18,5 +18,8 @@
 @property (strong, nonatomic) ZOLDataStore *database;
 
 
+//-----prt2
+- (void)updateWordDefinitionWithIdentifier:record;
+
 @end
 

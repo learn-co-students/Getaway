@@ -92,6 +92,13 @@
     }];
 }
 
+-(void)retryUpdatingWebServiceSettingsAfter:(double) secondsToRetry{
+
+    //enter retryUpdating... declaration
+    
+    
+}
+
 -(void)saveRecord:(CKRecord *)record toDataBase:(CKDatabase *)database
 {
     [database saveRecord:record completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
@@ -131,32 +138,32 @@
 //grab an image from CloudKit
 //In order to incorporate smooth loading, we should probably incorporate the CKQueryOperation to pass along batches of asset data at a time so we don't run risk of crashing our app.
 
--(void)fetchCKAsset{
-    
-    CKQuery *imageQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate: [NSPredicate predicateWithFormat:@"Caption = %@", @"fakeImage"]];
-    
-    [self.database performQuery:imageQuery inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * _Nullable results, NSError * _Nullable error) {
-        
-        if (error){
-            NSLog(@"ERROR for querying the public DB. Error type: %@", error.localizedDescription);
-        }
-        
-        NSArray *newImageArray = [[NSArray alloc]init];
-        [newImageArray arrayByAddingObject:results];
-        
-        
-        CKRecord *firstImage = newImageArray[0];
-        CKAsset *imageOne = firstImage[@"Picture"];
-        
-        NSData *data = [NSData dataWithContentsOfURL:imageOne.fileURL];
-        UIImage *anActulPicture =[UIImage imageWithData:data];
-//        self.testImage.image = anActulPicture;
-//'test image' was a UIview used to practice fething one image
-        
-    }];
-    
-    
-}
+//-(void)fetchCKAsset{
+//    
+//    CKQuery *imageQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate: [NSPredicate predicateWithFormat:@"Caption = %@", @"fakeImage"]];
+//    
+//    [self.database performQuery:imageQuery inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * _Nullable results, NSError * _Nullable error) {
+//        
+//        if (error){
+//            NSLog(@"ERROR for querying the public DB. Error type: %@", error.localizedDescription);
+//        }
+//        
+//        NSArray *newImageArray = [[NSArray alloc]init];
+//        [newImageArray arrayByAddingObject:results];
+//        
+//        
+//        CKRecord *firstImage = newImageArray[0];
+//        CKAsset *imageOne = firstImage[@"Picture"];
+//        
+//        NSData *data = [NSData dataWithContentsOfURL:imageOne.fileURL];
+//        UIImage *anActulPicture =[UIImage imageWithData:data];
+////        self.testImage.image = anActulPicture;
+////'test image' was a UIview used to practice fething one image
+//        
+//    }];
+//    
+//    
+//}
 
 - (void)readRecords_Resurs:(CKDatabase *)database
                      query:(CKQuery *)query

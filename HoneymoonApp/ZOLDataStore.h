@@ -42,8 +42,8 @@
 
 //-(void)fetchCKAssetWithCompletion:(void(^)(void))sendToCurser;
 
--(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID;
--(CKRecord *)fetchRecordWithID:(CKRecordID *)recordID completionHandler:(void(^)(void))CKRecord;
+//-(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID;
+//-(CKRecord *)fetchRecordWithID:(CKRecordID *)recordID completionHandler:(void(^)(void))CKRecord;
 
 
 -(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality;

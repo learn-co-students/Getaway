@@ -17,7 +17,8 @@
 
 @implementation AppDelegate
 
-//below are the two methods that allow the app to notice when a record has been motified. The commented numbers show the order each method is hit.
+//----------------------------------------
+//below are the two methods that allow the app to notice when a record has been motified. The commented numbers show the order each method is hit.These methods can olny pay attention to a single CKfile....
 
 
 //(3) trigger the subscribe to record method
@@ -84,7 +85,10 @@
     CKRecordID *recordID = [[CKRecordID alloc] initWithRecordName:@"542F88BA-E72F-400A-887A-C12EE75DA7C4"];  //RecZoneRecName
     [publicDatabase fetchRecordWithID:recordID completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
         if (error) {
-            // Handle here the error
+            
+            NSLog(@"Error retrieving recordID. Error type:%@", error.description);
+
+            
         } else {
             // Update the local copy of the setting (grab the keys in the 'record Zone' in the 'exeptionalWebService' record type)
             // [self updateSettingsWithServiceURL:record[@"serviceURL"] andServiceAPIKey:record[@"serviceAPIKey"]];
@@ -100,17 +104,19 @@
 
 //(2) display login VC with 'log onto iCloud' button prompt
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    // Push notification setup
-    UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
-    [application registerUserNotificationSettings:notificationSettings];
-    [application registerForRemoteNotifications];
-    
-    // Subscribe to web service settings changes
-    [self subscribeToWebServiceSettingsChanges];
+  
+//    // Push notification setup
+//    UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
+//    [application registerUserNotificationSettings:notificationSettings];
+//    [application registerForRemoteNotifications];
+//    
+//    // Subscribe to web service settings changes
+//    [self subscribeToWebServiceSettingsChanges];
+//    
+//    return YES;
+  
     
     return YES;
-    
 }
 
 
@@ -118,17 +124,17 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
-    CKNotification *cloudKitNotification = [CKNotification notificationFromRemoteNotificationDictionary:userInfo];
-    
-    if (cloudKitNotification.notificationType == CKNotificationTypeQuery) {
-        CKRecordID *recordId = [(CKQueryNotification *)cloudKitNotification recordID];
-        
-        // if the notification corresponds to a change in the CKRecord, then we fetch the new values
-        if ([recordId.recordName isEqualToString:@"542F88BA-E72F-400A-887A-C12EE75DA7C4"]) {
-            [self updateWebServiceSettings];
-            
-        }
-    }
+//    CKNotification *cloudKitNotification = [CKNotification notificationFromRemoteNotificationDictionary:userInfo];
+//    
+//    if (cloudKitNotification.notificationType == CKNotificationTypeQuery) {
+//        CKRecordID *recordId = [(CKQueryNotification *)cloudKitNotification recordID];
+//        
+//        // if the notification corresponds to a change in the CKRecord, then we fetch the new values
+//        if ([recordId.recordName isEqualToString:@"542F88BA-E72F-400A-887A-C12EE75DA7C4"]) {
+//            [self updateWebServiceSettings];
+//
+//        }
+//    }
 }
 
 
