@@ -139,6 +139,7 @@
                                                          //Set the selected image to outside/data property here.
                                                          NSLog(@"Image: %@", self.selectedImage);
                                                          //Go to next publish option.
+
     [self performSegueWithIdentifier:@"ratingSegue" sender:self];
                                                      }];
     [alertController addAction:cancelAction];

@@ -7,6 +7,7 @@
 //
 
 #import "ZOLLoginViewController.h"
+#import "ZOLTabBarViewController.h"
 
 @interface ZOLLoginViewController ()
 
@@ -20,8 +21,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.dataStore = [ZOLDataStore dataStore];
 }
 
 - (void)didReceiveMemoryWarning
@@ -30,97 +29,59 @@
     // Dispose of any resources that can be recreated.
 }
 
+//Handle the Login With iCloud button being tapped
 - (IBAction)loginTapped:(id)sender
 {
-    CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.dataStore.user.userID action:CKReferenceActionDeleteSelf];
-    NSPredicate *userSearch = [NSPredicate predicateWithFormat:@"User == %@", referenceToUser];
-    CKQuery *findHoneymoon = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:userSearch];
-    CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findHoneymoon];
-    findHMOp.resultsLimit = 1;
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
     
-    dispatch_semaphore_t loginSemaphore = dispatch_semaphore_create(0);
-    findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError){
-
-        if (operationError)
-        {
-            NSLog(@"Obviously this is an error, but heres the description: %@, and code: %lu, and heck heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
-        }
-            
-        dispatch_semaphore_signal(loginSemaphore);
-    };
-
-    __block CKRecord *userHoneyMoon;
-    findHMOp.recordFetchedBlock = ^(CKRecord *record){
-        userHoneyMoon = record;
-        self.dataStore.user.honeymoonID = record.recordID;
-    };
-    
-    [self.dataStore.database addOperation:findHMOp];
-    dispatch_semaphore_wait(loginSemaphore, DISPATCH_TIME_FOREVER);
-    
-    if (!userHoneyMoon)
-    {
-        [self createBlankHoneyMoon];
-    }
-}
-
--(void)createBlankHoneyMoon
-{
-    CKRecord *newHoneyMoon = [[CKRecord alloc]initWithRecordType:@"Honeymoon"];
-    CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.dataStore.user.userID action:CKReferenceActionDeleteSelf];
-    newHoneyMoon[@"User"] = referenceToUser;
-    
-    [self.dataStore saveRecord:newHoneyMoon toDataBase:self.dataStore.database];
-    self.dataStore.user.honeymoonID = newHoneyMoon.recordID;
-}
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
--(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
-{
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    
+    NSLog(@"Login Tapped");
+        
     [self.activityIndicator startAnimating];
-    self.activityIndicator.hidden = NO;
     
-    if ([identifier isEqualToString:@"LoggedIn"])
-    {
-        [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError *error) {
-        if (accountStatus == CKAccountStatusNoAccount)
-        {
-            self.shouldLogin = NO;
-        }
-        else
+    NSLog(@"%d", [self.activityIndicator isAnimating]);
+    
+    //Verify that the user is logged in to their iCloud account
+    [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError *error) {
+        if (accountStatus == CKAccountStatusAvailable)
         {
             self.shouldLogin = YES;
         }
-        dispatch_semaphore_signal(semaphore);
-        }];
-    }
-
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    
-    [self.activityIndicator stopAnimating];
-    
-    if (!self.shouldLogin)
-    {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Sign in to iCloud"
-                                                                       message:@"Sign in to your iCloud account to use this app. On the Home screen, launch Settings, tap iCloud, and enter your Apple ID. Turn iCloud Drive on. If you don't have an iCloud account, tap 'Create a new Apple ID'."
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Okay"
-                                                  style:UIAlertActionStyleCancel
-                                                handler:nil]];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
- 
-    return self.shouldLogin;
+        else
+        {
+            self.shouldLogin = NO;
+        }
+        if (self.shouldLogin == NO)
+        {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Sign in to iCloud"
+                                                                           message:@"Sign in to your iCloud account to use this app. On the Home screen, launch Settings, tap iCloud, and enter your Apple ID. Turn iCloud Drive on. If you don't have an iCloud account, tap 'Create a new Apple ID'."
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"Okay"
+                                                      style:UIAlertActionStyleCancel
+                                                    handler:nil]];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self presentViewController:alert animated:YES completion:nil];
+            }];
+        }
+        else
+        {
+            //TODO: Polish up this transition
+            [self.activityIndicator stopAnimating];
+            
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                self.dataStore = [ZOLDataStore dataStore];
+                [self presentViewController:mainVC animated:YES completion:nil];
+            }];
+        }
+        
+    }];
 }
+
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-
 
 @end

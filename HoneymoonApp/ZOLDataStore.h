@@ -11,6 +11,7 @@
 #import <CloudKit/CloudKit.h>
 #import <UIKit/UIKit.h>
 #import "ZOLUser.h"
+#import "ZOLCloudKitClient.h"
 
 @interface ZOLDataStore : NSObject
 
@@ -21,9 +22,8 @@
 
 @property (nonatomic, strong) NSMutableArray *feed;
 
-@property (nonatomic) CKDatabase *database;
-@property (nonatomic, strong) CKDatabase *privateDB;
 @property (nonatomic, strong) ZOLUser *user;
+@property (nonatomic, strong) ZOLCloudKitClient *client;
 
 
 @property (nonatomic, strong) NSMutableArray *fetchedRecords;
@@ -36,13 +36,5 @@
 //- (NSURL *)applicationDocumentsDirectory;
 
 + (instancetype) dataStore;
-
--(void)saveRecord: (CKRecord *)record toDataBase: (CKDatabase *)database;
-
--(void)fetchCKAssetWithCompletion:(void(^)(void))sendToCurser;
-
--(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID;
-
--(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality;
 
 @end
