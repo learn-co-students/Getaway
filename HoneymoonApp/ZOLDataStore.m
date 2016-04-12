@@ -7,6 +7,7 @@
 //
 
 #import "ZOLDataStore.h"
+#import "ZOLDetailTableViewController.h"
 
 @implementation ZOLDataStore
 
@@ -188,7 +189,6 @@ CKQueryOperation *operation;
 // If we don't have an error and there is another cursor, get next batch (using cursors until crusor == nil)
             dispatch_async(dispatch_get_main_queue(), ^{ [self readRecords_Resurs: database query: nil cursor: cursor]; });
             
-            //at this point we need to send the batch to the TVC...
         }
     };
     
@@ -206,9 +206,20 @@ CKQueryOperation *operation;
     else{
         
         NSLog(@"all batches are finished!");
+        
+        [self loadAssets];
     }
     
     //Do we need to set up a NSNotification to let the tableview know the record is finished/fully loaded?
+}
+
+
+- (void)loadAssets{
+    
+    //here I want to give each cursor batch to the tableVC
+   // ZOLDetailTableViewController *batchImages = [];
+    
+    
 }
 
 # pragma mark - Core Data stack
