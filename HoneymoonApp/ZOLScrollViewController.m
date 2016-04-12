@@ -16,6 +16,11 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *widthConstraint;
 @property (strong, nonatomic) UIImage *selectedImage;
 
+//Set up arrows to show additional content
+
+@property (strong, nonatomic) UIImageView *rightArrow;
+@property (strong, nonatomic) UIImageView *leftArrow;
+
 @end
 
 @implementation ZOLScrollViewController
@@ -34,7 +39,6 @@
         view.contentMode = UIViewContentModeScaleAspectFill;
         view.clipsToBounds = YES;
         [self.stackViewOutlet addArrangedSubview:view];
-        
     }
     
     self.stackViewOutlet.axis = UILayoutConstraintAxisHorizontal;
@@ -47,6 +51,51 @@
     NSLog(@"%lf", self.widthConstraint.constant);
 
    self.scrollView.delegate = self;
+    
+    
+    // Set up arrows to indicate more content
+    self.rightArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow.png"]];
+    self.leftArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LeftArrow.png"]];
+    
+    //Set color to arrows
+    self.leftArrow.image = [self.leftArrow.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.rightArrow.image = [self.rightArrow.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.leftArrow setTintColor:[UIColor whiteColor]];
+    [self.rightArrow setTintColor:[UIColor whiteColor]];
+    
+    // Upon startup, we are furthest to the left
+    self.rightArrow.hidden = NO;
+    self.leftArrow.hidden = YES;
+
+    // Add to the view controller
+    [self.view addSubview:self.rightArrow];
+    [self.view addSubview:self.leftArrow];
+
+    // constrain right arrow
+    self.rightArrow.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.rightArrow.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-20.0].active = YES;
+    [self.rightArrow.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor].active = YES;
+    [self.rightArrow.heightAnchor constraintEqualToAnchor:self.view.heightAnchor multiplier:0.1].active = YES;
+    self.rightArrow.contentMode = UIViewContentModeScaleAspectFit;
+    self.rightArrow.clipsToBounds = YES;
+    
+    // constrain left arrow
+    self.leftArrow.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.leftArrow.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:20.0].active = YES;
+    [self.leftArrow.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor].active = YES;
+    [self.leftArrow.heightAnchor constraintEqualToAnchor:self.view.heightAnchor multiplier:0.1].active = YES;
+    self.leftArrow.contentMode = UIViewContentModeScaleAspectFit;
+    self.leftArrow.clipsToBounds = YES;
+    
+    // constrain aspect ratio
+    UIImage *arrowImage = [UIImage imageNamed:@"LeftArrow.png"];
+    CGFloat arrowAspectRatio = (arrowImage.size.width / arrowImage.size.height);
+    NSLog(@"aspect ratio: %f",arrowAspectRatio);
+    
+    [self.rightArrow.widthAnchor constraintEqualToAnchor:self.rightArrow.heightAnchor multiplier:arrowAspectRatio].active = YES;
+    
+    [self.leftArrow.widthAnchor constraintEqualToAnchor:self.leftArrow.heightAnchor multiplier:arrowAspectRatio].active = YES;
+    
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -56,6 +105,21 @@
     self.selectedImage = [self.imagesArray objectAtIndex:pagenumber];
     NSLog(@"Page number: %lu", pagenumber);
     NSLog(@"Image: %@", self.selectedImage);
+    
+    //Set up arrows to indicate more content
+    // Are we at the far left of the scrollview?
+    if (scrollView.contentOffset.x <
+        scrollView.contentSize.width - scrollView.frame.size.width) {
+        self.rightArrow.hidden = NO;
+    } else {
+        self.rightArrow.hidden = YES;
+    }
+    // Are we at the far right of the scrollview?
+    if (scrollView.contentOffset.x > 0) {
+        self.leftArrow.hidden = NO;
+    }else {
+        self.leftArrow.hidden = YES;
+    }
     
 }
 
