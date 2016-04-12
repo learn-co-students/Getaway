@@ -11,7 +11,6 @@
 #import "ZOLCloudKitClient.h"
 #import "ZOLImage.h"
 
-
 @interface ZOLHoneymoon : NSObject
 
 @property (nonatomic, strong) CKRecordID *honeymoonID;
@@ -20,5 +19,8 @@
 @property (nonatomic, strong) UIImage *coverPicture;
 @property (nonatomic, assign) CGFloat rating;
 @property (nonatomic, strong) NSString *honeymoonDescription;
+@property (nonatomic, strong) NSString *published;
+
+-(void)populateHoneymoonImages;
 
 @end

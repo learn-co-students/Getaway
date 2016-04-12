@@ -19,6 +19,12 @@
     
     __block CKRecordID *idForUser;
     [defaultContainer fetchUserRecordIDWithCompletionHandler:^(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
+        
+        if (error)
+        {
+            NSLog(@"Error fetching User Record ID: %@", error.localizedDescription);
+        }
+        
         idForUser = recordID;
         
         dispatch_semaphore_signal(semaphore);
@@ -61,6 +67,10 @@
     if (!userHoneyMoon)
     {
         [self createBlankHoneyMoon];
+    }
+    else
+    {
+        [self.userHoneymoon populateHoneymoonImages];
     }
 
     return self;

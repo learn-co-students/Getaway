@@ -69,8 +69,11 @@
             [self.activityIndicator stopAnimating];
             
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                NSLog(@"Initializing datastore");
                 self.dataStore = [ZOLDataStore dataStore];
+                NSLog(@"Attempting to present VC");
                 [self presentViewController:mainVC animated:YES completion:nil];
+                NSLog(@"VC Presented?");
             }];
         }
         

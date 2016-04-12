@@ -73,7 +73,7 @@
     saveRecordOp.modifyRecordsCompletionBlock = ^(NSArray <CKRecord *> *savedRecords, NSArray <CKRecordID *> *deletedRecordIDs, NSError *operationError){
         if (operationError)
         {
-            NSLog(@"%@", operationError.localizedDescription);
+            NSLog(@"Error saving a record: %@", operationError.localizedDescription);
         }
     };
     

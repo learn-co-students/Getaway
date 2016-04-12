@@ -7,6 +7,7 @@
 //
 
 #import "ZOLHoneymoon.h"
+#import "ZOLDataStore.h"
 
 @implementation ZOLHoneymoon
 
@@ -16,10 +17,15 @@
     
     if (self)
     {
-        _honeymoonID = [[CKRecordID alloc]initWithRecordName:@"Honeymoon"];
+//        _honeymoonID = [[CKRecordID alloc]initWithRecordName:@"Honeymoon"];
         _honeymoonImages = [[NSMutableArray alloc]init];
         _client = [[ZOLCloudKitClient alloc]init];
+        _coverPicture = [[UIImage alloc]init];
+        
+        _published = @"NO";
     }
+    
+//    [self populateHoneymoonImages];
     
     return self;
 }
@@ -39,7 +45,7 @@
         {
             NSLog(@"Obviously this is an error, but heres the description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
         }
-        
+        NSLog(@"Populating finished");
         dispatch_semaphore_signal(honeymoonSemaphore);
     };
     
