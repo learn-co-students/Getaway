@@ -20,31 +20,38 @@
 
 @implementation ZOLDetailTableViewController
 
-{
-    // instantiation of beta background (mainCell) processor with needed processing class types.
-    NSOperationQueue *_queue;
-    NSString *_group;
-    ZOLDetailCell *localImageArray;
-    ZOLDetailCell *localTextArray;
+- (IBAction)back:(id)sender {
     
+    [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
 
-//instantiation of dequeue control objects
--(id)initWithGroup: (NSString *) group{
-    
-    self = [super init];
-    if (self) {
-        _group = group;
-        [self setTitle:group];  //not sure what this quite does...
-        // [[self tableView] setRowHeight:245]   // here we can set a specific height for all cells
-        
-        _queue = [[NSOperationQueue alloc]init];
-        
-    }
-    return self;
-    
-}
+
+//{
+//    // instantiation of beta background (mainCell) processor with needed processing class types.
+//    NSOperationQueue *_queue;
+//    NSString *_group;
+//    ZOLDetailCell *localImageArray;
+//    ZOLDetailCell *localTextArray;
+//    
+//}
+
+
+////instantiation of dequeue control objects
+//-(id)initWithGroup: (NSString *) group{
+//    
+//    self = [super init];
+//    if (self) {
+//        _group = group;
+//        [self setTitle:group];  //not sure what this quite does...
+//        // [[self tableView] setRowHeight:245]   // here we can set a specific height for all cells
+//        
+//        _queue = [[NSOperationQueue alloc]init];
+//        
+//    }
+//    return self;
+//    
+//}
 
 
 - (void)viewDidLoad {

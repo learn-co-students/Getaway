@@ -99,20 +99,27 @@
    
     CKRecord *newImageRecord = [[CKRecord alloc] initWithRecordType:@"Image"];
     CKAsset *newImageAsset = [[CKAsset alloc] initWithFileURL:self.acceptedImageURL];
+    CKReference *honeymoonReference = [[CKReference alloc]initWithRecordID:sharedDatastore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
     
     [newImageRecord setObject:newImageAsset forKey:@"Picture"];
     [newImageRecord setObject:photoDescription forKey:@"Caption"];
+    [newImageRecord setObject:honeymoonReference forKey:@"Honeymoon"];
     
-    [sharedDatastore saveRecord:newImageRecord toDataBase:sharedDatastore.database];
+    [sharedDatastore.client saveRecord:newImageRecord toDataBase:sharedDatastore.client.database];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil ];
     
-    UINavigationController *navigationViewController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
-//
-    [sharedDatastore.feed addObject:self.acceptedImage];
+    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+//    UINavigationController *navigationViewController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
+//    [self presentViewController:navigationViewController animated:NO completion:nil];
+    
+    
+//    [sharedDatastore.feed addObject:self.acceptedImage];
+
 //    [sharedDatastore.imageArray3 addObject:self.acceptedImage];
     
-    [self presentViewController:navigationViewController animated:NO completion:nil];
+    
 //
     
     //[self dismissViewControllerAnimated:NO completion:nil];

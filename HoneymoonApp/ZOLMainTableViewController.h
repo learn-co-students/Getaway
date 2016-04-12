@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "ZOLDataStore.h"
 
 @interface ZOLMainTableViewController : UITableViewController
+
 @property (nonatomic,strong) NSMutableArray *localImageArray;
 @property (nonatomic,strong) NSMutableArray *localTextArray;
+
 @end

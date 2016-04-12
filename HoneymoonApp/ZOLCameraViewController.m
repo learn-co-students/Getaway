@@ -12,15 +12,10 @@
 @interface ZOLCameraViewController ()
 
 @property (strong,nonatomic) UIImagePickerController *imagePickerController;
-
 @property (strong, nonatomic) IBOutlet UIView *cameraOverlayView;
-@property (strong, nonatomic) IBOutlet UIButton *openCameraButton;
-
 @property (nonatomic)BOOL isCameraModeOn;
-
 @property(nonatomic)UIImagePickerControllerCameraDevice cameraDevice;
 @property(nonatomic)UIImagePickerControllerCameraFlashMode flashMode;
-
 @property (strong, nonatomic) IBOutlet UIButton *flashButtonIcon;
 
 @end
@@ -30,28 +25,46 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self.flashButtonIcon setImage:[UIImage imageNamed:@"FlashInactive"] forState:UIControlStateNormal];
-    
     self.flashMode = -1;
+    self.openCam = YES;
+}
+
+
+
++(void)openCamFunction {
+    
+   ZOLCameraViewController *ZOLVC = [ZOLCameraViewController new];
+    ZOLVC.openCam = YES;
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    
+    
+    if(self.openCam) {
+        animated = NO;
+        UIImagePickerController *cameraController = [[UIImagePickerController alloc] init];
+        cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        cameraController.delegate = self;
+        cameraController.cameraDevice = self.cameraDevice;
+        cameraController.showsCameraControls = NO;
+        cameraController.toolbarHidden = YES;
+        cameraController.cameraViewTransform = CGAffineTransformConcat(CGAffineTransformMakeScale(1.38, 1.38), CGAffineTransformMakeTranslation(0, 80));
+        cameraController.cameraFlashMode = self.flashMode;
+        self.cameraOverlayView.frame = cameraController.cameraOverlayView.frame;
+        cameraController.cameraOverlayView = self.cameraOverlayView;
+        self.imagePickerController = cameraController;
+        [self presentViewController:cameraController animated:NO completion:nil];
+        self.isCameraModeOn = YES;
+        
+        self.openCam = NO;
+    }
     
 }
 
 - (IBAction)cameraButtonTapped:(UIButton *)sender
 {
-    UIImagePickerController *cameraController = [[UIImagePickerController alloc] init];
-    cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
-    cameraController.delegate = self;
-    cameraController.cameraDevice = self.cameraDevice;
-    cameraController.showsCameraControls = NO;
-    cameraController.toolbarHidden = YES;
-    cameraController.cameraViewTransform = CGAffineTransformConcat(CGAffineTransformMakeScale(1.38, 1.38), CGAffineTransformMakeTranslation(0, 80));
-    cameraController.cameraFlashMode = self.flashMode;
-    self.cameraOverlayView.frame = cameraController.cameraOverlayView.frame;
-    cameraController.cameraOverlayView = self.cameraOverlayView;
-    self.imagePickerController = cameraController;
-    [self presentViewController:cameraController animated:NO completion:nil];
-    self.isCameraModeOn = YES;
 }
 
 - (IBAction)photoLibraryButtonTapped:(UIButton *)sender
@@ -62,22 +75,41 @@
         UIImagePickerController *libraryController = [[UIImagePickerController alloc] init];
         libraryController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         
-        [self presentViewController:libraryController animated:NO completion:nil];
+        [self.tabBarController setSelectedIndex:0];
+        [self presentViewController:libraryController animated:NO completion:^{
+            self.openCam =YES;
+        }];
+        
+        
     }];
 }
 
 - (IBAction)captureButtonTapped:(UIButton *)sender
 {
     [self.imagePickerController takePicture];
+    self.openCam = YES;
 }
 
 - (IBAction)cancelButtonTapped:(UIButton *)sender
 {
-    [self dismissViewControllerAnimated:NO completion:nil];
+    
+    [self.tabBarController setSelectedIndex:0];
+    
+    [self.tabBarController dismissViewControllerAnimated:NO completion:^{
+        self.openCam = YES;
+    }];
+    
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+
+    self.openCam = YES;
+
 }
 
 - (IBAction)switchCameraButtonTapped:(UIButton *)sender
 {
+    self.openCam = YES;
     if (self.cameraDevice == UIImagePickerControllerCameraDeviceRear)
     {
         self.cameraDevice = UIImagePickerControllerCameraDeviceFront;
@@ -87,13 +119,11 @@
         self.cameraDevice = UIImagePickerControllerCameraDeviceRear;
     }
     
-    [self dismissViewControllerAnimated:NO completion:^{
-        [self cameraButtonTapped:sender];
-    }];
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
-- (IBAction)flashButtonTapped:(UIButton *)sender
-{
+- (IBAction)flashButtonTapped:(UIButton *)sender {
+    self.openCam = YES;
     if (self.flashMode == -1)
     {
         NSLog(@"flash is auto!");
@@ -136,7 +166,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
     ZOLDataStore *dataStore = [ZOLDataStore dataStore];
     
     UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-    NSURL *imageURL = [dataStore writeImage:image toTemporaryDirectoryWithQuality:0.5];
+    NSURL *imageURL = [dataStore.client writeImage:image toTemporaryDirectoryWithQuality:0];
 
     if (self.isCameraModeOn)
     {
@@ -149,21 +179,33 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
                    completionHandler:^(BOOL success, NSError * _Nullable error)
         {
             NSLog(@"Error?: %@, Success?: %d", error, success);
-//            dispatch_semaphore_signal(semaphore);
+//         /Users/andreasvestergaard/Development/code/ios-0216-team-yam/HoneymoonApp/ZOLAcceptPhotoViewController.h   dispatch_semaphore_signal(semaphore);
         }];
     }
     
-//    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    [self dismissViewControllerAnimated:NO completion:^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        
-        ZOLAcceptPhotoViewController *acceptViewController = [storyboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
-        
-        acceptViewController.currentImage = image;
-        acceptViewController.currentImageURL = imageURL;
-        
-        [self presentViewController:acceptViewController animated:NO completion:nil];
+    [self.tabBarController setSelectedIndex:0];
+    [self.tabBarController dismissViewControllerAnimated:NO completion:^{
+//    [self performSegueWithIdentifier:@"acceptSegue" sender:nil];
+        UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+        ZOLAcceptPhotoViewController *acceptViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
+                acceptViewController.currentImage = image;
+                acceptViewController.currentImageURL = imageURL;
+        [self.tabBarController presentViewController:acceptViewController animated:YES completion:nil];
     }];
+ 
+    
+//    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+   
+//    [self dismissViewControllerAnimated:NO completion:^{
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        
+//        ZOLAcceptPhotoViewController *acceptViewController = [[ZOLAcceptPhotoViewController alloc]init];
+//        
+//        acceptViewController.currentImage = image;
+//        acceptViewController.currentImageURL = imageURL;
+//        
+//        [self presentViewController:acceptViewController animated:NO completion:nil];
+//    }];
 }
 
 @end

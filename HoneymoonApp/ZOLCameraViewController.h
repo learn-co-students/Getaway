@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <Photos/Photos.h>
+#import "ZOLMainTableViewController.h"
 
 @interface ZOLCameraViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@property  (nonatomic) BOOL openCam;
+
++ (void)openCamFunction;
 
 @end

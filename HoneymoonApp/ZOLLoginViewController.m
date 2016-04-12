@@ -7,6 +7,7 @@
 //
 
 #import "ZOLLoginViewController.h"
+#import "ZOLTabBarViewController.h"
 
 @interface ZOLLoginViewController ()
 
@@ -20,8 +21,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.dataStore = [ZOLDataStore dataStore];
 }
 
 - (void)didReceiveMemoryWarning
@@ -30,108 +29,62 @@
     // Dispose of any resources that can be recreated.
 }
 
+//Handle the Login With iCloud button being tapped
 - (IBAction)loginTapped:(id)sender
 {
-//    CKRecordID *userID = [[CKRecordID alloc] init];
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
     
-    //If asset is baked into app:
-//    NSURL *alaskaURL = [[NSBundle mainBundle] URLForResource:@"alaska" withExtension:@"jpg"];
-//    UIImage *alaska = [[UIImage imageNamed:@"alaska"]];
-//    
-//    NSURL *alaskaURL = [self writeImage:alaska toTemporaryDirectoryWithQuality:100];
-//    
-//    CKRecord *newImageRecord = [[CKRecord alloc] initWithRecordType:@"Image"];
-//    
-//    CKAsset *imageAsset = [[CKAsset alloc] initWithFileURL:alaskaURL];
-//    
-//    [newImageRecord setObject:imageAsset forKey:@"Picture"];
-//    [newImageRecord setObject:@"It's Alaska I guess" forKey:@"Caption"];
-//    
-//    [self.dataStore.database saveRecord:newImageRecord completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
-//        NSLog(@"%@, and also: %ld", error.localizedDescription, error.code);
-//    }];
-//
-//    CKRecord *newHoneymoon = [[CKRecord alloc] initWithRecordType:@"Honeymoon"];
-//    [newHoneymoon setObject:@(5) forKey:@"Cost"];
-//    [newHoneymoon setObject:@"World Hopper" forKey:@"Description"];
-//    [newHoneymoon setObject:@"Phileas and Jean's Honeymoon" forKey:@"Name"];
-//    
-//    CKReference *honeymoonReference = [[CKReference alloc] initWithRecord:newHoneymoon action:CKReferenceActionDeleteSelf];
-//    
-//    
-//    CKRecordID *recordToFetch1 = [[CKRecordID alloc] initWithRecordName:@"China"];
-//    CKRecordID *recordToFetch2 = [[CKRecordID alloc] initWithRecordName:@"Ireland"];
-//    CKRecordID *recordToFetch3 = [[CKRecordID alloc] initWithRecordName:@"Israel"];
-//    CKRecordID *recordToFetch4 = [[CKRecordID alloc] initWithRecordName:@"murica"];
-//    
-//    NSArray *recordsToFetch = @[recordToFetch1, recordToFetch2, recordToFetch3, recordToFetch4];
-//    
-//    CKFetchRecordsOperation *fetchRecords = [[CKFetchRecordsOperation alloc] initWithRecordIDs:recordsToFetch];
-//
-//    fetchRecords.perRecordCompletionBlock = ^(CKRecord *record, CKRecordID *recordID, NSError *error){
-//        if (error)
-//        {
-//            <#statements#>
-//        }
-//    };
-    
-//    [self.dataStore.database fetchRecordWithID:recordToFetch completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
-//        if (error)
-//        {
-//            NSLog(@"There was a problem: %@, code: %ld", error.localizedDescription, error.code);
-//        }
-//        
-//        
-//    }];
-}
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
--(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
-{
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    
+    NSLog(@"Login Tapped");
+        
     [self.activityIndicator startAnimating];
     
-    if ([identifier isEqualToString:@"LoggedIn"])
-    {
-        [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError *error) {
-        if (accountStatus == CKAccountStatusNoAccount)
+    NSLog(@"%d", [self.activityIndicator isAnimating]);
+    
+    //Verify that the user is logged in to their iCloud account
+    [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError *error) {
+        if (accountStatus == CKAccountStatusAvailable)
         {
-            self.shouldLogin = NO;
+            self.shouldLogin = YES;
         }
         else
         {
-            self.shouldLogin = YES;
-            NSLog(@"Account Access!");
+            self.shouldLogin = NO;
         }
-        dispatch_semaphore_signal(semaphore);
-        }];
-    }
-
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    
-    [self.activityIndicator stopAnimating];
-    
-    if (!self.shouldLogin)
-    {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Sign in to iCloud"
-                                                                       message:@"Sign in to your iCloud account to use this app. On the Home screen, launch Settings, tap iCloud, and enter your Apple ID. Turn iCloud Drive on. If you don't have an iCloud account, tap 'Create a new Apple ID'."
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Okay"
-                                                  style:UIAlertActionStyleCancel
-                                                handler:nil]];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
- 
-        return self.shouldLogin;
+        if (self.shouldLogin == NO)
+        {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Sign in to iCloud"
+                                                                           message:@"Sign in to your iCloud account to use this app. On the Home screen, launch Settings, tap iCloud, and enter your Apple ID. Turn iCloud Drive on. If you don't have an iCloud account, tap 'Create a new Apple ID'."
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"Okay"
+                                                      style:UIAlertActionStyleCancel
+                                                    handler:nil]];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self presentViewController:alert animated:YES completion:nil];
+            }];
+        }
+        else
+        {
+            //TODO: Polish up this transition
+            [self.activityIndicator stopAnimating];
+            
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                NSLog(@"Initializing datastore");
+                self.dataStore = [ZOLDataStore dataStore];
+                NSLog(@"Attempting to present VC");
+                [self presentViewController:mainVC animated:YES completion:nil];
+                NSLog(@"VC Presented?");
+            }];
+        }
+        
+    }];
 }
+
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-
 
 @end
