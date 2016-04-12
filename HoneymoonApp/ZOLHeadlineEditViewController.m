@@ -26,12 +26,35 @@
 
 - (IBAction)mainFeedButtonTapped:(UIBarButtonItem *)sender
 {
+    self.dataStore.user.userHoneymoon.honeymoonDescription = self.textField.text;
+    
+    ZOLHoneymoon *userHoneymoon = self.dataStore.user.userHoneymoon;
+    
+    CKRecord *honeymoonToSave = [self.dataStore.client fetchRecordWithRecordID:userHoneymoon.honeymoonID];
+    
+    NSURL *coverImageURL = [self.dataStore.client writeImage:userHoneymoon.coverPicture toTemporaryDirectoryWithQuality:0];
+    CKAsset *coverImageAsset = [[CKAsset alloc]initWithFileURL:coverImageURL];
+    
+    honeymoonToSave[@"CoverPicture"] = coverImageAsset;
+    honeymoonToSave[@"Description"] = userHoneymoon.honeymoonDescription;
+    honeymoonToSave[@"Published"] = @"YES";
+    honeymoonToSave[@"RatingStars"] = @(userHoneymoon.rating);
+    
+    [self.dataStore.client.database saveRecord:honeymoonToSave completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+        if (error)
+        {
+            NSLog(@"Something went wrong with this one too!: %@", error.localizedDescription);
+        }
+    }];
+//    [self.dataStore.client saveRecord:honeymoonToSave toDataBase:self.dataStore.client.database];
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.textField.delegate = self;
+    
+    self.dataStore = [ZOLDataStore dataStore];
     // Do any additional setup after loading the view.
 }
 

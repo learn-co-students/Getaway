@@ -97,6 +97,12 @@
 //    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
     ZOLDataStore *sharedDatastore = [ZOLDataStore dataStore];
    
+    ZOLImage *newImage = [[ZOLImage alloc]init];
+    newImage.picture = self.acceptedImage;
+    newImage.caption = photoDescription;
+    
+    [sharedDatastore.user.userHoneymoon.honeymoonImages insertObject:newImage atIndex:0];
+    
     CKRecord *newImageRecord = [[CKRecord alloc] initWithRecordType:@"Image"];
     CKAsset *newImageAsset = [[CKAsset alloc] initWithFileURL:self.acceptedImageURL];
     CKReference *honeymoonReference = [[CKReference alloc]initWithRecordID:sharedDatastore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];

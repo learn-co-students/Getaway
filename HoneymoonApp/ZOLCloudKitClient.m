@@ -52,6 +52,8 @@
 {
     __block CKRecord *recordToFetch;
     
+    dispatch_semaphore_t recordSem = dispatch_semaphore_create(0);
+    
     [self.database fetchRecordWithID:recordID completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
         if (error)
         {
@@ -61,8 +63,10 @@
         {
             recordToFetch = record;
         }
+        dispatch_semaphore_signal(recordSem);
     }];
     
+    dispatch_semaphore_wait(recordSem, DISPATCH_TIME_FOREVER);
     return recordToFetch;
 };
 
