@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="mKB-dA-dID">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="oxB-wh-Leb">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -21,9 +21,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yeK-da-Z9w">
                                 <rect key="frame" x="241" y="285" width="118" height="30"/>
                                 <state key="normal" title="Login with iCloud"/>
-                                <connections>
-                                    <action selector="loginTapped:" destination="oxB-wh-Leb" eventType="touchUpInside" id="GoL-ni-AlS"/>
-                                </connections>
                             </button>
                             <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="9gj-Xu-ThQ">
                                 <rect key="frame" x="282" y="314" width="37" height="37"/>
@@ -141,31 +138,13 @@
             </objects>
             <point key="canvasLocation" x="1355" y="1252"/>
         </scene>
-        <!--Main-->
+        <!--FeedStoryboard-->
         <scene sceneID="bS1-vs-9MD">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" id="u9x-IL-zzX" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="FeedStoryboard" id="u9x-IL-zzX" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kd8-DW-BjM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1821" y="472"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="K7L-g6-EVr">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mKB-dA-dID" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="uI7-hh-5fB">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="oxB-wh-Leb" kind="relationship" relationship="rootViewController" id="I0U-kz-AmW"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="NS4-L5-7xM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="543" y="472"/>
         </scene>
     </scenes>
 </document>

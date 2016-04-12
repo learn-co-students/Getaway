@@ -7,9 +7,15 @@
 //
 
 #import "User.h"
+#import <CloudKit/CloudKit.h>
 
 @implementation User
 
+
+-(void)createAnAssetLibrary: (CKAsset *)anAsset{
+    
+    
+}
 
 
 @end

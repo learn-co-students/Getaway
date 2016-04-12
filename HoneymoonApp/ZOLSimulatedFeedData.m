@@ -27,10 +27,11 @@
     if (self) {
         _imageArray = [[NSMutableArray alloc] init];
         _textArray = [[NSMutableArray alloc]init];
+        
         _textArray2 =[[NSMutableArray alloc]init];
         _imageArray2 = [[NSMutableArray alloc]init];
         
-        _imageArray3 = [NSMutableArray new];
+       // _imageArray3 = [NSMutableArray new];
 
         _mainTextArray =[[NSMutableArray alloc]init];
         _mainImageArray = [[NSMutableArray alloc]init];

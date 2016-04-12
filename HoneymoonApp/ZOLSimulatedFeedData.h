@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) NSMutableArray *imageArray;
 @property (nonatomic, strong) NSMutableArray *imageArray2;
+
 @property (nonatomic, strong) NSMutableArray *imageArray3;
 
 @property (nonatomic, strong) NSMutableArray *textArray;

@@ -25,6 +25,11 @@
 @property (nonatomic, strong) ZOLUser *user;
 @property (nonatomic, strong) ZOLCloudKitClient *client;
 
+
+@property (nonatomic, strong) NSMutableArray *fetchedRecords;
+//@property(nonatomic, assign) NSUInteger cursorLimit; only implement this if the auto limit doesn't do the job. 
+
+
 //CORE DATA
 //- (void)saveContext;
 //- (void)fetchData;

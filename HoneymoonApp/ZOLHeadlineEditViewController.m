@@ -26,7 +26,7 @@
 
 - (IBAction)mainFeedButtonTapped:(UIBarButtonItem *)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:NO];
+    [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)viewDidLoad {

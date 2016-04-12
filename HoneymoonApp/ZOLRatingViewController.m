@@ -28,6 +28,7 @@
     starRatingView.tintColor = [UIColor whiteColor];
     [starRatingView addTarget:self action:@selector(didChangeValue:) forControlEvents:UIControlEventValueChanged];
     [self.subview addSubview:starRatingView];
+    
 }
 
 - (IBAction)didChangeValue:(HCSStarRatingView *)sender {
