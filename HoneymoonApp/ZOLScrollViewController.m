@@ -19,8 +19,8 @@
 
 //Set up arrows to show additional content
 
-@property (strong, nonatomic) UIImageView *rightArrow;
-@property (strong, nonatomic) UIImageView *leftArrow;
+@property (strong, nonatomic) UIButton *rightArrow;
+@property (strong, nonatomic) UIButton *leftArrow;
 
 @end
 
@@ -64,12 +64,18 @@
    self.scrollView.delegate = self;
     
     // Set up arrows to indicate more content
-    self.rightArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow.png"]];
-    self.leftArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LeftArrow.png"]];
+
+    self.rightArrow = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.leftArrow = [UIButton buttonWithType:UIButtonTypeCustom];
     
+    //Set images to buttons & rendering mode to template.
+    UIImage *rightArrowButtonImage = [[UIImage imageNamed:@"RightArrow.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *leftArrowButtonImage = [[UIImage imageNamed:@"LeftArrow.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    [self.rightArrow setBackgroundImage:rightArrowButtonImage forState:UIControlStateNormal];
+    [self.leftArrow setBackgroundImage:leftArrowButtonImage forState:UIControlStateNormal];
+
     //Set color to arrows
-    self.leftArrow.image = [self.leftArrow.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.rightArrow.image = [self.rightArrow.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.leftArrow setTintColor:[UIColor whiteColor]];
     [self.rightArrow setTintColor:[UIColor whiteColor]];
     
@@ -106,6 +112,33 @@
     
     [self.leftArrow.widthAnchor constraintEqualToAnchor:self.leftArrow.heightAnchor multiplier:arrowAspectRatio].active = YES;
     
+    
+    //Add IBActions programmatically for the buttons
+    [self.rightArrow addTarget:self action:@selector(rightArrowButtonTappedWithselector:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.leftArrow addTarget:self action:@selector(leftArrowButtonTappedWithselector:) forControlEvents:UIControlEventTouchUpInside];
+    
+}
+
+-(IBAction)rightArrowButtonTappedWithselector:(id)sender
+{
+    //Calculate the offset distance for the right button to scroll when tapped
+    
+    NSUInteger pageNumber = self.scrollView.contentOffset.x /
+    self.scrollView.bounds.size.width;
+    
+    NSUInteger *xOffset =
+    
+    CGPoint scrollDistance = CGPointMake((pageNumber * self.scrollView.frame.size.width), 0);
+    
+    [self.scrollView setContentOffset:scrollDistance animated:YES];
+}
+
+-(IBAction)leftArrowButtonTappedWithselector:(id)sender
+{
+    CGPoint scrollDistance = CGPointMake(-self.scrollView.frame.size.width, 0);
+    
+    [self.scrollView setContentOffset:scrollDistance animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
