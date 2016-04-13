@@ -21,43 +21,47 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
-    self.localImageArray = sharedDatastore.mainImageArray;
-    self.localTextArray = sharedDatastore.mainTextArray;
+//    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
+//    self.localImageArray = sharedDatastore.mainImageArray;
+//    self.localTextArray = sharedDatastore.mainTextArray;
+    self.localImageArray = [[NSMutableArray alloc]init];
+    self.localTextArray = [[NSMutableArray alloc]init];
+    
+    self.dataStore = [ZOLDataStore dataStore];
 
-    __block NSMutableArray *capturedImageArray = [[NSMutableArray alloc]init];
-    __block NSMutableArray *capturedTextArray = [[NSMutableArray alloc]init];
-    
-    ZOLDataStore *dataStore = [ZOLDataStore dataStore];
-    
-    CKReference *honeymoonImages = [[CKReference alloc]initWithRecordID:dataStore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
-    NSPredicate *findImages = [NSPredicate predicateWithFormat:@"Honeymoon == %@", honeymoonImages];
-    CKQuery *imageQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
-    
-    dispatch_semaphore_t imageSem = dispatch_semaphore_create(0);
-    CKQueryOperation *imageFindOp = [[CKQueryOperation alloc]initWithQuery:imageQuery];
-    imageFindOp.recordFetchedBlock = ^(CKRecord *record){
-        CKAsset *image = record[@"Picture"];
-        UIImage *picture = [dataStore.client retrieveUIImageFromAsset:image];
-        
-        NSString *captionText = record[@"Caption"];
-        
-        [capturedImageArray addObject:picture];
-        [capturedTextArray addObject:captionText];
-    };
-    imageFindOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *error){
-        
-        if (error)
-        {
-            NSLog(@"%@", error.localizedDescription);
-        }
-//        [self.localImageArray addObject:capturedImageArray];
-//        [self.localTextArray addObject:capturedTextArray];
-        dispatch_semaphore_signal(imageSem);
-    };
-    
-    [dataStore.client.database addOperation:imageFindOp];
-    dispatch_semaphore_wait(imageSem, DISPATCH_TIME_FOREVER);
+//    for (ZOLHoneymoon *honeymoon in self.dataStore.mainFeed)
+//    {
+//        [self.localImageArray insertObject:honeymoon.coverPicture atIndex:0];
+//        [self.localTextArray insertObject:honeymoon.honeymoonDescription atIndex:0];
+//    }
+//    CKReference *honeymoonImages = [[CKReference alloc]initWithRecordID:dataStore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
+//    NSPredicate *findImages = [NSPredicate predicateWithFormat:@"Honeymoon == %@", honeymoonImages];
+//    CKQuery *imageQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
+//    
+//    dispatch_semaphore_t imageSem = dispatch_semaphore_create(0);
+//    CKQueryOperation *imageFindOp = [[CKQueryOperation alloc]initWithQuery:imageQuery];
+//    imageFindOp.recordFetchedBlock = ^(CKRecord *record){
+//        CKAsset *image = record[@"Picture"];
+//        UIImage *picture = [dataStore.client retrieveUIImageFromAsset:image];
+//        
+//        NSString *captionText = record[@"Caption"];
+//        
+//        [capturedImageArray addObject:picture];
+//        [capturedTextArray addObject:captionText];
+//    };
+//    imageFindOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *error){
+//        
+//        if (error)
+//        {
+//            NSLog(@"%@", error.localizedDescription);
+//        }
+////        [self.localImageArray addObject:capturedImageArray];
+////        [self.localTextArray addObject:capturedTextArray];
+//        dispatch_semaphore_signal(imageSem);
+//    };
+//    
+//    [dataStore.client.database addOperation:imageFindOp];
+//    dispatch_semaphore_wait(imageSem, DISPATCH_TIME_FOREVER);
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -65,40 +69,20 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.localImageArray.count;
+    return self.dataStore.mainFeed.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ZOLMainCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellMain" forIndexPath:indexPath];
     
-    cell.image.image = self.localImageArray[indexPath.row][0];
+    ZOLHoneymoon *thisHoneymoon = self.dataStore.mainFeed[indexPath.row];
     
-//IF WE WANT TO DEAL WITH WHAT TO DO WHEN ASSETS ARE NOT LOADED IN THE CELLS:
-   // cell.headlineLabel.text = self.localTextArray[indexPath.row][0];
+    cell.image.image = thisHoneymoon.coverPicture;
+    cell.cellRating = thisHoneymoon.rating;
+    [cell drawStarRating];
     
-    // kick off the CKQuery for the first image asset for the corresponding honeymoon record
-    // in the completion block for that query, set the image view to the image in the CKAsset
-    //  * but... you need to make sure that the cell hasn't been reused in the meantime
-    
-    /*
-     
-     HoneymoonRecord *theHoneymoon = [... whatever ...: indexPath.row];
-     cell.honeymoon = theHoneymoon;
-     cell.image.image = [some placehold image];
-     
-     [CKQuery querySomeStuffWithCompletion:^(CKRecord *imageRecord) {
-        if(cell.honeymoon != theHoneymoon) {
-            // the cell got reused, and we should *not* set the image we just got on it,
-            // since the cell not represents another honeymoon.
-            return;
-        }
-     
-        cell.image = [imageRecord];
-     }];
-     
-     
-     */
+    cell.headlineLabel.text = thisHoneymoon.honeymoonDescription;
     
     return cell;
 }

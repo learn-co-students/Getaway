@@ -85,43 +85,41 @@
 }
 
 //DO NOT pass both a query and a cursor into this, one or the other must be nil
-//-(void)queryRecordsWithQuery: (CKQuery *)query
-//                         orCursor: (CKQueryCursor *)cursor
-//                fromDatabase: (CKDatabase *)database everyRecord: (id ^(CKRecord *record))recordBlock completionBlock: (id ^(CKQueryCursor *cursor))
-//{
-//    CKQueryOperation *operation;
-//    
-//    //(1)first time through we are passing in a query and will enter the else statement:
-//    if (query && !cursor)
-//    {
-//        operation = [[CKQueryOperation alloc] initWithQuery: query];
-//        
-//    }
-//    else if (cursor && !query)
-//    {
-//        operation = [[CKQueryOperation alloc] initWithCursor: cursor];
-//    }
-//    else
-//    {
-//        NSLog(@"queryRecordsWithQuery needs a query OR cursor, not both");
-//        return nil;
-//    }
-//    //(we enter the block below, fetch the record)
-//    operation.recordFetchedBlock = ^(CKRecord *record)
-//    {
-//        [returnArray addObject:record];
-//    };
-//    
-//    operation.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *error)
-//    {
-//        if (error)
-//        {
-//            // We're done in the event that there are no more crusors or an error occured
-//            NSLog(@"%@", error.localizedDescription);
-//        }
-//    };
-//    
-//    [database addOperation: operation]; // when we FIRST hit this method, this is when the cursor first comes into play, until this line of code, we are only dealing with the fetching the query. Afeter we hit this line, we begin using the cursor.
-//}
-//
+-(void)queryRecordsWithQuery: (CKQuery *)query
+                    orCursor: (CKQueryCursor *)cursor
+                fromDatabase: (CKDatabase *)database
+                 everyRecord: (void(^)(CKRecord *record))recordBlock
+             completionBlock: (void(^)(CKQueryCursor *cursor, NSError *error))completionBlock
+{
+    CKQueryOperation *operation;
+    
+    //(1)first time through we are passing in a query and will enter the else statement:
+    if (query && !cursor)
+    {
+        operation = [[CKQueryOperation alloc] initWithQuery: query];
+        
+    }
+    else if (cursor && !query)
+    {
+        operation = [[CKQueryOperation alloc] initWithCursor: cursor];
+    }
+    else
+    {
+        NSLog(@"queryRecordsWithQuery needs a query OR cursor, not both");
+        return;
+    }
+    //(we enter the block below, fetch the record)
+    operation.recordFetchedBlock = ^(CKRecord *record)
+    {
+        recordBlock(record);
+    };
+    
+    operation.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *error)
+    {
+        completionBlock(cursor, error);
+    };
+    
+    [database addOperation: operation]; // when we FIRST hit this method, this is when the cursor first comes into play, until this line of code, we are only dealing with the fetching the query. Afeter we hit this line, we begin using the cursor.
+}
+
 @end
