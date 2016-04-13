@@ -101,6 +101,13 @@
     }
 }
 
+
+- (IBAction)mainFeedPullToRefresh:(UIRefreshControl *)sender {
+    [self.tableView reloadData];
+    [sender endRefreshing];
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
