@@ -21,47 +21,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
-//    self.localImageArray = sharedDatastore.mainImageArray;
-//    self.localTextArray = sharedDatastore.mainTextArray;
     self.localImageArray = [[NSMutableArray alloc]init];
     self.localTextArray = [[NSMutableArray alloc]init];
     
     self.dataStore = [ZOLDataStore dataStore];
-
-//    for (ZOLHoneymoon *honeymoon in self.dataStore.mainFeed)
-//    {
-//        [self.localImageArray insertObject:honeymoon.coverPicture atIndex:0];
-//        [self.localTextArray insertObject:honeymoon.honeymoonDescription atIndex:0];
-//    }
-//    CKReference *honeymoonImages = [[CKReference alloc]initWithRecordID:dataStore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
-//    NSPredicate *findImages = [NSPredicate predicateWithFormat:@"Honeymoon == %@", honeymoonImages];
-//    CKQuery *imageQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
-//    
-//    dispatch_semaphore_t imageSem = dispatch_semaphore_create(0);
-//    CKQueryOperation *imageFindOp = [[CKQueryOperation alloc]initWithQuery:imageQuery];
-//    imageFindOp.recordFetchedBlock = ^(CKRecord *record){
-//        CKAsset *image = record[@"Picture"];
-//        UIImage *picture = [dataStore.client retrieveUIImageFromAsset:image];
-//        
-//        NSString *captionText = record[@"Caption"];
-//        
-//        [capturedImageArray addObject:picture];
-//        [capturedTextArray addObject:captionText];
-//    };
-//    imageFindOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *error){
-//        
-//        if (error)
-//        {
-//            NSLog(@"%@", error.localizedDescription);
-//        }
-////        [self.localImageArray addObject:capturedImageArray];
-////        [self.localTextArray addObject:capturedTextArray];
-//        dispatch_semaphore_signal(imageSem);
-//    };
-//    
-//    [dataStore.client.database addOperation:imageFindOp];
-//    dispatch_semaphore_wait(imageSem, DISPATCH_TIME_FOREVER);
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -103,6 +66,7 @@
 
 
 - (IBAction)mainFeedPullToRefresh:(UIRefreshControl *)sender {
+    
     [self.tableView reloadData];
     [sender endRefreshing];
 }
