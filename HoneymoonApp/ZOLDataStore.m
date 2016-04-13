@@ -38,9 +38,10 @@
 
 - (void)readRecords_Resurs:(CKDatabase *)database
                      query:(CKQuery *)query
-                    cursor:(CKQueryCursor *)cursor {
+                    cursor:(CKQueryCursor *)cursor
+{
     
-CKQueryOperation *operation;
+    CKQueryOperation *operation;
  
 //(1)first time through we are passing in a query and will enter the else statement:
     if (query != nil) {
@@ -73,8 +74,8 @@ CKQueryOperation *operation;
  
 }
 
-- (void) readRecordsDone: (NSString *) errorMsg {
-    
+- (void)readRecordsDone: (NSString *)errorMsg
+{
     if (errorMsg) {
         NSLog(@"Error: %@", errorMsg); //OR errorMesg.description OR errorMesg.debugDescription
     }
