@@ -55,6 +55,10 @@
     return cell;
 }
 
+- (IBAction)privatePullToRefresh:(UIRefreshControl *)sender {
+    [self.tableView reloadData];
+    [sender endRefreshing];
+}
 
 /*
 // Override to support conditional editing of the table view.
