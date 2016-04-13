@@ -13,5 +13,7 @@
 @interface ZOLRatingViewController : UIViewController
 
 @property (nonatomic, strong) ZOLDataStore *dataStore;
+@property (nonatomic, strong) UIImage *coverImage;
+
 
 @end

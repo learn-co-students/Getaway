@@ -7,6 +7,7 @@
 //
 
 #import "ZOLScrollViewController.h"
+#import "ZOLRatingViewController.h"
 
 @interface ZOLScrollViewController () <UIScrollViewDelegate>
 
@@ -150,11 +151,19 @@
                                                          NSLog(@"Image: %@", self.selectedImage);
                                                          //Go to next publish option.
                                                          self.dataStore.user.userHoneymoon.coverPicture = self.selectedImage;
+                                                         
     [self performSegueWithIdentifier:@"ratingSegue" sender:self];
                                                      }];
     [alertController addAction:cancelAction];
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"ratingSegue"]) {
+        ZOLRatingViewController *ratingViewController = segue.destinationViewController;
+        ratingViewController.coverImage = self.selectedImage;
+    }
 }
 
 @end
