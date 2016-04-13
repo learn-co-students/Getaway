@@ -63,24 +63,22 @@
     
 }
 
-- (IBAction)cameraButtonTapped:(UIButton *)sender
-{
-}
-
 - (IBAction)photoLibraryButtonTapped:(UIButton *)sender
 {
     self.isCameraModeOn = NO;
+    
+    
     
     [self dismissViewControllerAnimated:NO completion:^{
         UIImagePickerController *libraryController = [[UIImagePickerController alloc] init];
         libraryController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         
-        [self.tabBarController setSelectedIndex:0];
+        //Setting the library controller to the delegate allows the image picked in the library to call the didFinishPickingMediaWithInfo method and select the photo.
+        libraryController.delegate = self;
+        
         [self presentViewController:libraryController animated:NO completion:^{
             self.openCam =YES;
         }];
-        
-        
     }];
 }
 
@@ -143,19 +141,9 @@
         self.flashMode = -2;
     }
 
-    [self dismissViewControllerAnimated:NO completion:^{
-        [self cameraButtonTapped:sender];
-    }];
+    [self dismissViewControllerAnimated:NO completion:nil];
     
     self.flashMode++;
-}
-
-- (IBAction)showCameraLibraryButtonTapped:(UIButton *)sender
-{
-    UIImagePickerController *libraryController = [[UIImagePickerController alloc] init];
-    libraryController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    
-    [self presentViewController:libraryController animated:NO completion:nil];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker
@@ -179,7 +167,9 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
                    completionHandler:^(BOOL success, NSError * _Nullable error)
         {
             NSLog(@"Error?: %@, Success?: %d", error, success);
+            
 //         /Users/andreasvestergaard/Development/code/ios-0216-team-yam/HoneymoonApp/ZOLAcceptPhotoViewController.h   dispatch_semaphore_signal(semaphore);
+            
         }];
     }
     
