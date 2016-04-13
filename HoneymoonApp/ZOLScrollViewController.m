@@ -28,7 +28,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.imagesArray = [[NSMutableArray alloc]initWithArray:@[[UIImage imageNamed:@"image1.jpg"],[UIImage imageNamed:@"image2.jpg"], [UIImage imageNamed:@"image3.jpg"]]];
+    self.imagesArray = [[NSMutableArray alloc]init];
+    self.dataStore = [ZOLDataStore dataStore];
+    
+    for (ZOLImage *zolImage in self.dataStore.user.userHoneymoon.honeymoonImages)
+    {
+        UIImage *imageToAdd = zolImage.picture;
+        [self.imagesArray addObject:imageToAdd];
+    }
+    
+    self.selectedImage = self.imagesArray[0];
+    
     for (UIImage *image in self.imagesArray)
     {
         UIImageView *view = [[UIImageView alloc] initWithImage:image];
@@ -46,7 +56,7 @@
     self.stackViewOutlet.alignment = UIStackViewAlignmentFill;
     self.stackViewOutlet.spacing = 0;
     
-    self.widthConstraint.constant = self.view.frame.size.width * 3;
+    self.widthConstraint.constant = self.view.frame.size.width * self.imagesArray.count;
     self.scrollView.contentSize = CGSizeMake(self.widthConstraint.constant, self.view.frame.size.height);
     NSLog(@"%lf", self.widthConstraint.constant);
 
@@ -139,7 +149,7 @@
                                                          //Set the selected image to outside/data property here.
                                                          NSLog(@"Image: %@", self.selectedImage);
                                                          //Go to next publish option.
-
+                                                         self.dataStore.user.userHoneymoon.coverPicture = self.selectedImage;
     [self performSegueWithIdentifier:@"ratingSegue" sender:self];
                                                      }];
     [alertController addAction:cancelAction];

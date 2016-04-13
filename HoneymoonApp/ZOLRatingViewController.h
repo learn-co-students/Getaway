@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <HCSStarRatingView/HCSStarRatingView.h>
+#import "ZOLDataStore.h"
 
 @interface ZOLRatingViewController : UIViewController
+
+@property (nonatomic, strong) ZOLDataStore *dataStore;
 
 @end

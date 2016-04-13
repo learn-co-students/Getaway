@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZOLDataStore.h"
 
 @interface ZOLScrollViewController : UIViewController
+
+@property (nonatomic, strong) ZOLDataStore *dataStore;
 
 @end

@@ -45,11 +45,14 @@
     findHMOp.resultsLimit = 1;
     
     dispatch_semaphore_t honeymoonSemaphore = dispatch_semaphore_create(0);
+    
+    __block BOOL errorOccured = NO;
     findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError){
         
         if (operationError)
         {
-            NSLog(@"Obviously this is an error, but heres the description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
+            NSLog(@"Error searching for user honeymoon, description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
+            errorOccured = YES;
         }
         
         dispatch_semaphore_signal(honeymoonSemaphore);
@@ -64,7 +67,7 @@
     [[[CKContainer defaultContainer] publicCloudDatabase] addOperation:findHMOp];
     dispatch_semaphore_wait(honeymoonSemaphore, DISPATCH_TIME_FOREVER);
     
-    if (!userHoneyMoon)
+    if (!userHoneyMoon && !errorOccured)
     {
         [self createBlankHoneyMoon];
     }

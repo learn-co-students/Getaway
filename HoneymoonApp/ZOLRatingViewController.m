@@ -18,6 +18,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.dataStore = [ZOLDataStore dataStore];
+    
     //initialize star-rating view
     HCSStarRatingView *starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(45, 300, 300, 60)];
     starRatingView.maximumValue = 5;
@@ -32,13 +35,7 @@
 }
 
 - (IBAction)didChangeValue:(HCSStarRatingView *)sender {
-    NSLog(@"Changed rating to %.1f", sender.value);
     self.rating = sender.value;
-    NSLog(@"property rating is %.1lu", (unsigned long)self.rating);
-
-    
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,14 +43,16 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    self.dataStore.user.userHoneymoon.rating = self.rating;
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-*/
+
 
 @end
