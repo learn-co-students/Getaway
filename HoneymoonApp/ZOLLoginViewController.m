@@ -70,23 +70,10 @@
             
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 [self.activityIndicator stopAnimating];
-                NSLog(@"about to stop animating!!!");
-                //TODO: Polish up this transition
-                
-                NSLog(@"datastore about to be made.");
-                
                 self.dataStore = [ZOLDataStore dataStore];
-                
-                
-                NSLog(@"You wont be called for a long time.");
                 [self.dataStore populateMainFeed];
-                
-                NSLog(@"Hello populate is done.");
-                
             }];
-            
-        
-            
+           
 //            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
 //                NSLog(@"Initializing data store");
 //                self.dataStore = [ZOLDataStore dataStore];
@@ -96,21 +83,16 @@
         }
     }];
     
-    NSLog(@"MainFeed populated add observer is happening.");
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentNextVC:) name:@"MainFeedPopulated" object:nil];
 }
 
 -(void)presentNextVC: (NSNotification *)notification
 {
-    
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+//    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"mainFeed"];
 
-//    NSLog(@"Attempting to present tabbar VC");
-//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-//    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarViewController"];
-////    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"mainFeed"];
-//
-//    [self presentViewController:mainVC animated:YES completion:nil];
+    [self presentViewController:mainVC animated:YES completion:nil];
 }
 
 #pragma mark - Navigation
