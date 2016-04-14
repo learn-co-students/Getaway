@@ -18,9 +18,10 @@
 @property (strong, nonatomic) UIImage *selectedImage;
 
 //Set up arrows to show additional content
-
 @property (strong, nonatomic) UIButton *rightArrow;
 @property (strong, nonatomic) UIButton *leftArrow;
+
+@property (nonatomic)BOOL scrollButtonTapped;
 
 @end
 
@@ -64,7 +65,6 @@
    self.scrollView.delegate = self;
     
     // Set up arrows to indicate more content
-
     self.rightArrow = [UIButton buttonWithType:UIButtonTypeCustom];
     self.leftArrow = [UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -72,9 +72,9 @@
     UIImage *rightArrowButtonImage = [[UIImage imageNamed:@"RightArrow.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *leftArrowButtonImage = [[UIImage imageNamed:@"LeftArrow.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    [self.rightArrow setBackgroundImage:rightArrowButtonImage forState:UIControlStateNormal];
-    [self.leftArrow setBackgroundImage:leftArrowButtonImage forState:UIControlStateNormal];
-
+    [self.rightArrow setImage:rightArrowButtonImage forState:UIControlStateNormal];
+    [self.leftArrow setImage:leftArrowButtonImage forState:UIControlStateNormal];
+    
     //Set color to arrows
     [self.leftArrow setTintColor:[UIColor whiteColor]];
     [self.rightArrow setTintColor:[UIColor whiteColor]];
@@ -89,17 +89,17 @@
 
     // Constrain right arrow
     self.rightArrow.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.rightArrow.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-20.0].active = YES;
+    [self.rightArrow.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-10.0].active = YES;
     [self.rightArrow.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor].active = YES;
-    [self.rightArrow.heightAnchor constraintEqualToAnchor:self.view.heightAnchor multiplier:0.1].active = YES;
+    [self.rightArrow.heightAnchor constraintEqualToAnchor:self.view.heightAnchor multiplier:0.2].active = YES;
     self.rightArrow.contentMode = UIViewContentModeScaleAspectFit;
     self.rightArrow.clipsToBounds = YES;
     
     // Constrain left arrow
     self.leftArrow.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.leftArrow.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:20.0].active = YES;
+    [self.leftArrow.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:10.0].active = YES;
     [self.leftArrow.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor].active = YES;
-    [self.leftArrow.heightAnchor constraintEqualToAnchor:self.view.heightAnchor multiplier:0.1].active = YES;
+    [self.leftArrow.heightAnchor constraintEqualToAnchor:self.view.heightAnchor multiplier:0.2].active = YES;
     self.leftArrow.contentMode = UIViewContentModeScaleAspectFit;
     self.leftArrow.clipsToBounds = YES;
     
@@ -112,57 +112,125 @@
     
     [self.leftArrow.widthAnchor constraintEqualToAnchor:self.leftArrow.heightAnchor multiplier:arrowAspectRatio].active = YES;
     
+    CGFloat verticalInset = self.view.frame.size.height / 14;
+    CGFloat horizontalInset = verticalInset * arrowAspectRatio;
+    UIEdgeInsets arrowInsets = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
+    
+    self.rightArrow.imageEdgeInsets = arrowInsets;
+    self.leftArrow.imageEdgeInsets = arrowInsets;
     
     //Add IBActions programmatically for the buttons
     [self.rightArrow addTarget:self action:@selector(rightArrowButtonTappedWithselector:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.leftArrow addTarget:self action:@selector(leftArrowButtonTappedWithselector:) forControlEvents:UIControlEventTouchUpInside];
-    
 }
 
 -(IBAction)rightArrowButtonTappedWithselector:(id)sender
 {
-    //Calculate the offset distance for the right button to scroll when tapped
+    if(self.scrollView.contentOffset.x < (self.scrollView.contentSize.width - self.scrollView.frame.size.width))
+    {
+        self.scrollButtonTapped = YES;
+        
+        //Calculate the offset distance for the right button to scroll when tapped
+        NSUInteger pageNumber = (self.scrollView.contentOffset.x /
+                                 self.scrollView.bounds.size.width) + 1;
+
+        CGPoint scrollDistance = CGPointMake(self.scrollView.bounds.size.width * pageNumber, 0);
+        
+        [self.scrollView setContentOffset:scrollDistance animated:YES];
+    }
     
-    NSUInteger pageNumber = self.scrollView.contentOffset.x /
-    self.scrollView.bounds.size.width;
+    CGFloat totalWidth = self.scrollView.contentSize.width;
+    CGFloat offsetX = self.scrollView.contentOffset.x;
+    CGFloat screenWidth = self.scrollView.frame.size.width;
     
-    NSUInteger *xOffset =
     
-    CGPoint scrollDistance = CGPointMake((pageNumber * self.scrollView.frame.size.width), 0);
-    
-    [self.scrollView setContentOffset:scrollDistance animated:YES];
+    NSLog(@"totalWidth:%f",totalWidth);
+    NSLog(@"offSetX:%f",offsetX);
+    NSLog(@"screenWidth:%f",screenWidth);
 }
 
 -(IBAction)leftArrowButtonTappedWithselector:(id)sender
 {
-    CGPoint scrollDistance = CGPointMake(-self.scrollView.frame.size.width, 0);
+    //As long as the offset is greater than the screen size allow for scrolling.
+    if(self.scrollView.contentOffset.x >= self.scrollView.frame.size.width)
+    {
+            self.scrollButtonTapped = YES;
+        
+        NSUInteger pageNumber = (self.scrollView.contentOffset.x /
+        self.scrollView.bounds.size.width) + 1;
+
+        CGPoint scrollDistance = CGPointMake(self.scrollView.bounds.size.width * (pageNumber - 2), 0);
+     
+        [self.scrollView setContentOffset:scrollDistance animated:YES];
+    }
     
-    [self.scrollView setContentOffset:scrollDistance animated:YES];
+    CGFloat totalWidth = self.scrollView.contentSize.width;
+    CGFloat offsetX = self.scrollView.contentOffset.x;
+    CGFloat screenWidth = self.scrollView.frame.size.width;
+
+    
+    NSLog(@"totalWidth:%f",totalWidth);
+    NSLog(@"offSetX:%f",offsetX);
+    NSLog(@"screenWidth:%f",screenWidth);
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSUInteger pagenumber = self.scrollView.contentOffset.x /
-    self.scrollView.bounds.size.width;
-    self.selectedImage = [self.imagesArray objectAtIndex:pagenumber];
-    NSLog(@"Page number: %lu", pagenumber);
-    NSLog(@"Image: %@", self.selectedImage);
-    
-    //Set up arrows to indicate more content
-    // Are we at the far left of the scrollview?
-    if (scrollView.contentOffset.x <
-        scrollView.contentSize.width - scrollView.frame.size.width) {
-        self.rightArrow.hidden = NO;
-    } else {
-        self.rightArrow.hidden = YES;
+    if(self.scrollButtonTapped == NO)
+    {
+        NSUInteger pageNumber = self.scrollView.contentOffset.x /
+        self.scrollView.bounds.size.width;
+        self.selectedImage = [self.imagesArray objectAtIndex:pageNumber];
+        NSLog(@"Page number: %lu", pageNumber);
+        NSLog(@"Image: %@", self.selectedImage);
+        
+        //Set up arrows to indicate more content
+        CGFloat totalWidth = self.scrollView.contentSize.width;
+        CGFloat offsetX = self.scrollView.contentOffset.x;
+        CGFloat screenWidth = self.scrollView.frame.size.width;
+        //Is scroll at far right? Hide the right arrow.
+        if (offsetX >= (totalWidth - screenWidth))
+        {
+            self.rightArrow.hidden = YES;
+            self.leftArrow.hidden = NO;
+        } else if (offsetX < screenWidth)
+        {
+            self.rightArrow.hidden = NO;
+            self.leftArrow.hidden = YES;
+        } else {
+            
+            self.rightArrow.hidden = NO;
+            self.leftArrow.hidden = NO;
+        }
+
+        NSLog(@"totalWidth:%f",totalWidth);
+        NSLog(@"offSetX:%f",offsetX);
+        NSLog(@"screenWidth:%f",screenWidth);
+        
     }
-    // Are we at the far right of the scrollview?
-    if (scrollView.contentOffset.x > 0) {
-        self.leftArrow.hidden = NO;
-    }else {
-        self.leftArrow.hidden = YES;
-    }
+//        Set up arrows to indicate more content
+        CGFloat totalWidth = self.scrollView.contentSize.width;
+        CGFloat offsetX = self.scrollView.contentOffset.x;
+        CGFloat screenWidth = self.scrollView.frame.size.width;
+        //Is scroll at far right? Hide the right arrow.
+        if (offsetX >= (totalWidth - screenWidth))
+        {
+            self.rightArrow.hidden = YES;
+            self.leftArrow.hidden = NO;
+        } else if (offsetX < screenWidth)
+        {
+            self.rightArrow.hidden = NO;
+            self.leftArrow.hidden = YES;
+        } else {
+            
+            self.rightArrow.hidden = NO;
+            self.leftArrow.hidden = NO;
+        }
+        
+        NSLog(@"totalWidth:%f",totalWidth);
+        NSLog(@"offSetX:%f",offsetX);
+        NSLog(@"screenWidth:%f",screenWidth);
 }
 
 - (void)handleTap:(UITapGestureRecognizer *)tapGestureRecognizer
@@ -173,9 +241,7 @@
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                            style:UIAlertActionStyleDefault
-                                                         handler:^(UIAlertAction * _Nonnull action) {
-                                                             [self dismissViewControllerAnimated:NO completion:nil];
-                                                         }];
+                                                         handler:nil];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok"
                                                        style:UIAlertActionStyleDefault
