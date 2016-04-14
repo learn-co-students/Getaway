@@ -160,7 +160,6 @@
     CGFloat offsetX = self.scrollView.contentOffset.x;
     CGFloat screenWidth = self.scrollView.frame.size.width;
 
-    
     NSLog(@"totalWidth:%f",totalWidth);
     NSLog(@"offSetX:%f",offsetX);
     NSLog(@"screenWidth:%f",screenWidth);
