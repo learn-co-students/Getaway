@@ -7,7 +7,10 @@
 //
 
 #import "ZOLDataStore.h"
+
 #import "ZOLDetailTableViewController.h"
+
+#import "ZOLTabBarViewController.h"
 
 @implementation ZOLDataStore
 
@@ -32,9 +35,42 @@
     {
         _user = [[ZOLUser alloc]init];
         _client = [[ZOLCloudKitClient alloc]init];
+        _mainFeed = [[NSMutableArray alloc]init];
     }
-    
+
     return self;
+}
+
+-(void)populateMainFeed
+{
+    NSPredicate *publishedHoneymoons = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
+    CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
+    
+    [self.client queryRecordsWithQuery:intializeMainFeed orCursor:nil fromDatabase:self.client.database everyRecord:^(CKRecord *record) {
+        ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
+        
+        CKAsset *coverPictureAsset = record[@"CoverPicture"];
+        UIImage *coverPic = [self.client retrieveUIImageFromAsset:coverPictureAsset];
+        thisHoneymoon.coverPicture = coverPic;
+        
+        NSNumber *ratingVal = record[@"RatingStars"];
+        thisHoneymoon.rating = [ratingVal floatValue];
+        
+        thisHoneymoon.honeymoonDescription = record[@"Description"];
+        
+        [self.mainFeed insertObject:thisHoneymoon atIndex:0];
+    } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+        if (error)
+        {
+            NSLog(@"Error initializing main feed: %@", error.localizedDescription);
+        }
+        else
+        {
+            self.mainFeedCursor = cursor;
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"MainFeedPopulated" object:nil];
+        }
+    }];
 }
 
 - (void)readRecords_Resurs:(CKDatabase *)database

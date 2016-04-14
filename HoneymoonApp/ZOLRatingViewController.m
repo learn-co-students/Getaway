@@ -8,9 +8,11 @@
 
 #import "ZOLRatingViewController.h"
 
+
 @interface ZOLRatingViewController ()
 @property (nonatomic) CGFloat rating;
 @property (strong, nonatomic) IBOutlet UIView *subview;
+@property (strong, nonatomic) IBOutlet UIImageView *backgroundImage;
 
 @end
 
@@ -30,10 +32,17 @@
     starRatingView.backgroundColor = [UIColor clearColor];
     starRatingView.tintColor = [UIColor whiteColor];
     [starRatingView addTarget:self action:@selector(didChangeValue:) forControlEvents:UIControlEventValueChanged];
+    
+    //Set the rating stars to the front
+    [self.view bringSubviewToFront:self.subview];
     [self.subview addSubview:starRatingView];
     
-}
+    //Set the background image to the chosen cover image.
+    self.backgroundImage.image = self.coverImage;
+    
+    NSLog(@"View did load");
 
+}
 - (IBAction)didChangeValue:(HCSStarRatingView *)sender {
     self.rating = sender.value;
 }

@@ -67,7 +67,9 @@
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 self.dataStore = [ZOLDataStore dataStore];
                 [self.dataStore populateMainFeed];
-                //                [self presentViewController:mainVC animated:YES completion:nil];
+
+//                [self presentViewController:mainVC animated:YES completion:nil];
+
             }];
         }
     }];

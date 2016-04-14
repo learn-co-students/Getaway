@@ -20,7 +20,8 @@
 //@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 //@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-@property (nonatomic, strong) NSMutableArray *feed;
+@property (nonatomic, strong) NSMutableArray *mainFeed;
+@property (nonatomic, strong) CKQueryCursor *mainFeedCursor;
 
 @property (nonatomic, strong) ZOLUser *user;
 @property (nonatomic, strong) ZOLCloudKitClient *client;
@@ -39,6 +40,7 @@
 //- (NSURL *)applicationDocumentsDirectory;
 
 + (instancetype) dataStore;
+-(void)populateMainFeed;
 
 
 //-(void)saveRecord: (CKRecord *)record toDataBase: (CKDatabase *)database;

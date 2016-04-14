@@ -20,5 +20,10 @@
 -(CKRecord *)fetchRecordWithRecordID:(CKRecordID *)recordID;
 -(void)saveRecord:(CKRecord *)record toDataBase:(CKDatabase *)database;
 -(UIImage *)retrieveUIImageFromAsset: (CKAsset *)asset;
+-(void)queryRecordsWithQuery: (CKQuery *)query
+                    orCursor: (CKQueryCursor *)cursor
+                fromDatabase: (CKDatabase *)database
+                 everyRecord: (void(^)(CKRecord *record))recordBlock
+             completionBlock: (void(^)(CKQueryCursor *cursor, NSError *error))completionBlock;
 
 @end

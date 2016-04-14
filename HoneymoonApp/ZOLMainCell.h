@@ -7,10 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <HCSStarRatingView/HCSStarRatingView.h>
 
 @interface ZOLMainCell : UITableViewCell
 
 @property (strong, nonatomic) IBOutlet UILabel *headlineLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *image;
+@property (nonatomic, assign) CGFloat cellRating;
+@property (nonatomic, strong) HCSStarRatingView *starRatingView;
+
+-(void)drawStarRating;
 
 @end

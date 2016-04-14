@@ -67,8 +67,6 @@
 {
     self.isCameraModeOn = NO;
     
-    
-    
     [self dismissViewControllerAnimated:NO completion:^{
        
         UIImagePickerController *libraryController = [[UIImagePickerController alloc] init];
