@@ -8,6 +8,7 @@
 //
 
 #import "AppDelegate.h"
+#import "ZOLiCloudLoginViewController.h"
 
 @interface AppDelegate ()
 
@@ -22,7 +23,7 @@
 
 
 //(3) trigger the subscribe to record method
-- (void)subscribeToWebServiceSettingsChanges {
+- (void)subscribeImageAssetChanges {
     
     BOOL isSubscribed = [[NSUserDefaults standardUserDefaults] boolForKey:@"subscribedToUpdates"];
     NSLog(@"hit 'isSusbcribed BOOL'");
@@ -41,8 +42,8 @@
             } else {
                 NSLog(@"hit the else statement-- meaning isSuscribed == YES");
                 // Update the local copy of the setting
-                //[self updateSettingsWithServiceURL:record[@"serviceURL"] andServiceAPIKey:record[@"serviceAPIKey"]];
-                NSLog(@"We are subscribed to the 'APIKey' record in the 'image' recordtype!!");
+
+                NSLog(@"We are subscribed to the associated recordname in the 'image' recordtype!!");
                 
                 // Then, we check if there is an iCloud account available so we can have write permission
                 [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError * _Nullable error) {
@@ -80,7 +81,7 @@
     }
 };
 //(1)
-- (void)updateWebServiceSettings {
+- (void)updateImageChange {
     CKDatabase *publicDatabase = [[CKContainer defaultContainer] publicCloudDatabase];
     CKRecordID *recordID = [[CKRecordID alloc] initWithRecordName:@"542F88BA-E72F-400A-887A-C12EE75DA7C4"];  //RecZoneRecName
     [publicDatabase fetchRecordWithID:recordID completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
@@ -90,12 +91,12 @@
 
             
         } else {
-            // Update the local copy of the setting (grab the keys in the 'record Zone' in the 'exeptionalWebService' record type)
+            // Update the local copy of the setting (grab the keys in the 'record Zone' in the 'Images' record type)
             // [self updateSettingsWithServiceURL:record[@"serviceURL"] andServiceAPIKey:record[@"serviceAPIKey"]];
             
            NSLog(@"the fetched record dictionary values are:{'caption: %@ \n 'Honeymoon:%@'}", record[@"Caption"], record[@"Honeymoon"]);
             
-            [self subscribeToWebServiceSettingsChanges];
+            [self subscribeImageAssetChanges];
             
         }
     }];
@@ -105,40 +106,37 @@
 //(2) display login VC with 'log onto iCloud' button prompt
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
-//    // Push notification setup
-//    UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
-//    [application registerUserNotificationSettings:notificationSettings];
-//    [application registerForRemoteNotifications];
-//    
-//    // Subscribe to web service settings changes
-//    [self subscribeToWebServiceSettingsChanges];
-//    
-//    return YES;
+    // Push notification setup
+    UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
+    [application registerUserNotificationSettings:notificationSettings];
+    [application registerForRemoteNotifications];
+    
+    // Subscribe to alterations to the asset here:
+    [self subscribeImageAssetChanges];
+    
+    return YES;
   
     
     return YES;
 }
 
-
-
-
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
-//    CKNotification *cloudKitNotification = [CKNotification notificationFromRemoteNotificationDictionary:userInfo];
-//    
-//    if (cloudKitNotification.notificationType == CKNotificationTypeQuery) {
-//        CKRecordID *recordId = [(CKQueryNotification *)cloudKitNotification recordID];
-//        
-//        // if the notification corresponds to a change in the CKRecord, then we fetch the new values
-//        if ([recordId.recordName isEqualToString:@"542F88BA-E72F-400A-887A-C12EE75DA7C4"]) {
-//            [self updateWebServiceSettings];
-//
-//        }
-//    }
+    CKNotification *cloudKitNotification = [CKNotification notificationFromRemoteNotificationDictionary:userInfo];
+    
+    if (cloudKitNotification.notificationType == CKNotificationTypeQuery) {
+        CKRecordID *recordId = [(CKQueryNotification *)cloudKitNotification recordID];
+        
+        // if the notification corresponds to a change in the CKRecord, then we fetch the new values
+        if ([recordId.recordName isEqualToString:@"542F88BA-E72F-400A-887A-C12EE75DA7C4"]) {
+            [self updateImageChange];
+
+        }
+    }
 }
 
 
-//Below are othr methods we can use to manipulate when methods are called
+//Below are othr methods we can use to manipulate when methods/data are called
 //----------------------------------------------------
 //
 //- (void)applicationWillResignActive:(UIApplication *)application {
@@ -151,9 +149,15 @@
 //    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 //}
 //
-//- (void)applicationWillEnterForeground:(UIApplication *)application {
-//    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-//}
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    if (self.userDidntHaveiCloudAccountAtLogIn) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"USER_RETURNED_MID_LOGIN" object:nil];
+        NSLog(@"in app delegate, i was told the user left during log in, but they're back!");
+        self.userDidntHaveiCloudAccountAtLogIn = NO;
+    }
+    
+}
 //
 //- (void)applicationDidBecomeActive:(UIApplication *)application {
 //    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.

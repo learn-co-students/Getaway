@@ -6,9 +6,11 @@
 //  Copyright © 2016 Team Yam. All rights reserved.
 //
 
-#import "ViewController.h"
+#import <UIKit/UIKit.h>
+#import "ZOLDataStore.h"
+//#import "ZOLMainTableViewController.h"
 
-@interface ZOLiCloudLoginViewController : ViewController
+@interface ZOLiCloudLoginViewController : UIViewController
 
 @property (nonatomic, strong) ZOLDataStore *dataStore;
 
