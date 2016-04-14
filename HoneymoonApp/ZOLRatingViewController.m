@@ -23,8 +23,14 @@
     
     self.dataStore = [ZOLDataStore dataStore];
     
+    //Set height, width, and x/y positions for the star rating view
+    CGFloat starRatingXPostion = (self.view.frame.size.width/10);
+    CGFloat starRatingYPostion = (self.view.frame.size.height/3);
+    CGFloat starRatingWidth = (self.view.frame.size.width * 0.8);
+    CGFloat starRatingHeight = (self.view.frame.size.width/8);
+    
     //initialize star-rating view
-    HCSStarRatingView *starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(45, 300, 300, 60)];
+    HCSStarRatingView *starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(starRatingXPostion, starRatingYPostion, starRatingWidth, starRatingHeight)];
     starRatingView.maximumValue = 5;
     starRatingView.minimumValue = 0;
     starRatingView.value = 0;
@@ -39,8 +45,6 @@
     
     //Set the background image to the chosen cover image.
     self.backgroundImage.image = self.coverImage;
-    
-    NSLog(@"View did load");
 }
 - (IBAction)didChangeValue:(HCSStarRatingView *)sender {
     self.rating = sender.value;
