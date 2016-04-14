@@ -43,7 +43,7 @@
         
         if (operationError)
         {
-            NSLog(@"Obviously this is an error, but heres the description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
+            NSLog(@"Obviously this is an error, but heres the description: %@, and code: %li, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
         }
         NSLog(@"Populating finished");
         dispatch_semaphore_signal(honeymoonSemaphore);

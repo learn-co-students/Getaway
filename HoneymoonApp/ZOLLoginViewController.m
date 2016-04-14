@@ -35,11 +35,7 @@
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
     ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
     
-    NSLog(@"Login Tapped");
-        
     [self.activityIndicator startAnimating];
-    
-    NSLog(@"%d", [self.activityIndicator isAnimating]);
     
     //Verify that the user is logged in to their iCloud account
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError *error) {
@@ -60,7 +56,7 @@
                                                       style:UIAlertActionStyleCancel
                                                     handler:nil]];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [self presentViewController:alert animated:YES completion:nil];
+                [self presentViewController:alert animated:YES completion:nil];
             }];
         }
         else
@@ -69,15 +65,21 @@
             [self.activityIndicator stopAnimating];
             
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                NSLog(@"Initializing datastore");
                 self.dataStore = [ZOLDataStore dataStore];
-                NSLog(@"Attempting to present VC");
-                [self presentViewController:mainVC animated:YES completion:nil];
-                NSLog(@"VC Presented?");
+                [self.dataStore populateMainFeed];
+                //                [self presentViewController:mainVC animated:YES completion:nil];
             }];
         }
-        
     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentNextVC:) name:@"MainFeedPopulated" object:nil];
+}
+
+-(void)presentNextVC: (NSNotification *)notification
+{
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+    [self presentViewController:mainVC animated:YES completion:nil];
 }
 
 #pragma mark - Navigation

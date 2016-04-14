@@ -70,6 +70,7 @@
     
     
     [self dismissViewControllerAnimated:NO completion:^{
+       
         UIImagePickerController *libraryController = [[UIImagePickerController alloc] init];
         libraryController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         

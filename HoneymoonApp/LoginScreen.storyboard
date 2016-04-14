@@ -41,6 +41,7 @@
                     <navigationItem key="navigationItem" id="aA2-1r-aOF"/>
                     <connections>
                         <outlet property="activityIndicator" destination="9gj-Xu-ThQ" id="tVA-h5-gto"/>
+                        <outlet property="logInButton" destination="yeK-da-Z9w" id="QmR-M7-wlY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SYs-wZ-kag" userLabel="First Responder" sceneMemberID="firstResponder"/>

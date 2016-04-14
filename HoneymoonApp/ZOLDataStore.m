@@ -86,8 +86,7 @@
     else{
         
         NSLog(@"all batches are finished!");
-        
-        [self loadAssets];
+ 
     }
     
     //Do we need to set up a NSNotification to let the tableview know the record is finished/fully loaded?

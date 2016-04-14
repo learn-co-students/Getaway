@@ -41,7 +41,7 @@
 + (instancetype) dataStore;
 
 
--(void)saveRecord: (CKRecord *)record toDataBase: (CKDatabase *)database;
+//-(void)saveRecord: (CKRecord *)record toDataBase: (CKDatabase *)database;
 
 //-(void)fetchCKAssetWithCompletion:(void(^)(void))sendToCurser;
 
@@ -49,9 +49,10 @@
 //-(CKRecord *)fetchRecordWithID:(CKRecordID *)recordID completionHandler:(void(^)(void))CKRecord;
 
 
--(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality;
+//-(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality;
 
--(void)retryUpdatingWebServiceSettingsAfter:(double) secondsToRetry;
+//error handling for updating altered asset
+//-(void)retryUpdatingWebServiceSettingsAfter:(double) secondsToRetry;
 
 
 @end
