@@ -67,10 +67,43 @@
 
 - (IBAction)mainFeedPullToRefresh:(UIRefreshControl *)sender {
     
-    [self.tableView reloadData];
-    [sender endRefreshing];
+    [self.dataStore.client queryRecordsWithQuery:nil orCursor:self.dataStore.mainFeedCursor fromDatabase:self.dataStore.client.database everyRecord:^(CKRecord *record) {
+        ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
+        
+        CKAsset *coverPictureAsset = record[@"CoverPicture"];
+        UIImage *coverPic = [self.dataStore.client retrieveUIImageFromAsset:coverPictureAsset];
+        thisHoneymoon.coverPicture = coverPic;
+        
+        NSNumber *ratingVal = record[@"RatingStars"];
+        thisHoneymoon.rating = [ratingVal floatValue];
+        
+        thisHoneymoon.honeymoonDescription = record[@"Description"];
+        
+        [self.dataStore.mainFeed insertObject:thisHoneymoon atIndex:0];
+
+    } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+        if (error)
+        {
+            NSLog(@"Error reloading main feed data: %@", error.localizedDescription);
+        }
+        else
+        {
+            self.dataStore.mainFeedCursor = cursor;
+        }
+        
+        [self.tableView reloadData];
+        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+            [sender endRefreshing];
+        }];
+    }];
+    
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRefreshSpin:) name:@"QueryRefreshIssue" object:nil];
 }
 
+//-(void)stopRefreshSpin: (NSNotification *)notification
+//{
+//    [self.refreshControl endRefreshing];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

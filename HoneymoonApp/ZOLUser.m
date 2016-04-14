@@ -20,6 +20,7 @@
     __block CKRecordID *idForUser;
     [defaultContainer fetchUserRecordIDWithCompletionHandler:^(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
         
+        NSLog(@"User record fetched");
         if (error)
         {
             NSLog(@"Error fetching User Record ID: %@", error.localizedDescription);
@@ -33,6 +34,7 @@
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     if (self)
     {
+        NSLog(@"Initializing User properties");
         _userID = idForUser;
         _userHoneymoon = [[ZOLHoneymoon alloc]init];
         _client = [[ZOLCloudKitClient alloc]init];
@@ -49,6 +51,7 @@
     __block BOOL errorOccured = NO;
     findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError){
         
+        NSLog(@"Queried for user honeymoon");
         if (operationError)
         {
             NSLog(@"Error searching for user honeymoon, description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
@@ -69,24 +72,26 @@
     
     if (!userHoneyMoon && !errorOccured)
     {
-        [self createBlankHoneyMoon];
+        NSLog(@"No honeymoon found, creating blank");
+        [self createBlankHoneymoon];
     }
     else
     {
+        NSLog(@"Honeymoon found, populating images");
         [self.userHoneymoon populateHoneymoonImages];
     }
 
     return self;
 }
 
--(void)createBlankHoneyMoon
+-(void)createBlankHoneymoon
 {
-    CKRecord *newHoneyMoon = [[CKRecord alloc]initWithRecordType:@"Honeymoon"];
+    CKRecord *newHoneymoon = [[CKRecord alloc]initWithRecordType:@"Honeymoon"];
     CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.userID action:CKReferenceActionDeleteSelf];
-    newHoneyMoon[@"User"] = referenceToUser;
+    newHoneymoon[@"User"] = referenceToUser;
     
-    [self.client saveRecord:newHoneyMoon toDataBase:self.client.database];
-    self.userHoneymoon.honeymoonID = newHoneyMoon.recordID;
+    [self.client saveRecord:newHoneymoon toDataBase:self.client.database];
+    self.userHoneymoon.honeymoonID = newHoneymoon.recordID;
 }
 
 @end

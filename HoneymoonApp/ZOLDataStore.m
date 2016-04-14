@@ -18,6 +18,7 @@
     static ZOLDataStore *_sharedDataStore = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        NSLog(@"about to init data store for the first time.");
         _sharedDataStore = [[ZOLDataStore alloc] init];
     });
     
@@ -40,6 +41,7 @@
 
 -(void)populateMainFeed
 {
+    NSLog(@"about to populate the main feed.");
     NSPredicate *publishedHoneymoons = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
     CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
     
@@ -65,7 +67,9 @@
         {
             self.mainFeedCursor = cursor;
             
+            NSLog(@"MainFeedPopulated message sent");
             [[NSNotificationCenter defaultCenter] postNotificationName:@"MainFeedPopulated" object:nil];
+            
         }
     }];
 }

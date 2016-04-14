@@ -40,7 +40,7 @@
     
     dispatch_semaphore_t honeymoonSemaphore = dispatch_semaphore_create(0);
     findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError){
-        
+        NSLog(@"honeymoon images populated");
         if (operationError)
         {
             NSLog(@"Error in populateHoneymoonImages - description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
@@ -69,7 +69,6 @@
 }
 
 //Take the data gathered from the user and save their updated honeymoon to CloudKit
-//TODO: Polish this to work with user flow (required: full version of 'publish' VC flow)
 -(void)publishHoneymoon
 {
     CKRecord *honeymoonRecord = [self.client fetchRecordWithRecordID:self.honeymoonID];
