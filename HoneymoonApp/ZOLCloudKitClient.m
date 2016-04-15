@@ -105,11 +105,11 @@
     }
     else
     {
-        NSLog(@"queryRecordsWithQuery needs a query OR cursor, not both or either");
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"QueryRefreshIssue" object:nil];
+        NSLog(@"queryRecordsWithQuery needs a query OR cursor, not both or neither");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"QueryRefreshIssue" object:nil];
     }
     
-    operation.resultsLimit = 2;
+    operation.resultsLimit = 3;
     //(we enter the block below, fetch the record)
     operation.recordFetchedBlock = ^(CKRecord *record)
     {

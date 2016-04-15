@@ -54,8 +54,28 @@
         
         NSNumber *ratingVal = record[@"RatingStars"];
         thisHoneymoon.rating = [ratingVal floatValue];
-        
         thisHoneymoon.honeymoonDescription = record[@"Description"];
+        thisHoneymoon.honeymoonID = record.recordID;
+        
+        CKReference *honeymoonRef = [[CKReference alloc]initWithRecordID:thisHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
+        NSPredicate *findImages = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", honeymoonRef];
+        
+        CKQuery *findImagesQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
+                
+        [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database everyRecord:^(CKRecord *record) {
+            ZOLImage *thisImage = [[ZOLImage alloc]init];
+            CKAsset *thisPicture = record[@"Picture"];
+            UIImage *pictureForZOLImage = [self.client retrieveUIImageFromAsset:thisPicture];
+            thisImage.picture = pictureForZOLImage;
+            thisImage.caption = record[@"Caption"];
+            
+            [thisHoneymoon.honeymoonImages insertObject:thisImage atIndex:0];
+        } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+            if (error)
+            {
+                NSLog(@"Error finding images for a honeymoon: %@", error.localizedDescription);
+            }
+        }];
         
         [self.mainFeed insertObject:thisHoneymoon atIndex:0];
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {

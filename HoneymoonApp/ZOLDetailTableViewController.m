@@ -11,10 +11,7 @@
 #import "ZOLDetailCell.h"
 
 
-
 @interface ZOLDetailTableViewController ()
-
-
 
 @end
 
@@ -25,37 +22,13 @@
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
-
-
-//{
-//    // instantiation of beta background (mainCell) processor with needed processing class types.
-//    NSOperationQueue *_queue;
-//    NSString *_group;
-//    ZOLDetailCell *localImageArray;
-//    ZOLDetailCell *localTextArray;
-//    
-//}
-
-
-////instantiation of dequeue control objects
-//-(id)initWithGroup: (NSString *) group{
-//    
-//    self = [super init];
-//    if (self) {
-//        _group = group;
-//        [self setTitle:group];  //not sure what this quite does...
-//        // [[self tableView] setRowHeight:245]   // here we can set a specific height for all cells
-//        
-//        _queue = [[NSOperationQueue alloc]init];
-//        
-//    }
-//    return self;
-//    
-//}
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.dataStore = [ZOLDataStore dataStore];
+    
+    //TODO: Grab the cover image and display that on top
+    //TODO: kick off heavy query to populate images (give a limit)
     
 //    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
 //    self.localImageArray = sharedDatastore.imageArray;
@@ -81,14 +54,20 @@
    
     ZOLDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detailCell" forIndexPath:indexPath];
     
-    cell.image.image = self.localImageArray[indexPath.row];
-    cell.text.text = self.localTextArray[indexPath.row];
+    ZOLImage *thisImage = self.localImageArray[indexPath.row];
+    
+    cell.image.image = thisImage.picture;
+    cell.text.text = thisImage.caption;
     
     return cell;
+    
+    //TODO: put default image if image isn't loaded yet
+    //TODO: replace default image once image has loaded and reload cell data
 }
 
 
 - (IBAction)detailPullToRefresh:(UIRefreshControl *)sender {
+    //TODO: kicks off heavy query with cursor and starts to get more images
     [self.tableView reloadData];
     [sender endRefreshing];
 }

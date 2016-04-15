@@ -32,16 +32,12 @@
 //Handle the Login With iCloud button being tapped
 - (IBAction)loginTapped:(id)sender
 {
-//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-//    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
-    
     [self.activityIndicator startAnimating];
     
     //Verify that the user is logged in to their iCloud account
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError *error) {
         
         NSLog(@"back from block of code, accountSTatuswithCompletion");
-        NSLog(@"%ld", (long)accountStatus);
         NSLog(@"Error: %@", error.localizedDescription);
         
         if (accountStatus == CKAccountStatusAvailable)
@@ -67,19 +63,11 @@
         }
         else
         {
-            
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [self.activityIndicator stopAnimating];
                 self.dataStore = [ZOLDataStore dataStore];
                 [self.dataStore populateMainFeed];
+                //TODO: Instead of this populate, only launch the light query for honeymoons
             }];
-           
-//            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//                NSLog(@"Initializing data store");
-//                self.dataStore = [ZOLDataStore dataStore];
-//                [self.dataStore populateMainFeed];
-////                [self presentViewController:mainVC animated:YES completion:nil];
-//            }];
         }
     }];
     
@@ -88,9 +76,9 @@
 
 -(void)presentNextVC: (NSNotification *)notification
 {
+    [self.activityIndicator stopAnimating];
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
     ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
-//    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"mainFeed"];
 
     [self presentViewController:mainVC animated:YES completion:nil];
 }

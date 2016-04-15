@@ -14,6 +14,8 @@
 
 @interface ZOLMainTableViewController ()
 
+@property (nonatomic, strong) NSMutableArray *imagesToPush;
+
 @end
 
 @implementation ZOLMainTableViewController
@@ -21,8 +23,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.localImageArray = [[NSMutableArray alloc]init];
-    self.localTextArray = [[NSMutableArray alloc]init];
+    //TODO: Kick off heavy query for images (light query has finished)
+    
+    self.imagesToPush = [[NSMutableArray alloc]init];
     
     self.dataStore = [ZOLDataStore dataStore];
 }
@@ -47,20 +50,30 @@
     
     cell.headlineLabel.text = thisHoneymoon.honeymoonDescription;
     
+    //TODO: Give a placeholder image if image unavailable
+    //TODO: Load the image when it comes through on the query operation (use recordFetchedBlock?) and reload cell
+    
+    
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
-}
+//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    NSLog(@"row selected: %lu", indexPath.row);
+//    ZOLHoneymoon *honeymoonSelected = self.dataStore.mainFeed[indexPath.row];
+//    
+//    self.imagesToPush = honeymoonSelected.honeymoonImages;
+//}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier  isEqual: @"feedSegue"]) {
-    UINavigationController *destinationVC = [segue destinationViewController];
-    ZOLDetailTableViewController *tableVC = (ZOLDetailTableViewController*)destinationVC.topViewController;
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-    tableVC.localImageArray = self.localImageArray[selectedIndexPath.row];
-        tableVC.localTextArray = self.localTextArray[selectedIndexPath.row];
+    if ([segue.identifier isEqual: @"feedSegue"]) {
+        UINavigationController *destinationVC = [segue destinationViewController];
+        ZOLDetailTableViewController *tableVC = (ZOLDetailTableViewController*)destinationVC.topViewController;
+        NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+            
+        ZOLHoneymoon *honeymoonSelected = self.dataStore.mainFeed[selectedIndexPath.row];
+            
+        tableVC.localImageArray = honeymoonSelected.honeymoonImages;
+        //TODO: Do light query for this honeymoon detail and have user wait for it to complete
     }
 }
 
@@ -97,13 +110,13 @@
         }];
     }];
     
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRefreshSpin:) name:@"QueryRefreshIssue" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRefreshSpin:) name:@"QueryRefreshIssue" object:nil];
 }
 
-//-(void)stopRefreshSpin: (NSNotification *)notification
-//{
-//    [self.refreshControl endRefreshing];
-//}
+-(void)stopRefreshSpin: (NSNotification *)notification
+{
+    [self.refreshControl endRefreshing];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
