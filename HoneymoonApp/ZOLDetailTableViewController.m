@@ -28,7 +28,37 @@
     self.dataStore = [ZOLDataStore dataStore];
     
     //TODO: Grab the cover image and display that on top
-    //TODO: kick off heavy query to populate images (give a limit)
+    CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
+    NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
+    CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
+    NSArray *relevantKeys = @[@"Picture"];
+    
+    __block NSInteger counter = 0;
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys everyRecord:^(CKRecord *record) {
+        //TODO: Fix captions by adding a record ID to images and asssociating them with the proper cell
+        
+//        for (ZOLImage *image in self.localImageArray)
+//        {
+            UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
+//            image.picture = retrievedImage;
+        ZOLImage *thisImage = self.localImageArray[counter];
+        thisImage.picture = retrievedImage;
+//            NSUInteger rowOfImage = [self.localImageArray indexOfObject:image];
+//            NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
+        NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:counter inSection:0];
+
+        
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                NSLog(@"About to reload cell at indexpath: %lu", indexPathForImage.row);
+                [self.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
+                }];
+        counter++;
+//        }
+    } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+        //do something when we're done?
+        NSLog(@"Detail image query done");
+    }];
+
     
 //    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
 //    self.localImageArray = sharedDatastore.imageArray;

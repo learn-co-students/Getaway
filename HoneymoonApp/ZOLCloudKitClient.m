@@ -88,6 +88,7 @@
 -(void)queryRecordsWithQuery: (CKQuery *)query
                     orCursor: (CKQueryCursor *)cursor
                 fromDatabase: (CKDatabase *)database
+                     forKeys: (NSArray *)keys
                  everyRecord: (void(^)(CKRecord *record))recordBlock
              completionBlock: (void(^)(CKQueryCursor *cursor, NSError *error))completionBlock
 {
@@ -109,6 +110,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"QueryRefreshIssue" object:nil];
     }
     
+    operation.desiredKeys = keys;
     operation.resultsLimit = 3;
     //(we enter the block below, fetch the record)
     operation.recordFetchedBlock = ^(CKRecord *record)

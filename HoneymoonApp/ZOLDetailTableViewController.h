@@ -14,5 +14,6 @@
 @property (nonatomic,strong) NSMutableArray *localImageArray;
 @property (nonatomic,strong) NSMutableArray *localTextArray;
 @property (nonatomic, strong) ZOLDataStore *dataStore;
+@property (nonatomic, strong) CKRecordID *selectedHoneymoonID;
 
 @end

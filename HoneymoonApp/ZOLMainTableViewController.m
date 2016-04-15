@@ -23,11 +23,38 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //TODO: Kick off heavy query for images (light query has finished)
-    
     self.imagesToPush = [[NSMutableArray alloc]init];
     
     self.dataStore = [ZOLDataStore dataStore];
+    
+    NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
+    CKQuery *honeymoonImageQuery = [[CKQuery alloc] initWithRecordType:@"Honeymoon" predicate:imagePredicate];
+    NSArray *relevantKeys = @[@"CoverPicture", @"Published"];
+    
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImageQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys everyRecord:^(CKRecord *record) {
+        //Put the image we get into the relevant cell
+        NSLog(@"Found a record: %@", record.recordID);
+
+        for (ZOLHoneymoon *honeymoon in self.dataStore.mainFeed)
+        {
+            NSLog(@"Record name is: %@, and honeymoon record is: %@",record.recordID.recordName, honeymoon.honeymoonID.recordName);
+            if ([honeymoon.honeymoonID.recordName isEqualToString:record.recordID.recordName])
+            {
+                NSLog(@"Found the right record!: %@", record.recordID);
+                UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"CoverPicture"]];
+                honeymoon.coverPicture = retrievedImage;
+                NSUInteger rowOfHoneymoon = [self.dataStore.mainFeed indexOfObject:honeymoon];
+                NSIndexPath *indexPathForHoneymoon = [NSIndexPath indexPathForRow:rowOfHoneymoon inSection:0];
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPathForHoneymoon] withRowAnimation:UITableViewRowAnimationNone];
+                }];
+            }
+        }
+    } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+        //do something when we're done?
+        NSLog(@"Image query done");
+    }];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -73,14 +100,14 @@
         ZOLHoneymoon *honeymoonSelected = self.dataStore.mainFeed[selectedIndexPath.row];
             
         tableVC.localImageArray = honeymoonSelected.honeymoonImages;
-        //TODO: Do light query for this honeymoon detail and have user wait for it to complete
+        tableVC.selectedHoneymoonID = honeymoonSelected.honeymoonID;
     }
 }
 
 
 - (IBAction)mainFeedPullToRefresh:(UIRefreshControl *)sender {
     
-    [self.dataStore.client queryRecordsWithQuery:nil orCursor:self.dataStore.mainFeedCursor fromDatabase:self.dataStore.client.database everyRecord:^(CKRecord *record) {
+    [self.dataStore.client queryRecordsWithQuery:nil orCursor:self.dataStore.mainFeedCursor fromDatabase:self.dataStore.client.database forKeys:nil everyRecord:^(CKRecord *record) {
         ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
         
         CKAsset *coverPictureAsset = record[@"CoverPicture"];
