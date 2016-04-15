@@ -41,7 +41,6 @@
     self.backgroundImage.image = self.coverImage;
     
     NSLog(@"View did load");
-
 }
 - (IBAction)didChangeValue:(HCSStarRatingView *)sender {
     self.rating = sender.value;

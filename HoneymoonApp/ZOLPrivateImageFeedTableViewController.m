@@ -24,6 +24,11 @@
     
     self.localImageArray = self.dataStore.user.userHoneymoon.honeymoonImages;
 }
+- (IBAction)backButtonTapped:(UIBarButtonItem *)sender
+{
+        [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+   
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
