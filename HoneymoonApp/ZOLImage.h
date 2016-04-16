@@ -13,5 +13,6 @@
 
 @property (nonatomic, strong) NSString *caption;
 @property (nonatomic, strong) UIImage *picture;
+//@property (nonatomic, strong) CKRecordID *imageRecordID;
 
 @end

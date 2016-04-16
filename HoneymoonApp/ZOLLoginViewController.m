@@ -32,13 +32,14 @@
 //Handle the Login With iCloud button being tapped
 - (IBAction)loginTapped:(id)sender
 {
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
-    
     [self.activityIndicator startAnimating];
     
     //Verify that the user is logged in to their iCloud account
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError *error) {
+        
+        NSLog(@"back from block of code, accountSTatuswithCompletion");
+        NSLog(@"Error: %@", error.localizedDescription);
+        
         if (accountStatus == CKAccountStatusAvailable)
         {
             self.shouldLogin = YES;
@@ -47,6 +48,7 @@
         {
             self.shouldLogin = NO;
         }
+        
         if (self.shouldLogin == NO)
         {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Sign in to iCloud"
@@ -61,13 +63,10 @@
         }
         else
         {
-            //TODO: Polish up this transition
-            [self.activityIndicator stopAnimating];
-            
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 self.dataStore = [ZOLDataStore dataStore];
                 [self.dataStore populateMainFeed];
-//                [self presentViewController:mainVC animated:YES completion:nil];
+                //TODO: Instead of this populate, only launch the light query for honeymoons
             }];
         }
     }];
@@ -77,8 +76,10 @@
 
 -(void)presentNextVC: (NSNotification *)notification
 {
+    [self.activityIndicator stopAnimating];
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
     ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+
     [self presentViewController:mainVC animated:YES completion:nil];
 }
 

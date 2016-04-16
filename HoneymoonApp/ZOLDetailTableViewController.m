@@ -11,10 +11,7 @@
 #import "ZOLDetailCell.h"
 
 
-
 @interface ZOLDetailTableViewController ()
-
-
 
 @end
 
@@ -25,37 +22,43 @@
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
-
-
-//{
-//    // instantiation of beta background (mainCell) processor with needed processing class types.
-//    NSOperationQueue *_queue;
-//    NSString *_group;
-//    ZOLDetailCell *localImageArray;
-//    ZOLDetailCell *localTextArray;
-//    
-//}
-
-
-////instantiation of dequeue control objects
-//-(id)initWithGroup: (NSString *) group{
-//    
-//    self = [super init];
-//    if (self) {
-//        _group = group;
-//        [self setTitle:group];  //not sure what this quite does...
-//        // [[self tableView] setRowHeight:245]   // here we can set a specific height for all cells
-//        
-//        _queue = [[NSOperationQueue alloc]init];
-//        
-//    }
-//    return self;
-//    
-//}
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.dataStore = [ZOLDataStore dataStore];
+    
+    //TODO: Grab the cover image and display that on top
+    CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
+    NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
+    CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
+    NSArray *relevantKeys = @[@"Picture"];
+    
+    __block NSInteger counter = 0;
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys everyRecord:^(CKRecord *record) {
+        //TODO: Fix captions by adding a record ID to images and asssociating them with the proper cell
+        
+//        for (ZOLImage *image in self.localImageArray)
+//        {
+            UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
+//            image.picture = retrievedImage;
+        ZOLImage *thisImage = self.localImageArray[counter];
+        thisImage.picture = retrievedImage;
+//            NSUInteger rowOfImage = [self.localImageArray indexOfObject:image];
+//            NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
+        NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:counter inSection:0];
+
+        
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                NSLog(@"About to reload cell at indexpath: %lu", indexPathForImage.row);
+                [self.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
+                }];
+        counter++;
+//        }
+    } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+        //do something when we're done?
+        NSLog(@"Detail image query done");
+    }];
+
     
 //    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
 //    self.localImageArray = sharedDatastore.imageArray;
@@ -81,14 +84,20 @@
    
     ZOLDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detailCell" forIndexPath:indexPath];
     
-    cell.image.image = self.localImageArray[indexPath.row];
-    cell.text.text = self.localTextArray[indexPath.row];
+    ZOLImage *thisImage = self.localImageArray[indexPath.row];
+    
+    cell.image.image = thisImage.picture;
+    cell.text.text = thisImage.caption;
     
     return cell;
+    
+    //TODO: put default image if image isn't loaded yet
+    //TODO: replace default image once image has loaded and reload cell data
 }
 
 
 - (IBAction)detailPullToRefresh:(UIRefreshControl *)sender {
+    //TODO: kicks off heavy query with cursor and starts to get more images
     [self.tableView reloadData];
     [sender endRefreshing];
 }

@@ -11,7 +11,6 @@
 		06191C521CB6CC6E0029F7F6 /* ZOLUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 06191C511CB6CC6E0029F7F6 /* ZOLUser.m */; };
 		06198F871CBC1190008B2529 /* ZOLCloudKitClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 06198F861CBC1190008B2529 /* ZOLCloudKitClient.m */; };
 		06198F8A1CBC1FF6008B2529 /* ZOLImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 06198F891CBC1FF6008B2529 /* ZOLImage.m */; };
-		061C85311CAED0B500F32FDA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 061C85301CAED0B500F32FDA /* CloudKit.framework */; };
 		06263F1D1CB5AC6C00B0541F /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06263F1C1CB5AC6C00B0541F /* Photos.framework */; };
 		063301D21CBD6B0400BF383A /* ZOLPrivateImageFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 063301D11CBD6B0400BF383A /* ZOLPrivateImageFeedTableViewController.m */; };
 		063301D51CBD79EA00BF383A /* ZOLPrivateTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 063301D41CBD79EA00BF383A /* ZOLPrivateTableViewCell.m */; };
@@ -136,7 +135,6 @@
 				06263F1D1CB5AC6C00B0541F /* Photos.framework in Frameworks */,
 				2B9563BBCB99DA517B93FBBF /* libPods-HoneymoonApp.a in Frameworks */,
 				2B8636751CAEF7FE00909683 /* CloudKit.framework in Frameworks */,
-				061C85311CAED0B500F32FDA /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

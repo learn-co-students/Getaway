@@ -23,6 +23,7 @@
 -(void)queryRecordsWithQuery: (CKQuery *)query
                     orCursor: (CKQueryCursor *)cursor
                 fromDatabase: (CKDatabase *)database
+                     forKeys: (NSArray *)keys
                  everyRecord: (void(^)(CKRecord *record))recordBlock
              completionBlock: (void(^)(CKQueryCursor *cursor, NSError *error))completionBlock;
 
