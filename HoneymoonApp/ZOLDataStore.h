@@ -40,7 +40,7 @@
 //- (NSURL *)applicationDocumentsDirectory;
 
 + (instancetype) dataStore;
--(void)populateMainFeed;
+-(void)populateMainFeedWithCompletion:(void (^)(NSError *error))completionBlock;
 
 
 //-(void)saveRecord: (CKRecord *)record toDataBase: (CKDatabase *)database;

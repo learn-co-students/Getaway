@@ -33,7 +33,7 @@
     
     if (self)
     {
-        _user = [[ZOLUser alloc]init];
+        _user = [[ZOLUser alloc] init];
         _client = [[ZOLCloudKitClient alloc]init];
         _mainFeed = [[NSMutableArray alloc]init];
     }
@@ -41,8 +41,9 @@
     return self;
 }
 
--(void)populateMainFeed
+-(void)populateMainFeedWithCompletion:(void (^)(NSError *error))completionBlock
 {
+    
     NSPredicate *publishedHoneymoons = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
     CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
     
@@ -63,12 +64,14 @@
         if (error)
         {
             NSLog(@"Error initializing main feed: %@", error.localizedDescription);
+            completionBlock(error);
         }
         else
         {
             self.mainFeedCursor = cursor;
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"MainFeedPopulated" object:nil];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"MainFeedPopulated" object:nil];
+            completionBlock(nil);
         }
     }];
 }

@@ -16,7 +16,7 @@
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     CKContainer *defaultContainer = [CKContainer defaultContainer];
-    
+    //this is where we freeze
     __block CKRecordID *idForUser;
     [defaultContainer fetchUserRecordIDWithCompletionHandler:^(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
         
@@ -26,7 +26,7 @@
         }
         
         idForUser = recordID;
-        
+      
         dispatch_semaphore_signal(semaphore);
     }];
     
