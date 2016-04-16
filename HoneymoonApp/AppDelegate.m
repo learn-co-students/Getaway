@@ -102,8 +102,7 @@
     }];
 }
 
-
-//(2) display login VC with 'log onto iCloud' button prompt
+//this notifications works is tied with CKSubscriptions(letting us know when changes were applied to the picture 'meepbeep'--- this is code for a subscription test.
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
     // Push notification setup
