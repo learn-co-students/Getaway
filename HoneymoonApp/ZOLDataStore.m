@@ -57,7 +57,6 @@
         thisHoneymoon.rating = [ratingVal floatValue];
         thisHoneymoon.honeymoonDescription = record[@"Description"];
         thisHoneymoon.honeymoonID = record.recordID;
-        NSLog(@"This honeymoon's ID is: %@", thisHoneymoon.honeymoonID);
         
         CKReference *honeymoonRef = [[CKReference alloc]initWithRecordID:thisHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
         NSPredicate *findImages = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", honeymoonRef];

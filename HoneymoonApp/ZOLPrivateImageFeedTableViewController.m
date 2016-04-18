@@ -19,7 +19,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSLog(@"Private feed initialized");
     self.dataStore = [ZOLDataStore dataStore];
     
     self.localImageArray = self.dataStore.user.userHoneymoon.honeymoonImages;
@@ -47,9 +46,6 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSLog(@"Cell dequeued for private feed");
-    
     ZOLPrivateTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"privateDetailCell" forIndexPath:indexPath];
     
     ZOLImage *thisImage = self.localImageArray[indexPath.row];

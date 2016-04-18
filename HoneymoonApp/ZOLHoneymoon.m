@@ -34,38 +34,35 @@
 -(void)populateHoneymoonImages
 {
     CKReference *referenceToHoneymoon = [[CKReference alloc]initWithRecordID:self.honeymoonID action:CKReferenceActionDeleteSelf];
-    NSPredicate *honeymoonSearch = [NSPredicate predicateWithFormat:@"Honeymoon == %@", referenceToHoneymoon];
+    NSPredicate *honeymoonSearch = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", referenceToHoneymoon];
     CKQuery *findImages = [[CKQuery alloc]initWithRecordType:@"Image" predicate:honeymoonSearch];
     CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findImages];
+    NSArray *captionKey = @[@"Caption", @"Honeymoon"];
+    findHMOp.desiredKeys = captionKey;
     
-    dispatch_semaphore_t honeymoonSemaphore = dispatch_semaphore_create(0);
-    findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError){
+    findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError) {
         NSLog(@"honeymoon images populated");
         if (operationError)
         {
             NSLog(@"Error in populateHoneymoonImages - description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
         }
-        dispatch_semaphore_signal(honeymoonSemaphore);
     };
     
     findHMOp.recordFetchedBlock = ^(CKRecord *record){
         ZOLImage *imageToAdd = [[ZOLImage alloc]init];
         
-        CKAsset *image = record[@"Picture"];
-        NSURL *imageURL = image.fileURL;
-        NSData *imageData = [NSData dataWithContentsOfFile:imageURL.path];
-        UIImage *pictureToAdd = [UIImage imageWithData:imageData];
+//        CKAsset *image = record[@"Picture"];
+//        UIImage *pictureToAdd = [self.client retrieveUIImageFromAsset:image];
         NSString *captionText = record[@"Caption"];
         
-        imageToAdd.picture = pictureToAdd;
+//        imageToAdd.picture = pictureToAdd;
         imageToAdd.caption = captionText;
+        imageToAdd.imageRecordID = record.recordID;
         
         [self.honeymoonImages addObject:imageToAdd];
     };
     
     [[[CKContainer defaultContainer] publicCloudDatabase] addOperation:findHMOp];
-    dispatch_semaphore_wait(honeymoonSemaphore, DISPATCH_TIME_FOREVER);
-
 }
 
 //Take the data gathered from the user and save their updated honeymoon to CloudKit

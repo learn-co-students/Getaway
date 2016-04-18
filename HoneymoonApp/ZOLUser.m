@@ -18,12 +18,14 @@
     CKContainer *defaultContainer = [CKContainer defaultContainer];
     
     __block CKRecordID *idForUser;
+    __block BOOL userRecordError = NO;
+    
     [defaultContainer fetchUserRecordIDWithCompletionHandler:^(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
-        
-        NSLog(@"User record fetched");
+        NSLog(@"User record fetch completed");
         if (error)
         {
             NSLog(@"Error fetching User Record ID: %@", error.localizedDescription);
+            userRecordError = YES;
         }
         
         idForUser = recordID;
@@ -32,6 +34,12 @@
     }];
     
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    
+    if (userRecordError)
+    {
+        return nil;
+    }
+    
     if (self)
     {
         NSLog(@"Initializing User properties");
@@ -41,7 +49,7 @@
     }
     
     CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.userID action:CKReferenceActionDeleteSelf];
-    NSPredicate *userSearch = [NSPredicate predicateWithFormat:@"User == %@", referenceToUser];
+    NSPredicate *userSearch = [NSPredicate predicateWithFormat:@"%K == %@", @"User", referenceToUser];
     CKQuery *findHoneymoon = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:userSearch];
     CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findHoneymoon];
     findHMOp.resultsLimit = 1;

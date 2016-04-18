@@ -65,8 +65,25 @@
         {
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 self.dataStore = [ZOLDataStore dataStore];
-                [self.dataStore populateMainFeed];
-                //TODO: Instead of this populate, only launch the light query for honeymoons
+                if (self.dataStore.user)
+                {
+                    [self.dataStore populateMainFeed];
+                }
+                else
+                {
+                    UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"No User Record Found"
+                                                                                   message:@"An error occured while attempting to get your user record, please try again"
+                                                                            preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [self loginTapped:action];
+                    }];
+                    
+                    [userAlert addAction:retryAction];
+                    
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        [self presentViewController:userAlert animated:YES completion:nil];
+                    }];
+                }
             }];
         }
     }];
