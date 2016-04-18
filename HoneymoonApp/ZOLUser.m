@@ -89,6 +89,7 @@
     CKRecord *newHoneymoon = [[CKRecord alloc]initWithRecordType:@"Honeymoon"];
     CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.userID action:CKReferenceActionDeleteSelf];
     newHoneymoon[@"User"] = referenceToUser;
+    newHoneymoon[@"Published"] = @"NO";
     
     [self.client saveRecord:newHoneymoon toDataBase:self.client.database];
     self.userHoneymoon.honeymoonID = newHoneymoon.recordID;
