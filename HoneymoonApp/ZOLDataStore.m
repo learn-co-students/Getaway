@@ -7,6 +7,7 @@
 //
 
 #import "ZOLDataStore.h"
+#import "ZOLDetailTableViewController.h"
 #import "ZOLTabBarViewController.h"
 
 @implementation ZOLDataStore
@@ -15,6 +16,7 @@
 
 + (instancetype)dataStore
 {
+    NSLog(@"shared datastore created");
     static ZOLDataStore *_sharedDataStore = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -27,11 +29,12 @@
 
 -(instancetype)init
 {
+    NSLog(@"datastore init");
     self = [super init];
     
     if (self)
     {
-        _user = [[ZOLUser alloc]init];
+        _user = [[ZOLUser alloc] init];
         _client = [[ZOLCloudKitClient alloc]init];
         _mainFeed = [[NSMutableArray alloc]init];
     }
@@ -39,9 +42,8 @@
     return self;
 }
 
--(void)populateMainFeed
+-(void)populateMainFeedWithCompletion:(void (^)(NSError *error))completionBlock
 {
-    NSLog(@"about to populate the main feed.");
     NSPredicate *publishedHoneymoons = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
     CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
     NSArray *keysNeeded = @[@"Description", @"Published", @"RatingStars"];
@@ -83,19 +85,22 @@
         if (error)
         {
             NSLog(@"Error initializing main feed: %@", error.localizedDescription);
+            completionBlock(error);
         }
         else
         {
             self.mainFeedCursor = cursor;
-            
+                   
+
             NSLog(@"MainFeedPopulated message sent");
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"MainFeedPopulated" object:nil];
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"MainFeedPopulated" object:nil];   
+
+            completionBlock(nil);
         }
     }];
 }
 
-//CORE DATA
+
 # pragma mark - Core Data stack
 
 //@synthesize managedObjectContext = _managedObjectContext;
