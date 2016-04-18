@@ -20,6 +20,7 @@
     static ZOLDataStore *_sharedDataStore = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        NSLog(@"about to init data store for the first time.");
         _sharedDataStore = [[ZOLDataStore alloc] init];
     });
     
@@ -43,11 +44,11 @@
 
 -(void)populateMainFeedWithCompletion:(void (^)(NSError *error))completionBlock
 {
-    NSLog(@"populate main feed with completion");
     NSPredicate *publishedHoneymoons = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
     CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
+    NSArray *keysNeeded = @[@"Description", @"Published", @"RatingStars"];
     
-    [self.client queryRecordsWithQuery:intializeMainFeed orCursor:nil fromDatabase:self.client.database everyRecord:^(CKRecord *record) {
+    [self.client queryRecordsWithQuery:intializeMainFeed orCursor:nil fromDatabase:self.client.database forKeys:keysNeeded everyRecord:^(CKRecord *record) {
         ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
         
         CKAsset *coverPictureAsset = record[@"CoverPicture"];
@@ -56,8 +57,29 @@
         
         NSNumber *ratingVal = record[@"RatingStars"];
         thisHoneymoon.rating = [ratingVal floatValue];
-        
         thisHoneymoon.honeymoonDescription = record[@"Description"];
+        thisHoneymoon.honeymoonID = record.recordID;
+        NSLog(@"This honeymoon's ID is: %@", thisHoneymoon.honeymoonID);
+        
+        CKReference *honeymoonRef = [[CKReference alloc]initWithRecordID:thisHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
+        NSPredicate *findImages = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", honeymoonRef];
+        CKQuery *findImagesQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
+        NSArray *captionKey = @[@"Caption", @"Honeymoon"];
+        
+        [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database forKeys:captionKey everyRecord:^(CKRecord *record) {
+            ZOLImage *thisImage = [[ZOLImage alloc]init];
+            CKAsset *thisPicture = record[@"Picture"];
+            UIImage *pictureForZOLImage = [self.client retrieveUIImageFromAsset:thisPicture];
+            thisImage.picture = pictureForZOLImage;
+            thisImage.caption = record[@"Caption"];
+            
+            [thisHoneymoon.honeymoonImages insertObject:thisImage atIndex:0];
+        } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+            if (error)
+            {
+                NSLog(@"Error finding images for a honeymoon: %@", error.localizedDescription);
+            }
+        }];
         
         [self.mainFeed insertObject:thisHoneymoon atIndex:0];
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
@@ -69,67 +91,16 @@
         else
         {
             self.mainFeedCursor = cursor;
-            
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"MainFeedPopulated" object:nil];
+                   
+
+            NSLog(@"MainFeedPopulated message sent");
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"MainFeedPopulated" object:nil];   
+
             completionBlock(nil);
         }
     }];
 }
 
-- (void)readRecords_Resurs:(CKDatabase *)database
-                     query:(CKQuery *)query
-                    cursor:(CKQueryCursor *)cursor
-{
-    NSLog(@"read records");
-    CKQueryOperation *operation;
- 
-//(1)first time through we are passing in a query and will enter the else statement:
-    if (query != nil) {
-        operation = [[CKQueryOperation alloc] initWithQuery: query];
-        
-    } else {
-        operation = [[CKQueryOperation alloc] initWithCursor: cursor];
-    }
-//(we enter the block below, fetch the record)
-    operation.recordFetchedBlock = ^(CKRecord *record) {
-        
-        [self.fetchedRecords addObject:record];
-    };
-    operation.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *error) {
-        BOOL noMoreCursorsAvailable = cursor == nil;
-        BOOL weHaveAnError = error != nil;
-        
-        if (noMoreCursorsAvailable || weHaveAnError) {
-            
-// We're done in the event that there are no more crusors or an error occured
-            dispatch_async(dispatch_get_main_queue(), ^{ [self readRecordsDone: error == nil ? nil : [error localizedDescription]]; });
-        }
-        else {
-// If we don't have an error and there is another cursor, get next batch (using cursors until crusor == nil)
-            dispatch_async(dispatch_get_main_queue(), ^{ [self readRecords_Resurs: database query: nil cursor: cursor]; });
-            
-        }
-    };
-    
-    [database addOperation: operation]; // when we FIRST hit this method, this is when the cursor first comes into play, until this line of code, we are only dealing with the fetching the query. Afeter we hit this line, we begin using the cursor.
- 
-    
-}
-
-- (void)readRecordsDone: (NSString *)errorMsg
-{
-    if (errorMsg) {
-        NSLog(@"Error: %@", errorMsg.description); //OR errorMesg OR errorMesg.debugDescription
-    }
-    
-    else{
-        
-        NSLog(@"all batches are finished!");
- 
-    }
-    
-    //Do we need to set up a NSNotification to let the tableview know the record is finished/fully loaded?
-}
 
 # pragma mark - Core Data stack
 

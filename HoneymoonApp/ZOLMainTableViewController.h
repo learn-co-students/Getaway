@@ -11,9 +11,8 @@
 
 @interface ZOLMainTableViewController : UITableViewController
 
-@property (nonatomic,strong) NSMutableArray *localImageArray;
-@property (nonatomic,strong) NSMutableArray *localTextArray;
 @property (nonatomic, strong) NSMutableArray *ratingArray;
 @property (nonatomic, strong) ZOLDataStore *dataStore;
+@property (strong, nonatomic) IBOutlet UIRefreshControl *refreshControl;
 
 @end

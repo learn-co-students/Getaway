@@ -88,6 +88,7 @@
 -(void)queryRecordsWithQuery: (CKQuery *)query
                     orCursor: (CKQueryCursor *)cursor
                 fromDatabase: (CKDatabase *)database
+                     forKeys: (NSArray *)keys
                  everyRecord: (void(^)(CKRecord *record))recordBlock
              completionBlock: (void(^)(CKQueryCursor *cursor, NSError *error))completionBlock
 {
@@ -105,9 +106,12 @@
     }
     else
     {
-        NSLog(@"queryRecordsWithQuery needs a query OR cursor, not both");
-        return;
+        NSLog(@"queryRecordsWithQuery needs a query OR cursor, not both or neither");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"QueryRefreshIssue" object:nil];
     }
+    
+    operation.desiredKeys = keys;
+    operation.resultsLimit = 3;
     //(we enter the block below, fetch the record)
     operation.recordFetchedBlock = ^(CKRecord *record)
     {
@@ -119,7 +123,10 @@
         completionBlock(cursor, error);
     };
     
-    [database addOperation: operation]; // when we FIRST hit this method, this is when the cursor first comes into play, until this line of code, we are only dealing with the fetching the query. Afeter we hit this line, we begin using the cursor.
+    if (operation)
+    {
+        [database addOperation: operation];
+    }
 }
 
 @end
