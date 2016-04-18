@@ -16,6 +16,7 @@
 @property (nonatomic, assign) BOOL newUserHasAnAccount;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *logInButton;
+@property (nonatomic, strong) CKRecordID *idForUserClassFile;
 
 @end
 
@@ -27,12 +28,36 @@
 {
     [super viewDidLoad];
     
-    //   self.hasAnAccount = [[NSUserDefaults standardUserDefaults] boolForKey:@"LoggedIn"];
     NSLog(@"viewDidLoad.");
+    
+    
+    
+    
+    //-(BOOL)internetIsReachable{
+    //
+    //        Reachability *r = [Reachability reachabilityWithHostName:@"www.apple.com"];
+    //        NetworkStatus internetStatus = [r currentReachabilityStatus];
+    //
+    //        NSLog(@"internet status------%u",ReachableViaWiFi);
+    //        if ((internetStatus != ReachableViaWiFi) && (internetStatus != ReachableViaWWAN))
+    //        {
+    //            NSLog(@"There is no internet avaiable");
+    //            //do something for internet connection...
+    //            return NO;
+    //
+    //        }
+    //
+    //        else{
+    //            NSLog(@"We have internet connection!!");
+    //        }
+    //        return YES;
+    //}
+    
+    
     NSLog(@"self.newUserHasAnaccount = %@", self.newUserHasAnAccount ? @"YES" : @"NO");
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recievedNotificationFromAppDelegate:) name:@"USER_RETURNED_MID_LOGIN" object:nil];
-
+    
 }
 
 -(void)recievedNotificationFromAppDelegate:(NSNotification*)aNotification{
@@ -53,13 +78,15 @@
     
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError * _Nullable error) {
         NSLog(@"Entered account status code block!");
+        
+        
         if (error) {
             NSLog(@"Error loging a first-time user! Error type: %@", error.localizedDescription);
             return;
         }
         NSLog(@"Account status is %ld",(long)accountStatus);
-        //should login == no means if there is no active iClould account
-       
+        //'account status = 1' means the user has an active iClould account
+        
         
         if (accountStatus == CKAccountStatusNoAccount) {
             [self.activityIndicator stopAnimating];
@@ -77,9 +104,9 @@
                 [self tellAppDelegateTheUserDoesntHaveiCloudAccount];
             }];
         }
-    
         
-        else if (accountStatus == CKAccountStatusCouldNotDetermine) {
+        
+        if (accountStatus == CKAccountStatusCouldNotDetermine) {
             UIAlertController *accountNotDetermined = [UIAlertController alertControllerWithTitle:@"Your iCloud account could not be determined" message:@"Please resolve iCloud account issue" preferredStyle:UIAlertControllerStyleAlert];
             [accountNotDetermined addAction:[UIAlertAction actionWithTitle:@"Okay"style:UIAlertActionStyleCancel handler:nil]];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -87,125 +114,109 @@
                 [self tellAppDelegateTheUserDoesntHaveiCloudAccount];
             }];
         }
-     
         
-        else if (accountStatus == CKAccountStatusAvailable) {
+        
+        if (accountStatus == CKAccountStatusAvailable) {
             
             NSLog(@"The user who has logged into our app previously has been reverified upon launch");
-          //  [self.activityIndicator stopAnimating];
-           // self.activityIndicator.hidden = YES;
-            NSLog(@"About to initiate the NSOperation'go grab all my files and feeds' thingy");
             
+            CKContainer *defaultContainer = [CKContainer defaultContainer];
+            //this is where we freeze
             
-//            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//                NSLog(@"Initializing datastore");
-//                self.dataStore = [ZOLDataStore dataStore];
-//                [self.dataStore populateMainFeed];
-//                NSLog(@"About to present main feed VC");
-//                
-//                [self.activityIndicator startAnimating];
-//                [self fetchingYourData];
-//            }];
-//            
-//            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentNextVC:) name:@"MainFeedPopulated" object:nil];
-            
-//            NSOperationQueue * queue = [[NSOperationQueue alloc] init];
-//            
-//            NSBlockOperation * blockOp = [NSBlockOperation blockOperationWithBlock:^{
-//                
-//                NSLog(@"Initializing datastore");
-//                self.dataStore = [ZOLDataStore dataStore];
-//                [self.dataStore populateMainFeed];
-//                NSLog(@"About to present main feed VC");
-//                
-////                [self.activityIndicator startAnimating];
-////                [self fetchingYourData];
-//                
-//            }];
-//            
-//            [blockOp setCompletionBlock:^{
-//                
-//                
-//                [self presentNextVC];
-//                
-//            }];
-//            
-//            [queue addOperation:blockOp];
-//            
-            
-            
-            NSLog(@"Initializing datastore");
-            self.dataStore = [ZOLDataStore dataStore];
-            [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
-                if(error) {
-                    NSLog(@"error, and now i sit :|");
-                    return;
+            [defaultContainer fetchUserRecordIDWithCompletionHandler:^void(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
+                NSLog(@"IN THE COMPLETEION BLOCK");
+                if (error)
+                {
+                    NSLog(@"Error fetching User Record ID: %@", error.localizedDescription);
                 }
-                else{
                 
-                [self presentNextVC];
-                }
+                else {
+                    
+                    self.idForUser = recordID;
+                    NSLog(@"Initializing datastore");
+                    self.dataStore = [ZOLDataStore dataStore];
+                    
+                    self.dataStore.user.userID = recordID;
+                    
+                    [self.dataStore.user getAllTheRecords];
+                    
+                    [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
+                        
+                        if(error) {
+                            NSLog(@"error, and now i sit :|");
+                            return;
+                        }
+                        
+                        else{
+                            [self presentNextVC];
+                            
+                        }
+                        
+                        
+                    }];
+                    
+                };
+                
             }];
-
-            
-
         };
+        
     }];
-}
+};
+
 
 -(void)presentNextVC {
     
     NSLog(@"present next VC was called");
-
-UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+    
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
     
     [self presentViewController:mainVC animated:YES completion:^{
         [self.activityIndicator stopAnimating];
         [self fetchingYourData];
     }];
-
+    
     
 }
 
 
 //Would we want to get rid of the login screen after we've loaded the mainFeed??
 //-(void)dealloc {
-//    
+//
 //    NSLog(@"VC is dead dead dead");
 //}
 
 
-
-- (void)loginNewUser {
-    
-    //  self.logInButton.hidden = NO;
-    [self.activityIndicator startAnimating];
-    
-    
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
-    
-    NSLog(@"Login Tapped");
-    NSLog(@"%d", [self.activityIndicator isAnimating]);
-    
-    [self fetchingYourData];
-    
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        NSLog(@"Initializing datastore");
-        self.dataStore = [ZOLDataStore dataStore];
-        [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
-            if (error)
-                NSLog(@"Error initing the datastore");
-            else{
-                NSLog(@"Attempting to present VC");
-                [self presentViewController:mainVC animated:YES completion:nil];
-            }
-        }];
-        
- 
-    }];
-}
+//
+//- (void)loginNewUser {
+//
+////  self.logInButton.hidden = NO;
+//[self.activityIndicator startAnimating];
+//
+//
+//UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+//ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+//
+//NSLog(@"Login Tapped");
+//NSLog(@"%d", [self.activityIndicator isAnimating]);
+//
+//[self fetchingYourData];
+//
+//[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//    NSLog(@"Initializing datastore");
+//    self.dataStore = [ZOLDataStore dataStore];
+//    [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
+//        if (error)
+//            NSLog(@"Error initing the datastore");
+//        else{
+//            NSLog(@"Attempting to present VC");
+//            [self presentViewController:mainVC animated:YES completion:nil];
+//        }
+//    }];
+//
+//
+//}];
+//}
 
 
 -(void) zolaAppWillWaitForYou{
@@ -213,16 +224,16 @@ ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithI
     UIAlertController *waitForUserToLogIn = [UIAlertController alertControllerWithTitle:@"Go ahead and login to iCloud" message:@"We'll wait for you to get back!" preferredStyle:UIAlertControllerStyleAlert];
     
     [waitForUserToLogIn addAction:[UIAlertAction actionWithTitle:@"Exit Zola app"
-                                                         style:(UIAlertActionStyleCancel)
-                                                       handler:nil]];
+                                                           style:(UIAlertActionStyleCancel)
+                                                         handler:nil]];
     
     [self presentViewController:waitForUserToLogIn animated:YES completion:nil];
     
 }
 
-- (IBAction)loginTapped:(id)sender {
-    [self loginNewUser];
-}
+//- (IBAction)loginTapped:(id)sender {
+//[self loginNewUser];
+//}
 
 -(void)tellAppDelegateTheUserDoesntHaveiCloudAccount{
     ((AppDelegate*)[UIApplication sharedApplication].delegate).userDidntHaveiCloudAccountAtLogIn = YES;
@@ -235,9 +246,10 @@ ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithI
     [self presentViewController:userOkNotification animated:YES completion:nil];
     
     
-     NSLog(@"Hey, we are logged in, store YES in userdefaults with KEY LoggedIn");
-     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LoggedIn"];
+    NSLog(@"Hey, we are logged in, store YES in userdefaults with KEY LoggedIn");
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LoggedIn"];
 }
+
 
 
 

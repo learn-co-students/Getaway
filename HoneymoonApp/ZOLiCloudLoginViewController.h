@@ -7,12 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ZOLDataStore.h"
+#import <CloudKit/CloudKit.h>
+@class ZOLDataStore;
+
+
 //#import "ZOLMainTableViewController.h"
 
 @interface ZOLiCloudLoginViewController : UIViewController
 
-@property (nonatomic, strong) ZOLDataStore *dataStore;
+@property (strong, nonatomic) ZOLDataStore *dataStore;
+@property (nonatomic, strong) CKRecordID *idForUser;
+//@property (nonatomic, strong) ZOLUser *idForUserClass;
+
+
+-(BOOL)doWeHaveInternetAccess;
+- (void)presentNextVC;
+//- (void)loginNewUser;
+- (void)zolaAppWillWaitForYou;
+- (void)tellAppDelegateTheUserDoesntHaveiCloudAccount;
+
 
 
 @end
