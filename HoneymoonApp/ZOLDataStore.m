@@ -16,6 +16,7 @@
 
 + (instancetype)dataStore
 {
+    NSLog(@"shared datastore created");
     static ZOLDataStore *_sharedDataStore = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -27,6 +28,7 @@
 
 -(instancetype)init
 {
+    NSLog(@"datastore init");
     self = [super init];
     
     if (self)
@@ -41,7 +43,7 @@
 
 -(void)populateMainFeedWithCompletion:(void (^)(NSError *error))completionBlock
 {
-    
+    NSLog(@"populate main feed with completion");
     NSPredicate *publishedHoneymoons = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
     CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
     
@@ -78,7 +80,7 @@
                      query:(CKQuery *)query
                     cursor:(CKQueryCursor *)cursor
 {
-    
+    NSLog(@"read records");
     CKQueryOperation *operation;
  
 //(1)first time through we are passing in a query and will enter the else statement:

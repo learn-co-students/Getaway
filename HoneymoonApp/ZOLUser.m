@@ -31,6 +31,7 @@
 
 - (void)getAllTheRecords {
     
+    NSLog(@"get all the records");
     if (self.userID) {
         
         CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.userID action:CKReferenceActionDeleteSelf];
