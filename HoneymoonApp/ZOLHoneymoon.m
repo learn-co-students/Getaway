@@ -27,7 +27,7 @@
     return self;
 }
 
-//Fetch all the images associated with a user's honeymoon from CloudKit, make them into ZOLImage objects and add them to the ZOLHoneymoon for this user
+//Fetch all the images associated with a honeymoon from CloudKit, make them into ZOLImage objects and add them to this ZOLHoneymoon
 -(void)populateHoneymoonImages
 {
     CKReference *referenceToHoneymoon = [[CKReference alloc]initWithRecordID:self.honeymoonID action:CKReferenceActionDeleteSelf];
@@ -42,6 +42,7 @@
         if (operationError)
         {
             NSLog(@"Error in populateHoneymoonImages - description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
+            [self populateHoneymoonImages];
         }
     };
     
