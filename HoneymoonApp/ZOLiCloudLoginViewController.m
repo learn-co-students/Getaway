@@ -110,7 +110,6 @@
             CKContainer *defaultContainer = [CKContainer defaultContainer];
             
             [defaultContainer fetchUserRecordIDWithCompletionHandler:^void(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
-                NSLog(@"IN THE COMPLETEION BLOCK");
                 if (error) {
                     NSLog(@"Error fetching User Record ID: %@", error.localizedDescription);
                     UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"No User Record Found"
@@ -133,6 +132,16 @@
                     self.dataStore = [ZOLDataStore dataStore];
                     
                     self.dataStore.user.userID = recordID;
+                    
+                    [[CKContainer defaultContainer] requestApplicationPermission:CKApplicationPermissionUserDiscoverability completionHandler:^(CKApplicationPermissionStatus applicationPermissionStatus, NSError * _Nullable error) {
+                        if (applicationPermissionStatus == CKApplicationPermissionStatusGranted)
+                        {
+                            [[CKContainer defaultContainer] discoverUserInfoWithUserRecordID:self.dataStore.user.userID completionHandler:^(CKDiscoveredUserInfo * _Nullable userInfo, NSError * _Nullable error) {
+                                self.dataStore.user.firstName = userInfo.displayContact.givenName;
+                                self.dataStore.user.lastName = userInfo.displayContact.familyName;
+                            }];
+                        }
+                    }];
                     
                     [self.dataStore.user getAllTheRecords];
                     

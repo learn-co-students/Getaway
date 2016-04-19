@@ -17,15 +17,12 @@
     
     if (self)
     {
-//        _honeymoonID = [[CKRecordID alloc]initWithRecordName:@"Honeymoon"];
         _honeymoonImages = [[NSMutableArray alloc]init];
         _client = [[ZOLCloudKitClient alloc]init];
         _coverPicture = [[UIImage alloc]init];
-        
+        _userName = [[NSString alloc]init];
         _published = @"NO";
     }
-    
-//    [self populateHoneymoonImages];
     
     return self;
 }
@@ -50,12 +47,8 @@
     
     findHMOp.recordFetchedBlock = ^(CKRecord *record){
         ZOLImage *imageToAdd = [[ZOLImage alloc]init];
-        
-//        CKAsset *image = record[@"Picture"];
-//        UIImage *pictureToAdd = [self.client retrieveUIImageFromAsset:image];
         NSString *captionText = record[@"Caption"];
-        
-//        imageToAdd.picture = pictureToAdd;
+
         imageToAdd.caption = captionText;
         imageToAdd.imageRecordID = record.recordID;
         
