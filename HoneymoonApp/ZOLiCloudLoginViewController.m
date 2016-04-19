@@ -139,6 +139,7 @@
                             [[CKContainer defaultContainer] discoverUserInfoWithUserRecordID:self.dataStore.user.userID completionHandler:^(CKDiscoveredUserInfo * _Nullable userInfo, NSError * _Nullable error) {
                                 self.dataStore.user.firstName = userInfo.displayContact.givenName;
                                 self.dataStore.user.lastName = userInfo.displayContact.familyName;
+                                self.dataStore.user.userHoneymoon.userName = [NSString stringWithFormat:@"%@ %@", self.dataStore.user.firstName, self.dataStore.user.lastName];
                             }];
                         }
                     }];

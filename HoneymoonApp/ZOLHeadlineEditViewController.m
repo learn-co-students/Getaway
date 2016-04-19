@@ -39,7 +39,7 @@
     honeymoonToSave[@"Description"] = userHoneymoon.honeymoonDescription;
     honeymoonToSave[@"Published"] = @"YES";
     honeymoonToSave[@"RatingStars"] = @(userHoneymoon.rating);
-    honeymoonToSave[@"Name"] = [NSString stringWithFormat:@"%@ %@", self.dataStore.user.firstName, self.dataStore.user.lastName];
+    honeymoonToSave[@"Name"] = userHoneymoon.userName;
     
     [self.dataStore.client.database saveRecord:honeymoonToSave completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
         if (error)
