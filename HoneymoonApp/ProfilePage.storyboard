@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Profile-->
+        <scene sceneID="N5B-h7-eq8">
+            <objects>
+                <viewController storyboardIdentifier="profileViewController" id="vMJ-eG-GpP" customClass="ZOLProfileViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1bt-uO-uyK"/>
+                        <viewControllerLayoutGuide type="bottom" id="69k-1j-6mV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="H8a-UH-jn6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y1e-ug-ncd">
+                                <rect key="frame" x="117" y="84" width="140" height="166"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XRG-i0-Ssb">
+                                        <rect key="frame" x="0.0" y="0.0" width="140" height="166"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="XRG-i0-Ssb" firstAttribute="bottom" secondItem="Y1e-ug-ncd" secondAttribute="bottom" id="3P5-gn-chU"/>
+                                    <constraint firstItem="XRG-i0-Ssb" firstAttribute="leading" secondItem="Y1e-ug-ncd" secondAttribute="leading" id="D2H-L8-dUt"/>
+                                    <constraint firstItem="XRG-i0-Ssb" firstAttribute="top" secondItem="Y1e-ug-ncd" secondAttribute="top" id="i9R-sq-yGR"/>
+                                    <constraint firstItem="XRG-i0-Ssb" firstAttribute="trailing" secondItem="Y1e-ug-ncd" secondAttribute="trailing" id="xG5-Hr-dvc"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HJ5-Ko-Ljj">
+                                <rect key="frame" x="158" y="369" width="59" height="30"/>
+                                <state key="normal" title="My Feed"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d5T-7d-ckI">
+                                <rect key="frame" x="-1" y="0.0" width="376" height="667"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KZl-9G-lXL">
+                                <rect key="frame" x="86" y="260" width="204" height="30"/>
+                                <state key="normal" title="Take or choose profile picture">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="addProfilePicButtonTapped:" destination="vMJ-eG-GpP" eventType="touchUpInside" id="rhU-Zi-i7f"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="KZl-9G-lXL" firstAttribute="centerX" secondItem="H8a-UH-jn6" secondAttribute="centerX" id="9k8-7c-pYR"/>
+                            <constraint firstItem="Y1e-ug-ncd" firstAttribute="centerY" secondItem="H8a-UH-jn6" secondAttribute="centerY" multiplier="0.5" id="Aby-Pw-m1h"/>
+                            <constraint firstItem="d5T-7d-ckI" firstAttribute="centerY" secondItem="H8a-UH-jn6" secondAttribute="centerY" id="Fco-Ih-OBm"/>
+                            <constraint firstItem="HJ5-Ko-Ljj" firstAttribute="centerY" secondItem="H8a-UH-jn6" secondAttribute="centerY" constant="50" id="Fi7-kx-Juj"/>
+                            <constraint firstItem="Y1e-ug-ncd" firstAttribute="height" secondItem="H8a-UH-jn6" secondAttribute="height" multiplier="0.25" id="OtQ-YR-tVk"/>
+                            <constraint firstItem="Y1e-ug-ncd" firstAttribute="centerX" secondItem="H8a-UH-jn6" secondAttribute="centerX" id="TPm-5H-CqC"/>
+                            <constraint firstItem="d5T-7d-ckI" firstAttribute="width" secondItem="H8a-UH-jn6" secondAttribute="width" id="Typ-fG-qBR"/>
+                            <constraint firstItem="d5T-7d-ckI" firstAttribute="height" secondItem="H8a-UH-jn6" secondAttribute="height" id="WHS-Rq-jj1"/>
+                            <constraint firstItem="Y1e-ug-ncd" firstAttribute="width" secondItem="H8a-UH-jn6" secondAttribute="width" multiplier="0.375" id="m6J-MX-7fN"/>
+                            <constraint firstItem="KZl-9G-lXL" firstAttribute="top" secondItem="Y1e-ug-ncd" secondAttribute="bottom" constant="10" id="o8d-r2-S2E"/>
+                            <constraint firstItem="HJ5-Ko-Ljj" firstAttribute="centerX" secondItem="d5T-7d-ckI" secondAttribute="centerX" id="qVB-pK-ID0"/>
+                            <constraint firstItem="d5T-7d-ckI" firstAttribute="centerX" secondItem="H8a-UH-jn6" secondAttribute="centerX" id="ycH-s4-orA"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Profile" id="ebs-hj-cAB"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="imageView" destination="XRG-i0-Ssb" id="AMg-Gw-eRo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sAl-aI-2JN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="981.5" y="-443.5"/>
+        </scene>
+    </scenes>
+</document>

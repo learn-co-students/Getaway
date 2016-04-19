@@ -48,6 +48,8 @@
 		4B23AF0C1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B23AF0B1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m */; };
 		4B23AF181CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B23AF171CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m */; };
 		4B2BC4CA1CB6FFC700984844 /* ZOLScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2BC4C91CB6FFC700984844 /* ZOLScrollViewController.m */; };
+		4B7CBFF21CC570D800D3769B /* ZOLProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B7CBFF11CC570D800D3769B /* ZOLProfileViewController.m */; };
+		4B7CBFF41CC66F9100D3769B /* ProfilePage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B7CBFF31CC66F9100D3769B /* ProfilePage.storyboard */; };
 		4BEA016A1CAD76B4003F219B /* ZOLCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEA01691CAD76B4003F219B /* ZOLCameraViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -121,6 +123,9 @@
 		4B23AF171CB2EA0B005A45C8 /* ZOLEditPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLEditPhotoViewController.m; sourceTree = "<group>"; };
 		4B2BC4C81CB6FFC700984844 /* ZOLScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLScrollViewController.h; sourceTree = "<group>"; };
 		4B2BC4C91CB6FFC700984844 /* ZOLScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLScrollViewController.m; sourceTree = "<group>"; };
+		4B7CBFF01CC570D800D3769B /* ZOLProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLProfileViewController.h; sourceTree = "<group>"; };
+		4B7CBFF11CC570D800D3769B /* ZOLProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLProfileViewController.m; sourceTree = "<group>"; };
+		4B7CBFF31CC66F9100D3769B /* ProfilePage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ProfilePage.storyboard; sourceTree = "<group>"; };
 		4BEA01681CAD76B4003F219B /* ZOLCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLCameraViewController.h; sourceTree = "<group>"; };
 		4BEA01691CAD76B4003F219B /* ZOLCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLCameraViewController.m; sourceTree = "<group>"; };
 		5E51CB7A6399C09E4181A5E2 /* Pods-HoneymoonApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HoneymoonApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HoneymoonApp/Pods-HoneymoonApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -254,6 +259,8 @@
 				4B2BC4C91CB6FFC700984844 /* ZOLScrollViewController.m */,
 				063301D01CBD6B0400BF383A /* ZOLPrivateImageFeedTableViewController.h */,
 				063301D11CBD6B0400BF383A /* ZOLPrivateImageFeedTableViewController.m */,
+				4B7CBFF01CC570D800D3769B /* ZOLProfileViewController.h */,
+				4B7CBFF11CC570D800D3769B /* ZOLProfileViewController.m */,
 			);
 			name = "User Interface";
 			sourceTree = "<group>";
@@ -288,6 +295,7 @@
 				0644D1BB1CAAEE3100510F19 /* LaunchScreen.storyboard */,
 				06738B471CAD77EB00E5E692 /* LoginScreen.storyboard */,
 				2D3758F71CB40BBF001BD7AE /* FeedStoryboard.storyboard */,
+				4B7CBFF31CC66F9100D3769B /* ProfilePage.storyboard */,
 				0644D1B91CAAEE3100510F19 /* Assets.xcassets */,
 				0644D1BE1CAAEE3100510F19 /* Info.plist */,
 				0644D1AA1CAAEE3100510F19 /* Supporting Files */,
@@ -393,6 +401,7 @@
 				2D6206221CB4351900C5D231 /* A2 img4.png in Resources */,
 				2D6206231CB4351900C5D231 /* A2 img3.png in Resources */,
 				0644D1BD1CAAEE3100510F19 /* LaunchScreen.storyboard in Resources */,
+				4B7CBFF41CC66F9100D3769B /* ProfilePage.storyboard in Resources */,
 				0644D1BA1CAAEE3100510F19 /* Assets.xcassets in Resources */,
 				2D6206251CB4351900C5D231 /* A2 img1.png in Resources */,
 				2D6206241CB4351900C5D231 /* A2 img2.png in Resources */,
@@ -478,6 +487,7 @@
 				06738B561CADA1B000E5E692 /* User+CoreDataProperties.m in Sources */,
 				2DB4CEB41CB59A80002DB3B9 /* ZOLHeadlineEditViewController.m in Sources */,
 				06E73DBD1CB85CDB000E860A /* ZOLHoneymoon.m in Sources */,
+				4B7CBFF21CC570D800D3769B /* ZOLProfileViewController.m in Sources */,
 				0644D1B81CAAEE3100510F19 /* HoneymoonApp.xcdatamodeld in Sources */,
 				4B23AF0C1CB2C75B005A45C8 /* ZOLAcceptPhotoViewController.m in Sources */,
 				2D3759071CB40E56001BD7AE /* ZOLSimulatedFeedData.m in Sources */,

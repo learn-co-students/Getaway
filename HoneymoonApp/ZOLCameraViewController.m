@@ -8,6 +8,9 @@
 
 #import "ZOLCameraViewController.h"
 #import "ZOLAcceptPhotoViewController.h"
+#import "ZOLProfileViewController.h"
+
+
 
 @interface ZOLCameraViewController ()
 
@@ -17,6 +20,10 @@
 @property(nonatomic)UIImagePickerControllerCameraDevice cameraDevice;
 @property(nonatomic)UIImagePickerControllerCameraFlashMode flashMode;
 @property (strong, nonatomic) IBOutlet UIButton *flashButtonIcon;
+@property (strong, nonatomic) IBOutlet UIButton *switchCameraDirectionButtonTapped;
+
+
+
 
 @end
 
@@ -28,20 +35,18 @@
     [self.flashButtonIcon setImage:[UIImage imageNamed:@"FlashInactive"] forState:UIControlStateNormal];
     self.flashMode = -1;
     self.openCam = YES;
+    
+
 }
-
-
 
 +(void)openCamFunction {
     
    ZOLCameraViewController *ZOLVC = [ZOLCameraViewController new];
     ZOLVC.openCam = YES;
-    
 }
 
--(void)viewDidAppear:(BOOL)animated {
-    
-    
+-(void)viewDidAppear:(BOOL)animated
+{
     if(self.openCam) {
         animated = NO;
         UIImagePickerController *cameraController = [[UIImagePickerController alloc] init];
@@ -60,6 +65,9 @@
         
         self.openCam = NO;
     }
+    
+    //    if user coming from profile page automatically switch camera to selfie mode.
+    //[self.switchCameraDirectionButtonTapped sendActionsForControlEvents: UIControlEventTouchUpInside];
     
 }
 
@@ -88,19 +96,29 @@
 
 - (IBAction)cancelButtonTapped:(UIButton *)sender
 {
-    
-    [self.tabBarController setSelectedIndex:0];
-    
-    [self.tabBarController dismissViewControllerAnimated:NO completion:^{
-        self.openCam = YES;
-    }];
-    
+    //If user is accessing the camera from the profile page
+    if (self.isComingFromProfilePage == YES)
+    {
+        [self.tabBarController setSelectedIndex:2];
+        
+        [self.tabBarController dismissViewControllerAnimated:NO completion:^{
+            self.openCam = YES;
+        }];
+         
+    } else {
+        [self.tabBarController setSelectedIndex:0];
+        
+        [self.tabBarController dismissViewControllerAnimated:NO completion:^{
+            self.openCam = YES;
+        }];
+    }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
 
     self.openCam = YES;
-
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (IBAction)switchCameraButtonTapped:(UIButton *)sender
@@ -144,56 +162,79 @@
     self.flashMode++;
 }
 
+//Saving image to documents directory
+-(void)saveImage:(UIImage *)image withFileName:(NSString *)imageName ofType:(NSString *)extension inDirectory:(NSString *)directoryPath {
+    if ([[extension lowercaseString] isEqualToString:@"png"]) {
+        [UIImagePNGRepresentation(image) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"png"]] options:NSAtomicWrite error:nil];
+    } else if ([[extension lowercaseString] isEqualToString:@"jpg"] || [[extension lowercaseString] isEqualToString:@"jpeg"]) {
+        [UIImageJPEGRepresentation(image, 1.0) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"jpg"]] options:NSAtomicWrite error:nil];
+    } else {
+        NSLog(@"Image Save Failed\nExtension: (%@) is not recognized, use (PNG/JPG)", extension);
+    }
+}
+
+
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
                                id> *)info
 {
-//    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    ZOLDataStore *dataStore = [ZOLDataStore dataStore];
-    
-    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-    NSURL *imageURL = [dataStore.client writeImage:image toTemporaryDirectoryWithQuality:0];
-
-    if (self.isCameraModeOn)
+    //If user is accessing the camera from the profile page
+    if (self.isComingFromProfilePage == YES)
     {
-        PHPhotoLibrary *photoLibrary = [PHPhotoLibrary sharedPhotoLibrary];
+        NSLog(@"Is coming to camera from profile page");
         
-        [photoLibrary performChanges:^
-        {
-            [PHAssetChangeRequest creationRequestForAssetFromImage:image];
-        }
-                   completionHandler:^(BOOL success, NSError * _Nullable error)
-        {
-            NSLog(@"Error?: %@, Success?: %d", error, success);
+        UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+        
+        NSLog(@"Image: %@", image);
+        
+        //Save the profile picture in documents file on phone
+        NSString * documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        [self saveImage:image withFileName:@"ProfilePic" ofType:@"jpg" inDirectory:documentsDirectory];
+
+        //Transition back to the profile page
+        [self.tabBarController setSelectedIndex:1];
+        [self.tabBarController dismissViewControllerAnimated:NO completion:^{
             
-//         /Users/andreasvestergaard/Development/code/ios-0216-team-yam/HoneymoonApp/ZOLAcceptPhotoViewController.h   dispatch_semaphore_signal(semaphore);
+            UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+            ZOLProfileViewController *profileViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"profileViewController"];
             
+            [self.tabBarController presentViewController:profileViewController animated:YES completion:nil];
+            
+            self.isComingFromProfilePage = NO;
         }];
-    }
-    
-    [self.tabBarController setSelectedIndex:0];
-    [self.tabBarController dismissViewControllerAnimated:NO completion:^{
-//    [self performSegueWithIdentifier:@"acceptSegue" sender:nil];
-        UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-        ZOLAcceptPhotoViewController *acceptViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
-                acceptViewController.currentImage = image;
-                acceptViewController.currentImageURL = imageURL;
-        [self.tabBarController presentViewController:acceptViewController animated:YES completion:nil];
-    }];
+
+    } else {
  
-    
-//    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        ZOLDataStore *dataStore = [ZOLDataStore dataStore];
+        
+        UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+        NSURL *imageURL = [dataStore.client writeImage:image toTemporaryDirectoryWithQuality:0];
+
+        if (self.isCameraModeOn)
+        {
+            PHPhotoLibrary *photoLibrary = [PHPhotoLibrary sharedPhotoLibrary];
+            
+            [photoLibrary performChanges:^
+            {
+                [PHAssetChangeRequest creationRequestForAssetFromImage:image];
+            }
+                       completionHandler:^(BOOL success, NSError * _Nullable error)
+            {
+                NSLog(@"Error?: %@, Success?: %d", error, success);
+            }];
+        }
+        self.openCam = NO;
+        [self.tabBarController dismissViewControllerAnimated:NO completion:^{
+    //    [self performSegueWithIdentifier:@"acceptSegue" sender:nil];
+            UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+            ZOLAcceptPhotoViewController *acceptViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
+                    acceptViewController.currentImage = image;
+                    acceptViewController.currentImageURL = imageURL;
+            self.openCam = YES;
+            [self.tabBarController presentViewController:acceptViewController animated:YES completion:nil];
+        }];
    
-//    [self dismissViewControllerAnimated:NO completion:^{
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        
-//        ZOLAcceptPhotoViewController *acceptViewController = [[ZOLAcceptPhotoViewController alloc]init];
-//        
-//        acceptViewController.currentImage = image;
-//        acceptViewController.currentImageURL = imageURL;
-//        
-//        [self presentViewController:acceptViewController animated:NO completion:nil];
-//    }];
+    }
 }
 
 @end
