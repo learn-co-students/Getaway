@@ -38,7 +38,7 @@
 
 + (instancetype) dataStore;
 -(void)populateMainFeedWithCompletion:(void (^)(NSError *error))completionBlock;
--(void) populateMainFeed;
+//-(void) populateMainFeed;
 
 
 

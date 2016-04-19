@@ -91,7 +91,6 @@
         {
             self.mainFeedCursor = cursor;
                    
-
             NSLog(@"MainFeedPopulated message sent");
             [[NSNotificationCenter defaultCenter] postNotificationName:@"MainFeedPopulated" object:nil];   
 
