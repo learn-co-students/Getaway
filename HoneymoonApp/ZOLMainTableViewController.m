@@ -25,7 +25,6 @@
     [super viewDidLoad];
     
     self.imagesToPush = [[NSMutableArray alloc]init];
-    
     self.dataStore = [ZOLDataStore dataStore];
     
     NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
@@ -53,6 +52,12 @@
         NSLog(@"Image query done");
     }];
 }
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -83,6 +88,22 @@
 //    
 //    self.imagesToPush = honeymoonSelected.honeymoonImages;
 //}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqual: @"feedSegue"]) {
+        UINavigationController *destinationVC = [segue destinationViewController];
+        ZOLDetailTableViewController *tableVC = (ZOLDetailTableViewController*)destinationVC.topViewController;
+        NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+            
+        ZOLHoneymoon *honeymoonSelected = self.dataStore.mainFeed[selectedIndexPath.row];
+            
+        tableVC.localImageArray = honeymoonSelected.honeymoonImages;
+        tableVC.selectedHoneymoonID = honeymoonSelected.honeymoonID;
+        tableVC.titleString = honeymoonSelected.honeymoonDescription;
+        tableVC.parralaxHeaderImage = honeymoonSelected.coverPicture;
+    }
+}
+
 
 - (IBAction)mainFeedPullToRefresh:(UIRefreshControl *)sender {
     //Grab the next honeymoons in the main feed query
@@ -141,18 +162,6 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRefreshSpin:) name:@"QueryRefreshIssue" object:nil];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqual: @"feedSegue"]) {
-        UINavigationController *destinationVC = [segue destinationViewController];
-        ZOLDetailTableViewController *tableVC = (ZOLDetailTableViewController *)destinationVC.topViewController;
-        NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-        
-        ZOLHoneymoon *honeymoonSelected = self.dataStore.mainFeed[selectedIndexPath.row];
-        
-        tableVC.localImageArray = honeymoonSelected.honeymoonImages;
-        tableVC.selectedHoneymoonID = honeymoonSelected.honeymoonID;
-    }
-}
 
 -(void)stopRefreshSpin: (NSNotification *)notification
 {

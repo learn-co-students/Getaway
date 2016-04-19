@@ -13,18 +13,73 @@
 
 @interface ZOLDetailTableViewController ()
 
+@property (nonatomic,strong) NSLayoutConstraint *labelYConstraint;
+
 @end
 
 @implementation ZOLDetailTableViewController
 
+-(void)viewDidAppear:(BOOL)animated{
+
+}
+
 - (IBAction)back:(id)sender {
-    
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+
+
+
+}
+
+
+-(void)viewDidLayoutSubviews{
+    
+}
+
+
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    UIImageView *headerView = [UIImageView new];
     
+    //label
+    UILabel *labelHeadline = [[UILabel alloc]init];
+    labelHeadline.text = @"";
+    labelHeadline.textColor = [UIColor whiteColor];
+    labelHeadline.textAlignment = NSTextAlignmentCenter;
+    [labelHeadline setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:35]];
+    labelHeadline.adjustsFontSizeToFitWidth = YES;
+    
+    //header
+    [headerView addSubview:labelHeadline ];
+    headerView.image = self.parralaxHeaderImage;
+    headerView.contentMode = UIViewContentModeScaleAspectFill;
+    
+    //Constraints
+    headerView.translatesAutoresizingMaskIntoConstraints = NO;
+    labelHeadline.translatesAutoresizingMaskIntoConstraints = NO;
+    [labelHeadline.centerXAnchor constraintEqualToAnchor: headerView.centerXAnchor].active = YES;
+    self.labelYConstraint = [labelHeadline.centerYAnchor constraintEqualToAnchor:headerView.centerYAnchor];
+    self.labelYConstraint.active = YES;
+    [labelHeadline.heightAnchor constraintEqualToConstant:100];
+    [labelHeadline.widthAnchor constraintEqualToAnchor: headerView.widthAnchor].active = YES;
+   
+
+    
+    
+    //
+    self.tableView.parallaxHeader.view = headerView;
+    self.tableView.parallaxHeader.height = self.tableView.frame.size.height;
+    self.tableView.parallaxHeader.mode =  MXParallaxHeaderModeTopFill;
+    self.tableView.parallaxHeader.minimumHeight = 0;
+    
+    self.navigationController.navigationBar.topItem.title = self.titleString;
+
     self.dataStore = [ZOLDataStore dataStore];
     
     //TODO: Grab the cover image and display that on top
@@ -69,12 +124,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    
     ZOLDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detailCell" forIndexPath:indexPath];
-    
     ZOLImage *thisImage = self.localImageArray[indexPath.row];
-    
     cell.image.image = thisImage.picture;
     cell.text.text = thisImage.caption;
-    
     return cell;
 }
 

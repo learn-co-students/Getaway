@@ -104,6 +104,12 @@
 
 //this notifications works is tied with CKSubscriptions(letting us know when changes were applied to the picture 'meepbeep'--- this is code for a subscription test.
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }
+                                             forState:UIControlStateSelected];
+    
+
   
 //    // Push notification setup
 //    UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
@@ -118,6 +124,7 @@
     
     return YES;
 }
+
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
