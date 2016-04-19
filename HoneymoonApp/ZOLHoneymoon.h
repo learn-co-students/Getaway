@@ -20,6 +20,7 @@
 @property (nonatomic, assign) CGFloat rating;
 @property (nonatomic, strong) NSString *honeymoonDescription;
 @property (nonatomic, strong) NSString *published;
+@property (nonatomic, strong) NSString *userName;
 
 -(void)populateHoneymoonImages;
 

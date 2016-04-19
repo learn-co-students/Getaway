@@ -1,3 +1,4 @@
+
 //
 //  ZOLDetailTableViewController.m
 //  HoneymoonApp
@@ -26,6 +27,7 @@
 - (IBAction)back:(id)sender {
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -104,6 +106,7 @@
             }
         }
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+        [self viewDidLoad];
         NSLog(@"Detail image query done");
     }];
 }

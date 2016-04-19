@@ -20,8 +20,34 @@
     [super viewDidLoad];
     
     self.dataStore = [ZOLDataStore dataStore];
-    
     self.localImageArray = self.dataStore.user.userHoneymoon.honeymoonImages;
+    
+    CKReference *referenceToHoneymoon = [[CKReference alloc]initWithRecordID:self.dataStore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
+    NSPredicate *userHoneymoonPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", referenceToHoneymoon];
+    CKQuery *honeymoonImageQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:userHoneymoonPredicate];
+    NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
+    
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImageQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys everyRecord:^(CKRecord *record) {
+        //Put the image we get into the relevant cell
+        for (ZOLImage *image in self.localImageArray)
+        {
+            NSLog(@"putting image into private image feed");
+            if ([image.imageRecordID.recordName isEqualToString:record.recordID.recordName])
+            {
+                UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
+                image.picture = retrievedImage;
+                NSUInteger rowOfImage = [self.localImageArray indexOfObject:image];
+                NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
+                }];
+            }
+        }
+    } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+        //do something when we're done?
+        NSLog(@"Image query done");
+    }];
 }
 - (IBAction)backButtonTapped:(UIBarButtonItem *)sender
 {
