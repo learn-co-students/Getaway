@@ -178,7 +178,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
         ZOLAcceptPhotoViewController *acceptViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
                 acceptViewController.currentImage = image;
                 acceptViewController.currentImageURL = imageURL;
-        [self.tabBarController presentViewController:acceptViewController animated:YES completion:nil];
+        [self.tabBarController presentViewController:acceptViewController animated:NO completion:nil];
     }];
  
     

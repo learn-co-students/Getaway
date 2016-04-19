@@ -34,7 +34,7 @@
 -(void)populateHoneymoonImages
 {
     CKReference *referenceToHoneymoon = [[CKReference alloc]initWithRecordID:self.honeymoonID action:CKReferenceActionDeleteSelf];
-    NSPredicate *honeymoonSearch = [NSPredicate predicateWithFormat:@"Honeymoon == %@", referenceToHoneymoon];
+    NSPredicate *honeymoonSearch = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", referenceToHoneymoon];
     CKQuery *findImages = [[CKQuery alloc]initWithRecordType:@"Image" predicate:honeymoonSearch];
     CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findImages];
     

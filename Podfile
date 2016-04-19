@@ -6,6 +6,7 @@
 target 'HoneymoonApp' do
   pod 'Masonry'
   pod 'HCSStarRatingView'
+  pod 'MXParallaxHeader'
 
 end
 

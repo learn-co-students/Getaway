@@ -1,16 +1,16 @@
 PODS:
-  - Firebase (2.5.1)
   - HCSStarRatingView (1.4.3)
   - Masonry (1.0.0)
+  - MXParallaxHeader (0.5.0)
 
 DEPENDENCIES:
-  - Firebase (>= 2.5.1)
   - HCSStarRatingView
   - Masonry
+  - MXParallaxHeader
 
 SPEC CHECKSUMS:
-  Firebase: 3565ea88b830f28f2c77ecc524622bc71a20d085
   HCSStarRatingView: bada6ae98258c3019531e0218030e2d5ad10765a
   Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
+  MXParallaxHeader: c7dfdf8d769a8eb868a431ec3aeaf994a147b8bc
 
 COCOAPODS: 0.39.0

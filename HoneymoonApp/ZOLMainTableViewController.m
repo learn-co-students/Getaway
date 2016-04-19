@@ -24,7 +24,6 @@
     [super viewDidLoad];
     
     self.imagesToPush = [[NSMutableArray alloc]init];
-    
     self.dataStore = [ZOLDataStore dataStore];
     
     NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
@@ -56,6 +55,12 @@
         NSLog(@"Image query done");
     }];
 }
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -101,6 +106,8 @@
             
         tableVC.localImageArray = honeymoonSelected.honeymoonImages;
         tableVC.selectedHoneymoonID = honeymoonSelected.honeymoonID;
+        tableVC.titleString = honeymoonSelected.honeymoonDescription;
+        tableVC.parralaxHeaderImage = honeymoonSelected.coverPicture;
     }
 }
 

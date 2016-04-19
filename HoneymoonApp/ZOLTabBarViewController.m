@@ -16,7 +16,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+
+
+    
     // Do any additional setup after loading the view.
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -25,11 +34,15 @@
 }
 
 - (void)viewWillLayoutSubviews {
-    CGRect tabFrame = self.tabBar.frame; //self.TabBar is IBOutlet of your TabBar
-    tabFrame.size.height = 35;
-    tabFrame.origin.y = self.view.frame.size.height - 35;
+    CGRect tabFrame = self.tabBar.frame;
+    tabFrame.size.height = 30;
+    tabFrame.origin.y = self.view.frame.size.height - 30;
     self.tabBar.frame = tabFrame;
-    self.tabBar.barTintColor = [UIColor colorWithRed:255 green:255 blue:255 alpha:0.5];
+    self.tabBar.translucent = YES;
+    self.tabBar.backgroundColor = [UIColor clearColor];
+    self.tabBar.barTintColor = [UIColor colorWithWhite:1 alpha:0.5];
+    
+    //self.tabBar set
 }
 
 /*
