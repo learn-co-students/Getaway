@@ -17,6 +17,8 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *logInButton;
 @property (nonatomic, strong) CKRecordID *idForUserClassFile;
+@property (nonatomic, strong) NSString *firstNameStore;
+@property (nonatomic, strong) NSString *lastNameStore;
 
 @end
 
@@ -26,7 +28,18 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"viewDidLoad.");
+//    [[CKContainer defaultContainer] requestApplicationPermission:CKApplicationPermissionUserDiscoverability completionHandler:^(CKApplicationPermissionStatus applicationPermissionStatus, NSError * _Nullable error) {
+//        if (applicationPermissionStatus == CKApplicationPermissionStatusGranted)
+//        {
+//            [[CKContainer defaultContainer] discoverUserInfoWithUserRecordID:self.dataStore.user.userID completionHandler:^(CKDiscoveredUserInfo * _Nullable userInfo, NSError * _Nullable error) {
+//                self.firstNameStore = userInfo.displayContact.givenName;
+//                self.lastNameStore = userInfo.displayContact.familyName;
+//            }];
+//            
+//            
+//        }
+//    }];
+
     
     //-(BOOL)internetIsReachable{
     //
@@ -74,7 +87,7 @@
         
         if (error) {
             NSLog(@"Error logging a first-time user! Error type: %@", error.localizedDescription);
-            return;
+            [self checkAndHandleiCloudStatus];
         }
         NSLog(@"Account status is %ld",(long)accountStatus);
         //'account status = 1' means the user has an active iClould account
@@ -133,17 +146,6 @@
                     
                     self.dataStore.user.userID = recordID;
                     
-                    [[CKContainer defaultContainer] requestApplicationPermission:CKApplicationPermissionUserDiscoverability completionHandler:^(CKApplicationPermissionStatus applicationPermissionStatus, NSError * _Nullable error) {
-                        if (applicationPermissionStatus == CKApplicationPermissionStatusGranted)
-                        {
-                            [[CKContainer defaultContainer] discoverUserInfoWithUserRecordID:self.dataStore.user.userID completionHandler:^(CKDiscoveredUserInfo * _Nullable userInfo, NSError * _Nullable error) {
-                                self.dataStore.user.firstName = userInfo.displayContact.givenName;
-                                self.dataStore.user.lastName = userInfo.displayContact.familyName;
-                                self.dataStore.user.userHoneymoon.userName = [NSString stringWithFormat:@"%@ %@", self.dataStore.user.firstName, self.dataStore.user.lastName];
-                            }];
-                        }
-                    }];
-                    
                     [self.dataStore.user getAllTheRecords];
                     
                     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentErrorAlert:) name:@"HoneymoonError" object:nil];
@@ -152,7 +154,6 @@
                     
                         if(error) {
                             NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
-                            [self checkAndHandleiCloudStatus];
                         }
                         else {
                             [self presentNextVC];

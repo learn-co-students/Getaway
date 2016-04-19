@@ -28,9 +28,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-
-
-
+    
 }
 
 
@@ -97,8 +95,11 @@
             }
         }
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
-        [self viewDidLoad];
         NSLog(@"Detail image query done");
+        if (error)
+        {
+            NSLog(@"Error with detail image query: %@", error.localizedDescription);
+        }
     }];
 }
 

@@ -50,7 +50,6 @@
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
         if (error)
         {
-            [self viewDidLoad];
         }
         NSLog(@"Image query done");
     }];
