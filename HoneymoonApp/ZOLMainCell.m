@@ -31,6 +31,8 @@
     [self.starRatingView.topAnchor constraintEqualToAnchor: self.contentView.topAnchor constant:290].active = YES;
     [self.starRatingView.heightAnchor constraintEqualToConstant:30].active = YES;
     [self.starRatingView.widthAnchor constraintEqualToConstant:100].active = YES;
+    
+    self.headlineLabel.adjustsFontSizeToFitWidth = YES;
 
     
     
