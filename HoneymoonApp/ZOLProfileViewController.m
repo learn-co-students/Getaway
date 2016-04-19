@@ -21,12 +21,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+ 
+  
+    
     //Retrieve document from directory
     NSString * documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 
     UIImage * retrievedProfileImage = [self loadImageWithFileName:@"ProfilePic" ofType:@"jpg" inDirectory:documentsDirectory];
     
+    //Make imageview round
+    self.imageView.layer.cornerRadius = self.imageView.frame.size.width / 2;
+    self.imageView.layer.masksToBounds = YES;
+    
     self.imageView.image = retrievedProfileImage;
+    
+    
 }
 
 //Allows you to reload an image from the documents directory.

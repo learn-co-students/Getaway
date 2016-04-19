@@ -99,7 +99,7 @@
     //If user is accessing the camera from the profile page
     if (self.isComingFromProfilePage == YES)
     {
-        [self.tabBarController setSelectedIndex:2];
+        [self.tabBarController setSelectedIndex:1];
         
         [self.tabBarController dismissViewControllerAnimated:NO completion:^{
             self.openCam = YES;
@@ -192,15 +192,15 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
         [self saveImage:image withFileName:@"ProfilePic" ofType:@"jpg" inDirectory:documentsDirectory];
 
         //Transition back to the profile page
-        [self.tabBarController setSelectedIndex:1];
-        [self.tabBarController dismissViewControllerAnimated:NO completion:^{
-            
+        self.openCam = NO;
+//        [self.tabBarController setSelectedIndex:0];
+        [self dismissViewControllerAnimated:NO completion:^{
             UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
             ZOLProfileViewController *profileViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"profileViewController"];
-            
-            [self.tabBarController presentViewController:profileViewController animated:YES completion:nil];
-            
+            self.openCam = YES;
             self.isComingFromProfilePage = NO;
+            
+            [self presentViewController:profileViewController animated:YES completion:nil];
         }];
 
     } else {
@@ -233,7 +233,6 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
             self.openCam = YES;
             [self.tabBarController presentViewController:acceptViewController animated:YES completion:nil];
         }];
-   
     }
 }
 

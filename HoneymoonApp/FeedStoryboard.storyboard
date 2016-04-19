@@ -87,13 +87,15 @@
                                 <rect key="frame" x="117" y="84" width="140" height="166"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e6T-Bl-LSU">
-                                        <rect key="frame" x="0.0" y="0.0" width="140" height="166"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="150" id="RRf-tX-hTg"/>
+                                            <constraint firstAttribute="width" constant="150" id="Y6U-fv-NCG"/>
+                                        </constraints>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="e6T-Bl-LSU" firstAttribute="trailing" secondItem="p2M-Xc-rk7" secondAttribute="trailing" id="5b7-bb-DVU"/>
-                                    <constraint firstItem="e6T-Bl-LSU" firstAttribute="bottom" secondItem="p2M-Xc-rk7" secondAttribute="bottom" id="Vck-Ln-qvk"/>
                                     <constraint firstItem="e6T-Bl-LSU" firstAttribute="top" secondItem="p2M-Xc-rk7" secondAttribute="top" id="db7-LQ-hB3"/>
                                     <constraint firstItem="e6T-Bl-LSU" firstAttribute="leading" secondItem="p2M-Xc-rk7" secondAttribute="leading" id="ywR-ZN-gu7"/>
                                 </constraints>

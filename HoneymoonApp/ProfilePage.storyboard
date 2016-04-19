@@ -21,16 +21,18 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y1e-ug-ncd">
                                 <rect key="frame" x="117" y="84" width="140" height="166"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XRG-i0-Ssb">
-                                        <rect key="frame" x="0.0" y="0.0" width="140" height="166"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XRG-i0-Ssb">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="150" id="22g-w8-vmp"/>
+                                            <constraint firstAttribute="width" constant="150" id="ISO-kc-ABU"/>
+                                        </constraints>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="XRG-i0-Ssb" firstAttribute="bottom" secondItem="Y1e-ug-ncd" secondAttribute="bottom" id="3P5-gn-chU"/>
                                     <constraint firstItem="XRG-i0-Ssb" firstAttribute="leading" secondItem="Y1e-ug-ncd" secondAttribute="leading" id="D2H-L8-dUt"/>
                                     <constraint firstItem="XRG-i0-Ssb" firstAttribute="top" secondItem="Y1e-ug-ncd" secondAttribute="top" id="i9R-sq-yGR"/>
-                                    <constraint firstItem="XRG-i0-Ssb" firstAttribute="trailing" secondItem="Y1e-ug-ncd" secondAttribute="trailing" id="xG5-Hr-dvc"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HJ5-Ko-Ljj">
