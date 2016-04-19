@@ -38,10 +38,6 @@
     
 }
 
-
-
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -68,9 +64,6 @@
     self.labelYConstraint.active = YES;
     [labelHeadline.heightAnchor constraintEqualToConstant:100];
     [labelHeadline.widthAnchor constraintEqualToAnchor: headerView.widthAnchor].active = YES;
-   
-
-    
     
     //
     self.tableView.parallaxHeader.view = headerView;
@@ -104,6 +97,7 @@
             }
         }
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+        [self viewDidLoad];
         NSLog(@"Detail image query done");
     }];
 }

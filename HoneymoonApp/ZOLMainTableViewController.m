@@ -48,7 +48,10 @@
             }
         }
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
-        //do something when we're done?
+        if (error)
+        {
+            [self viewDidLoad];
+        }
         NSLog(@"Image query done");
     }];
 }
@@ -58,7 +61,6 @@
     return UIStatusBarStyleLightContent;
 }
 
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -66,7 +68,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.dataStore.mainFeed.count;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ZOLMainCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellMain" forIndexPath:indexPath];
@@ -82,13 +83,6 @@
     return cell;
 }
 
-//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSLog(@"row selected: %lu", indexPath.row);
-//    ZOLHoneymoon *honeymoonSelected = self.dataStore.mainFeed[indexPath.row];
-//    
-//    self.imagesToPush = honeymoonSelected.honeymoonImages;
-//}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqual: @"feedSegue"]) {
         UINavigationController *destinationVC = [segue destinationViewController];
@@ -103,7 +97,6 @@
         tableVC.parralaxHeaderImage = honeymoonSelected.coverPicture;
     }
 }
-
 
 - (IBAction)mainFeedPullToRefresh:(UIRefreshControl *)sender {
     //Grab the next honeymoons in the main feed query

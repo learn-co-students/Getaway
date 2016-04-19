@@ -149,10 +149,10 @@
                     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentErrorAlert:) name:@"HoneymoonError" object:nil];
                     
                     [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
-                        
+                    
                         if(error) {
                             NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
-                            return;
+                            [self checkAndHandleiCloudStatus];
                         }
                         else {
                             [self presentNextVC];
