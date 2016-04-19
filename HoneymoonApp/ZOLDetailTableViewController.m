@@ -64,7 +64,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -72,7 +71,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.localImageArray.count;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    
@@ -85,7 +83,6 @@
     
     return cell;
 }
-
 
 - (IBAction)detailPullToRefresh:(UIRefreshControl *)sender {
     //TODO: kicks off heavy query with cursor and starts to get more images
