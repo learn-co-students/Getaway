@@ -1,5 +1,6 @@
 PODS:
-  - HCSStarRatingView (1.4.3)
+
+  - HCSStarRatingView (1.4.4)
   - Masonry (1.0.0)
   - MXParallaxHeader (0.5.0)
 
@@ -9,7 +10,8 @@ DEPENDENCIES:
   - MXParallaxHeader
 
 SPEC CHECKSUMS:
-  HCSStarRatingView: bada6ae98258c3019531e0218030e2d5ad10765a
+
+  HCSStarRatingView: 25f2497549b80f71fd1b0a2ed3631e5ccaa73362
   Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
   MXParallaxHeader: c7dfdf8d769a8eb868a431ec3aeaf994a147b8bc
 

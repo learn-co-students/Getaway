@@ -94,7 +94,7 @@
         
 //        for (ZOLImage *image in self.localImageArray)
 //        {
-            UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
+        UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
 //            image.picture = retrievedImage;
         ZOLImage *thisImage = self.localImageArray[counter];
         thisImage.picture = retrievedImage;
@@ -110,14 +110,8 @@
         counter++;
 //        }
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
-        //do something when we're done?
         NSLog(@"Detail image query done");
     }];
-
-    
-//    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
-//    self.localImageArray = sharedDatastore.imageArray;
-//    self.localTextArray = sharedDatastore.textArray;
 }
 
 - (void)didReceiveMemoryWarning {

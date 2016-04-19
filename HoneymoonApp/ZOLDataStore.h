@@ -27,6 +27,9 @@
 @property (nonatomic, strong) ZOLCloudKitClient *client;
 
 @property (nonatomic, strong) NSMutableArray *fetchedRecords;
+//@property(nonatomic, assign) NSUInteger cursorLimit; only implement this if the auto limit doesn't do the job.
+@property (readwrite) double doubleValue;
+
 
 //CORE DATA
 //- (void)saveContext;
@@ -34,6 +37,9 @@
 //- (NSURL *)applicationDocumentsDirectory;
 
 + (instancetype) dataStore;
--(void)populateMainFeed;
+-(void)populateMainFeedWithCompletion:(void (^)(NSError *error))completionBlock;
+//-(void) populateMainFeed;
+
+
 
 @end
