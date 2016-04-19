@@ -15,6 +15,7 @@
 @interface ZOLMainTableViewController ()
 
 @property (nonatomic, strong) NSMutableArray *imagesToPush;
+@property (nonatomic, strong) NSMutableArray *detailQueryCursors;
 
 @end
 
@@ -110,7 +111,7 @@
             thisImage.caption = record[@"Caption"];
             thisImage.imageRecordID = record.recordID;
             
-            [thisHoneymoon.honeymoonImages insertObject:thisImage atIndex:0];
+            [thisHoneymoon.honeymoonImages addObject:thisImage];
         } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
             if (error)
             {

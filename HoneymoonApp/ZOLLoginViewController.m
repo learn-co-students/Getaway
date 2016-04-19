@@ -59,7 +59,7 @@
                 self.dataStore = [ZOLDataStore dataStore];
                 if (self.dataStore.user)
                 {
-                    [self.dataStore populateMainFeed];
+//                    [self.dataStore populateMainFeed];
                 }
                 else
                 {

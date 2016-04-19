@@ -31,29 +31,23 @@
     CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
     NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
     CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
-    NSArray *relevantKeys = @[@"Picture"];
+    NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
     
-    __block NSInteger counter = 0;
     [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys everyRecord:^(CKRecord *record) {
-        //TODO: Fix captions by adding a record ID to images and asssociating them with the proper cell
-        
-//        for (ZOLImage *image in self.localImageArray)
-//        {
-        UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
-//            image.picture = retrievedImage;
-        ZOLImage *thisImage = self.localImageArray[counter];
-        thisImage.picture = retrievedImage;
-//            NSUInteger rowOfImage = [self.localImageArray indexOfObject:image];
-//            NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
-        NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:counter inSection:0];
-
-        
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                NSLog(@"About to reload cell at indexpath: %lu", indexPathForImage.row);
-                [self.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
+        for (ZOLImage *image in self.localImageArray)
+        {
+            if ([image.imageRecordID isEqual:record.recordID])
+            {
+                UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
+                image.picture = retrievedImage;
+                NSUInteger rowOfImage = [self.localImageArray indexOfObject:image];
+                NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    NSLog(@"About to reload cell at indexpath: %lu", indexPathForImage.row);
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
                 }];
-        counter++;
-//        }
+            }
+        }
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
         NSLog(@"Detail image query done");
     }];
@@ -83,13 +77,6 @@
     
     return cell;
 }
-
-- (IBAction)detailPullToRefresh:(UIRefreshControl *)sender {
-    //TODO: kicks off heavy query with cursor and starts to get more images
-    [self.tableView reloadData];
-    [sender endRefreshing];
-}
-
 
 /*
 // Override to support conditional editing of the table view.

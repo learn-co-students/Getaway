@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <CloudKit/CloudKit.h>
-@class ZOLDataStore;
 
+
+@class ZOLDataStore;
 
 //#import "ZOLMainTableViewController.h"
 
@@ -20,7 +21,7 @@
 //@property (nonatomic, strong) ZOLUser *idForUserClass;
 
 
--(BOOL)doWeHaveInternetAccess;
+//-(BOOL)doWeHaveInternetAccess;
 - (void)presentNextVC;
 //- (void)loginNewUser;
 - (void)zolaAppWillWaitForYou;

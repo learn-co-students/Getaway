@@ -20,7 +20,7 @@
 @property (nonatomic, strong) ZOLUser *idForUser;
 
 - (void)getAllTheRecords;
-- (void)createBlankHoneyMoon;
+- (void)createBlankHoneymoon;
 
 
 @end

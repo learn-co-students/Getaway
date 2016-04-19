@@ -16,7 +16,6 @@
 
 + (instancetype)dataStore
 {
-    NSLog(@"shared datastore created");
     static ZOLDataStore *_sharedDataStore = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -67,12 +66,10 @@
         
         [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database forKeys:captionKey everyRecord:^(CKRecord *record) {
             ZOLImage *thisImage = [[ZOLImage alloc]init];
-            CKAsset *thisPicture = record[@"Picture"];
-            UIImage *pictureForZOLImage = [self.client retrieveUIImageFromAsset:thisPicture];
-            thisImage.picture = pictureForZOLImage;
             thisImage.caption = record[@"Caption"];
+            thisImage.imageRecordID = record.recordID;
             
-            [thisHoneymoon.honeymoonImages insertObject:thisImage atIndex:0];
+            [thisHoneymoon.honeymoonImages addObject:thisImage];
         } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
             if (error)
             {

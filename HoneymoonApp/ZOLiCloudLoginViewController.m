@@ -22,16 +22,11 @@
 
 @implementation ZOLiCloudLoginViewController
 
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     NSLog(@"viewDidLoad.");
-    
-    
-    
     
     //-(BOOL)internetIsReachable{
     //
@@ -53,14 +48,12 @@
     //        return YES;
     //}
     
-    
     NSLog(@"self.newUserHasAnaccount = %@", self.newUserHasAnAccount ? @"YES" : @"NO");
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recievedNotificationFromAppDelegate:) name:@"USER_RETURNED_MID_LOGIN" object:nil];
-    
 }
 
--(void)recievedNotificationFromAppDelegate:(NSNotification*)aNotification{
+-(void)recievedNotificationFromAppDelegate:(NSNotification *)aNotification{
     [self checkAndHandleiCloudStatus];
 }
 
@@ -70,7 +63,7 @@
     [self checkAndHandleiCloudStatus];
 };
 
--(void)checkAndHandleiCloudStatus{
+-(void)checkAndHandleiCloudStatus {
     // 1. Get account status
     // 2. If account status is NO, alert user to sign in
     // 3. If account status is YES, set up database and proceed to next VC
@@ -79,14 +72,12 @@
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError * _Nullable error) {
         NSLog(@"Entered account status code block!");
         
-        
         if (error) {
-            NSLog(@"Error loging a first-time user! Error type: %@", error.localizedDescription);
+            NSLog(@"Error logging a first-time user! Error type: %@", error.localizedDescription);
             return;
         }
         NSLog(@"Account status is %ld",(long)accountStatus);
         //'account status = 1' means the user has an active iClould account
-        
         
         if (accountStatus == CKAccountStatusNoAccount) {
             [self.activityIndicator stopAnimating];
@@ -104,9 +95,7 @@
                 [self tellAppDelegateTheUserDoesntHaveiCloudAccount];
             }];
         }
-        
-        
-        if (accountStatus == CKAccountStatusCouldNotDetermine) {
+        else if (accountStatus == CKAccountStatusCouldNotDetermine) {
             UIAlertController *accountNotDetermined = [UIAlertController alertControllerWithTitle:@"Your iCloud account could not be determined" message:@"Please resolve iCloud account issue" preferredStyle:UIAlertControllerStyleAlert];
             [accountNotDetermined addAction:[UIAlertAction actionWithTitle:@"Okay"style:UIAlertActionStyleCancel handler:nil]];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -114,24 +103,31 @@
                 [self tellAppDelegateTheUserDoesntHaveiCloudAccount];
             }];
         }
-        
-        
-        if (accountStatus == CKAccountStatusAvailable) {
+        else if (accountStatus == CKAccountStatusAvailable) {
             
             NSLog(@"The user who has logged into our app previously has been reverified upon launch");
             
             CKContainer *defaultContainer = [CKContainer defaultContainer];
-            //this is where we freeze
             
             [defaultContainer fetchUserRecordIDWithCompletionHandler:^void(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
                 NSLog(@"IN THE COMPLETEION BLOCK");
-                if (error)
-                {
+                if (error) {
                     NSLog(@"Error fetching User Record ID: %@", error.localizedDescription);
-                }
-                
-                else {
+                    UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"No User Record Found"
+                                                                                       message:@"An error occured while attempting to get your user record, please try again"
+                                                                                preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [self checkAndHandleiCloudStatus];
+                    }];
                     
+                    [userAlert addAction:retryAction];
+                    
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        [self presentViewController:userAlert animated:YES completion:nil];
+                    }];
+
+                }
+                else {
                     self.idForUser = recordID;
                     NSLog(@"Initializing datastore");
                     self.dataStore = [ZOLDataStore dataStore];
@@ -140,29 +136,55 @@
                     
                     [self.dataStore.user getAllTheRecords];
                     
+                    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentErrorAlert:) name:@"HoneymoonError" object:nil];
+                    
                     [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
                         
                         if(error) {
-                            NSLog(@"error, and now i sit :|");
+                            NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
                             return;
                         }
-                        
-                        else{
+                        else {
                             [self presentNextVC];
                             
                         }
-                        
-                        
                     }];
-                    
                 };
-                
             }];
-        };
-        
+        }
+        else if (accountStatus == CKAccountStatusRestricted)
+        {
+            UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"Application Blocked!"
+                                                                               message:@"This application is blocked in Parental Settings"
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self checkAndHandleiCloudStatus];
+            }];
+            
+            [userAlert addAction:retryAction];
+            
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [self presentViewController:userAlert animated:YES completion:nil];
+            }];
+        }
     }];
 };
 
+-(void)presentErrorAlert: (NSNotification *)notification {
+    UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"ERROR!"
+                                                                       message:@"An error occured, please try again"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.dataStore.user getAllTheRecords];
+    }];
+    
+    [userAlert addAction:retryAction];
+    
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [self presentViewController:userAlert animated:YES completion:nil];
+    }];
+    
+}
 
 -(void)presentNextVC {
     
@@ -173,10 +195,8 @@
     
     [self presentViewController:mainVC animated:YES completion:^{
         [self.activityIndicator stopAnimating];
-        [self fetchingYourData];
+        [self setUserAsLoggedIn];
     }];
-    
-    
 }
 
 
@@ -219,33 +239,26 @@
 //}
 
 
--(void) zolaAppWillWaitForYou{
+-(void)zolaAppWillWaitForYou {
     
     UIAlertController *waitForUserToLogIn = [UIAlertController alertControllerWithTitle:@"Go ahead and login to iCloud" message:@"We'll wait for you to get back!" preferredStyle:UIAlertControllerStyleAlert];
     
-    [waitForUserToLogIn addAction:[UIAlertAction actionWithTitle:@"Exit Zola app"
-                                                           style:(UIAlertActionStyleCancel)
+    [waitForUserToLogIn addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                           style:UIAlertActionStyleCancel
                                                          handler:nil]];
     
     [self presentViewController:waitForUserToLogIn animated:YES completion:nil];
-    
 }
 
 //- (IBAction)loginTapped:(id)sender {
 //[self loginNewUser];
 //}
 
--(void)tellAppDelegateTheUserDoesntHaveiCloudAccount{
-    ((AppDelegate*)[UIApplication sharedApplication].delegate).userDidntHaveiCloudAccountAtLogIn = YES;
+-(void)tellAppDelegateTheUserDoesntHaveiCloudAccount {
+    ((AppDelegate *)[UIApplication sharedApplication].delegate).userDidntHaveiCloudAccountAtLogIn = YES;
 }
 
--(void) fetchingYourData{
-    
-    UIAlertController *userOkNotification = [UIAlertController alertControllerWithTitle:@"Logging you in!" message:@"We are fixing up your profile" preferredStyle:UIAlertControllerStyleAlert];
-    
-    [self presentViewController:userOkNotification animated:YES completion:nil];
-    
-    
+-(void)setUserAsLoggedIn {
     NSLog(@"Hey, we are logged in, store YES in userdefaults with KEY LoggedIn");
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LoggedIn"];
 }
