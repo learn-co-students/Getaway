@@ -76,6 +76,7 @@
     self.isCameraModeOn = NO;
     
     [self dismissViewControllerAnimated:NO completion:^{
+       
         UIImagePickerController *libraryController = [[UIImagePickerController alloc] init];
         libraryController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         
@@ -234,6 +235,12 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
             [self.tabBarController presentViewController:acceptViewController animated:YES completion:nil];
         }];
     }
+    
+
+ 
+    
+
+
 }
 
 @end

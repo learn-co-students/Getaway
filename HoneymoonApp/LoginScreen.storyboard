@@ -6,10 +6,10 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Login View Controller-->
+        <!--Li Cloud Login View Controller-->
         <scene sceneID="1x5-Uv-NC0">
             <objects>
-                <viewController id="oxB-wh-Leb" customClass="ZOLLoginViewController" sceneMemberID="viewController">
+                <viewController id="oxB-wh-Leb" customClass="ZOLiCloudLoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SHC-SQ-6Dt"/>
                         <viewControllerLayoutGuide type="bottom" id="VXO-ck-pTZ"/>
@@ -41,6 +41,7 @@
                     <navigationItem key="navigationItem" id="aA2-1r-aOF"/>
                     <connections>
                         <outlet property="activityIndicator" destination="9gj-Xu-ThQ" id="tVA-h5-gto"/>
+                        <outlet property="logInButton" destination="yeK-da-Z9w" id="QmR-M7-wlY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SYs-wZ-kag" userLabel="First Responder" sceneMemberID="firstResponder"/>

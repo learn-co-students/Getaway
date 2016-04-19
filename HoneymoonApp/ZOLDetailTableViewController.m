@@ -1,3 +1,4 @@
+
 //
 //  ZOLDetailTableViewController.m
 //  HoneymoonApp
@@ -13,63 +14,109 @@
 
 @interface ZOLDetailTableViewController ()
 
+@property (nonatomic,strong) NSLayoutConstraint *labelYConstraint;
+
 @end
 
 @implementation ZOLDetailTableViewController
 
+-(void)viewDidAppear:(BOOL)animated{
+
+}
+
 - (IBAction)back:(id)sender {
-    
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    UIImageView *headerView = [UIImageView new];
     
+    //Headline label
+    UILabel *labelHeadline = [[UILabel alloc]init];
+    labelHeadline.text = self.titleString;
+    labelHeadline.textColor = [UIColor whiteColor];
+    labelHeadline.textAlignment = NSTextAlignmentCenter;
+    [labelHeadline setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:35]];
+    labelHeadline.adjustsFontSizeToFitWidth = YES;
+    
+    //Explore
+    
+    
+    UIImageView *exploreIconView = [UIImageView new];
+    
+    headerView.translatesAutoresizingMaskIntoConstraints = NO;
+    labelHeadline.translatesAutoresizingMaskIntoConstraints = NO;
+    exploreIconView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    exploreIconView.image = [UIImage imageNamed:@"explore"];
+    
+    [headerView addSubview:exploreIconView];
+    
+    [exploreIconView.centerYAnchor constraintEqualToAnchor:headerView.centerYAnchor constant:245].active = YES;
+    [exploreIconView.centerXAnchor constraintEqualToAnchor:headerView.centerXAnchor].active = YES;
+    [exploreIconView.widthAnchor constraintEqualToConstant:80].active = YES;
+    [exploreIconView.heightAnchor constraintEqualToConstant:60].active = YES;
+    
+
+    
+    //header
+    [headerView addSubview:labelHeadline ];
+    headerView.image = self.parralaxHeaderImage;
+    headerView.contentMode = UIViewContentModeScaleAspectFill;
+    
+    //Constraints
+ 
+    [labelHeadline.centerXAnchor constraintEqualToAnchor: headerView.centerXAnchor].active = YES;
+    self.labelYConstraint = [labelHeadline.centerYAnchor constraintEqualToAnchor:headerView.centerYAnchor];
+    self.labelYConstraint.active = YES;
+    [labelHeadline.heightAnchor constraintEqualToConstant:20];
+    [labelHeadline.widthAnchor constraintEqualToAnchor: headerView.widthAnchor].active = YES;
+    
+    //
+    self.tableView.parallaxHeader.view = headerView;
+    self.tableView.parallaxHeader.height = self.tableView.frame.size.height - 62;
+    self.tableView.parallaxHeader.mode =  MXParallaxHeaderModeTopFill;
+    self.tableView.parallaxHeader.minimumHeight = 0;
+    
+    self.navigationController.navigationBar.topItem.title = @"";
     self.dataStore = [ZOLDataStore dataStore];
     
     //TODO: Grab the cover image and display that on top
     CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
     NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
     CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
-    NSArray *relevantKeys = @[@"Picture"];
+    NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
     
-    __block NSInteger counter = 0;
     [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys everyRecord:^(CKRecord *record) {
-        //TODO: Fix captions by adding a record ID to images and asssociating them with the proper cell
-        
-//        for (ZOLImage *image in self.localImageArray)
-//        {
-            UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
-//            image.picture = retrievedImage;
-        ZOLImage *thisImage = self.localImageArray[counter];
-        thisImage.picture = retrievedImage;
-//            NSUInteger rowOfImage = [self.localImageArray indexOfObject:image];
-//            NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
-        NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:counter inSection:0];
-
-        
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                NSLog(@"About to reload cell at indexpath: %lu", indexPathForImage.row);
-                [self.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
+        for (ZOLImage *image in self.localImageArray)
+        {
+            if ([image.imageRecordID isEqual:record.recordID])
+            {
+                UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
+                image.picture = retrievedImage;
+                NSUInteger rowOfImage = [self.localImageArray indexOfObject:image];
+                NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    NSLog(@"About to reload cell at indexpath: %lu", indexPathForImage.row);
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
                 }];
-        counter++;
-//        }
+            }
+        }
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
-        //do something when we're done?
         NSLog(@"Detail image query done");
+        if (error)
+        {
+            NSLog(@"Error with detail image query: %@", error.localizedDescription);
+        }
     }];
-
-    
-//    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
-//    self.localImageArray = sharedDatastore.imageArray;
-//    self.localTextArray = sharedDatastore.textArray;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -79,29 +126,14 @@
     return self.localImageArray.count;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    
     ZOLDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detailCell" forIndexPath:indexPath];
-    
     ZOLImage *thisImage = self.localImageArray[indexPath.row];
-    
     cell.image.image = thisImage.picture;
     cell.text.text = thisImage.caption;
-    
     return cell;
-    
-    //TODO: put default image if image isn't loaded yet
-    //TODO: replace default image once image has loaded and reload cell data
 }
-
-
-- (IBAction)detailPullToRefresh:(UIRefreshControl *)sender {
-    //TODO: kicks off heavy query with cursor and starts to get more images
-    [self.tableView reloadData];
-    [sender endRefreshing];
-}
-
 
 /*
 // Override to support conditional editing of the table view.

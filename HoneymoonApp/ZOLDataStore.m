@@ -7,6 +7,7 @@
 //
 
 #import "ZOLDataStore.h"
+#import "ZOLDetailTableViewController.h"
 #import "ZOLTabBarViewController.h"
 
 @implementation ZOLDataStore
@@ -27,11 +28,12 @@
 
 -(instancetype)init
 {
+    NSLog(@"datastore init");
     self = [super init];
     
     if (self)
     {
-        _user = [[ZOLUser alloc]init];
+        _user = [[ZOLUser alloc] init];
         _client = [[ZOLCloudKitClient alloc]init];
         _mainFeed = [[NSMutableArray alloc]init];
     }
@@ -39,9 +41,8 @@
     return self;
 }
 
--(void)populateMainFeed
+-(void)populateMainFeedWithCompletion:(void (^)(NSError *error))completionBlock
 {
-    NSLog(@"about to populate the main feed.");
     NSPredicate *publishedHoneymoons = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
     CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
     NSArray *keysNeeded = @[@"Description", @"Published", @"RatingStars"];
@@ -57,7 +58,6 @@
         thisHoneymoon.rating = [ratingVal floatValue];
         thisHoneymoon.honeymoonDescription = record[@"Description"];
         thisHoneymoon.honeymoonID = record.recordID;
-        NSLog(@"This honeymoon's ID is: %@", thisHoneymoon.honeymoonID);
         
         CKReference *honeymoonRef = [[CKReference alloc]initWithRecordID:thisHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
         NSPredicate *findImages = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", honeymoonRef];
@@ -66,12 +66,10 @@
         
         [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database forKeys:captionKey everyRecord:^(CKRecord *record) {
             ZOLImage *thisImage = [[ZOLImage alloc]init];
-            CKAsset *thisPicture = record[@"Picture"];
-            UIImage *pictureForZOLImage = [self.client retrieveUIImageFromAsset:thisPicture];
-            thisImage.picture = pictureForZOLImage;
             thisImage.caption = record[@"Caption"];
+            thisImage.imageRecordID = record.recordID;
             
-            [thisHoneymoon.honeymoonImages insertObject:thisImage atIndex:0];
+            [thisHoneymoon.honeymoonImages addObject:thisImage];
         } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
             if (error)
             {
@@ -84,19 +82,21 @@
         if (error)
         {
             NSLog(@"Error initializing main feed: %@", error.localizedDescription);
+            completionBlock(error);
         }
         else
         {
             self.mainFeedCursor = cursor;
-            
+                   
             NSLog(@"MainFeedPopulated message sent");
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"MainFeedPopulated" object:nil];
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"MainFeedPopulated" object:nil];   
+
+            completionBlock(nil);
         }
     }];
 }
 
-//CORE DATA
+
 # pragma mark - Core Data stack
 
 //@synthesize managedObjectContext = _managedObjectContext;

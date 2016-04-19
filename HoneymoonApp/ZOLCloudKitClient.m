@@ -94,7 +94,6 @@
 {
     CKQueryOperation *operation;
     
-    //(1)first time through we are passing in a query and will enter the else statement:
     if (query && !cursor)
     {
         operation = [[CKQueryOperation alloc] initWithQuery: query];
@@ -111,8 +110,7 @@
     }
     
     operation.desiredKeys = keys;
-    operation.resultsLimit = 3;
-    //(we enter the block below, fetch the record)
+//    operation.resultsLimit = 3;
     operation.recordFetchedBlock = ^(CKRecord *record)
     {
         recordBlock(record);
