@@ -16,6 +16,5 @@
 
 
 + (void)openCamFunction;
--(void)comingFromProfilePage:(NSNotification *)notification;
 
 @end

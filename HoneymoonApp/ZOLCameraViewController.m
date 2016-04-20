@@ -67,7 +67,7 @@
         self.openCam = NO;
     }
     
-    //    if user coming from profile page automatically switch camera to selfie mode.
+    //    TODO: if user coming from profile page automatically switch camera to selfie mode.
     //[self.switchCameraDirectionButtonTapped sendActionsForControlEvents: UIControlEventTouchUpInside];
     
 }
@@ -95,18 +95,26 @@
     [self.imagePickerController takePicture];
     self.openCam = YES;
 }
-
+//Hitting cancel from camera
 - (IBAction)cancelButtonTapped:(UIButton *)sender
 {
     //If user is accessing the camera from the profile page
     if (self.isComingFromProfilePage == YES)
     {
-        [self.tabBarController setSelectedIndex:1];
-        
-        [self.tabBarController dismissViewControllerAnimated:NO completion:^{
+        self.openCam = NO;
+        [self dismissViewControllerAnimated:NO completion:^{
+            
+            UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+            ZOLTabBarViewController *tabBarViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+            
             self.openCam = YES;
+            self.isComingFromProfilePage = NO;
+            
+            [tabBarViewController setSelectedIndex:2];
+            
+            [self presentViewController: tabBarViewController animated:YES completion:nil];
         }];
-         
+        
     } else {
         [self.tabBarController setSelectedIndex:0];
         
@@ -116,11 +124,37 @@
     }
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+//Hitting cancel from the photo library
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    //If user is canceling from the camera from the profile page
+    if (self.isComingFromProfilePage == YES)
+    {
+        self.openCam = NO;
+        [self dismissViewControllerAnimated:NO completion:^{
+        
+            UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+            ZOLTabBarViewController *tabBarViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+            
+            self.openCam = YES;
+            self.isComingFromProfilePage = NO;
+            
+            [tabBarViewController setSelectedIndex:2];
+            
+            [self presentViewController: tabBarViewController animated:YES completion:nil];
+        }];
+        
+    } else {
+        self.openCam = NO;
+        [self.tabBarController dismissViewControllerAnimated:NO completion:^{
+            
+            UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+            ZOLAcceptPhotoViewController *acceptViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
 
-    self.openCam = YES;
-    
-    [self dismissViewControllerAnimated:NO completion:nil];
+            self.openCam = YES;
+            [self.tabBarController presentViewController:acceptViewController animated:YES completion:nil];
+        }];
+    }
 }
 
 - (IBAction)switchCameraButtonTapped:(UIButton *)sender
@@ -175,7 +209,6 @@
     }
 }
 
-
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
                                id> *)info
@@ -207,11 +240,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
             [tabBarViewController setSelectedIndex:2];
     
             [self presentViewController: tabBarViewController animated:YES completion:nil];
-            
-            
         }];
-            
-        
 
     } else {
  
@@ -235,7 +264,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
         }
         self.openCam = NO;
         [self.tabBarController dismissViewControllerAnimated:NO completion:^{
-    //    [self performSegueWithIdentifier:@"acceptSegue" sender:nil];
+   
             UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
             ZOLAcceptPhotoViewController *acceptViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
                     acceptViewController.currentImage = image;
@@ -245,11 +274,6 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
         }];
     }
     
-
- 
-    
-
-
 }
 
 @end
