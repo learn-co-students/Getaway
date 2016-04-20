@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ZOLProfileViewController : UIViewController
-
+@property(nonatomic) BOOL isComingFromCamera;
 @end

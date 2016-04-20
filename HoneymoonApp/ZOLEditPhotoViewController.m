@@ -11,6 +11,7 @@
 #import "ZOLMainTableViewController.h"
 #import "ZOLSimulatedFeedData.h"
 #import "ZOLScrollViewController.h"
+#import "ZOLProfileViewController.h"
 
 
 @interface ZOLEditPhotoViewController () <UITextFieldDelegate>
@@ -113,12 +114,17 @@
     
     [sharedDatastore.client saveRecord:newImageRecord toDataBase:sharedDatastore.client.database];
     
+    [self performSegueWithIdentifier:@"unwindToPersonalFeed" sender:self];
+    
+
+    
+    
+    
    // [self  dismissViewControllerAnimated:NO completion:nil ];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-    UITabBarController *tabVC = [storyboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
-    [tabVC setSelectedIndex:2];
-    [self presentViewController:tabVC animated:NO completion:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+//    UINavigationController *navVC = [storyboard instantiateViewControllerWithIdentifier:@"personalFeedNav"];
+//    [self presentViewController:navVC animated:NO completion:nil];
     
     
 //    [sharedDatastore.feed addObject:self.acceptedImage];
@@ -131,6 +137,18 @@
     //[self dismissViewControllerAnimated:NO completion:nil];
     
    // [[NSNotificationCenter defaultCenter] postNotificationName:@"Dismiss AcceptVC" object:nil];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+
+    if ([segue.identifier isEqualToString: @"unwindToPersonalFeed"]) {
+    
+        ZOLProfileViewController *destinationVC = segue.destinationViewController;
+        
+        destinationVC.isComingFromCamera = YES;
+    
+    }
+    
 }
 
 /*

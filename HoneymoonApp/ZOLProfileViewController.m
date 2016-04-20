@@ -15,10 +15,24 @@
 @property (strong, nonatomic)IBOutlet UIImageView *imageView;
 @property(nonatomic) BOOL isComingFromProfilePage;
 
+
 @end
 
 @implementation ZOLProfileViewController
+
+-(void)viewDidAppear:(BOOL)animated {
+
+    if (self.isComingFromCamera) {
+        [self performSegueWithIdentifier:@"profileToFeed" sender:nil];
+        self.isComingFromCamera = NO;
+    }
+}
+
+
+
+
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     
  
@@ -67,5 +81,11 @@
         cameraVC.isComingFromProfilePage = YES;
     }
 }
+
+-(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
+    
+
+}
+
 
 @end
