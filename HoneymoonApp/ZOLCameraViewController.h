@@ -12,7 +12,10 @@
 
 @interface ZOLCameraViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property  (nonatomic) BOOL openCam;
+@property (nonatomic)BOOL isComingFromProfilePage;
+
 
 + (void)openCamFunction;
+-(void)comingFromProfilePage:(NSNotification *)notification;
 
 @end

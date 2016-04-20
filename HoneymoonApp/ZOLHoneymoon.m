@@ -27,7 +27,9 @@
     return self;
 }
 
+
 //Fetch all the images associated with a honeymoon from CloudKit, make them into ZOLImage objects and add them to this ZOLHoneymoon
+
 -(void)populateHoneymoonImages
 {
     CKReference *referenceToHoneymoon = [[CKReference alloc]initWithRecordID:self.honeymoonID action:CKReferenceActionDeleteSelf];
