@@ -9,6 +9,7 @@
 #import "ZOLCameraViewController.h"
 #import "ZOLAcceptPhotoViewController.h"
 #import "ZOLProfileViewController.h"
+#import "ZOLTabBarViewController.h"
 
 
 
@@ -194,15 +195,23 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
 
         //Transition back to the profile page
         self.openCam = NO;
-//        [self.tabBarController setSelectedIndex:0];
+
         [self dismissViewControllerAnimated:NO completion:^{
+            
             UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-            ZOLProfileViewController *profileViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"profileViewController"];
+            ZOLTabBarViewController *tabBarViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+            
             self.openCam = YES;
             self.isComingFromProfilePage = NO;
             
-            [self presentViewController:profileViewController animated:YES completion:nil];
+            [tabBarViewController setSelectedIndex:2];
+    
+            [self presentViewController: tabBarViewController animated:YES completion:nil];
+            
+            
         }];
+            
+        
 
     } else {
  
