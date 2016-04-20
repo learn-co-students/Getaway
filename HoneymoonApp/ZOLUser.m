@@ -29,7 +29,7 @@
 - (void)getAllTheRecords {
     
     NSLog(@"get all the records");
-    if (self.userID && !self.userHoneymoon) {
+    if (self.userID) {
         
         CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.userID action:CKReferenceActionDeleteSelf];
         NSPredicate *userSearch = [NSPredicate predicateWithFormat:@"User == %@", referenceToUser];

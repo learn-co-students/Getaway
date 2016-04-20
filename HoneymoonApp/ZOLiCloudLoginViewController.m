@@ -17,8 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *logInButton;
 @property (nonatomic, strong) CKRecordID *idForUserClassFile;
-@property (nonatomic, strong) NSString *firstNameStore;
-@property (nonatomic, strong) NSString *lastNameStore;
 
 @end
 
@@ -27,20 +25,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-//    [[CKContainer defaultContainer] requestApplicationPermission:CKApplicationPermissionUserDiscoverability completionHandler:^(CKApplicationPermissionStatus applicationPermissionStatus, NSError * _Nullable error) {
-//        if (applicationPermissionStatus == CKApplicationPermissionStatusGranted)
-//        {
-//            [[CKContainer defaultContainer] discoverUserInfoWithUserRecordID:self.dataStore.user.userID completionHandler:^(CKDiscoveredUserInfo * _Nullable userInfo, NSError * _Nullable error) {
-//                self.firstNameStore = userInfo.displayContact.givenName;
-//                self.lastNameStore = userInfo.displayContact.familyName;
-//            }];
-//            
-//            
-//        }
-//    }];
 
-    
     //-(BOOL)internetIsReachable{
     //
     //        Reachability *r = [Reachability reachabilityWithHostName:@"www.apple.com"];
@@ -89,8 +74,6 @@
             NSLog(@"Error logging a first-time user! Error type: %@", error.localizedDescription);
             [self checkAndHandleiCloudStatus];
         }
-        NSLog(@"Account status is %ld",(long)accountStatus);
-        //'account status = 1' means the user has an active iClould account
         
         if (accountStatus == CKAccountStatusNoAccount) {
             [self.activityIndicator stopAnimating];
@@ -145,6 +128,24 @@
                     self.dataStore = [ZOLDataStore dataStore];
                     
                     self.dataStore.user.userID = recordID;
+                    
+                    [defaultContainer requestApplicationPermission:CKApplicationPermissionUserDiscoverability completionHandler:^(CKApplicationPermissionStatus applicationPermissionStatus, NSError * _Nullable error) {
+                        if (applicationPermissionStatus == CKApplicationPermissionStatusGranted)
+                        {
+                            [defaultContainer discoverUserInfoWithUserRecordID:self.dataStore.user.userID completionHandler:^(CKDiscoveredUserInfo * _Nullable userInfo, NSError * _Nullable error) {
+                                if (error)
+                                {
+                                    NSLog(@"Error fetching username: %@", error.localizedDescription);
+                                }
+                                else
+                                {
+                                    self.dataStore.user.firstName = userInfo.displayContact.givenName;
+                                    self.dataStore.user.lastName = userInfo.displayContact.familyName;
+                                    self.dataStore.user.userHoneymoon.userName = [NSString stringWithFormat:@"%@ %@", self.dataStore.user.firstName, self.dataStore.user.lastName];
+                                }
+                            }];
+                        }
+                    }];
                     
                     [self.dataStore.user getAllTheRecords];
                     
@@ -204,9 +205,11 @@
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
     ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
     
-    [self presentViewController:mainVC animated:YES completion:^{
-        [self.activityIndicator stopAnimating];
-        [self setUserAsLoggedIn];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [self presentViewController:mainVC animated:YES completion:^{
+            [self.activityIndicator stopAnimating];
+            [self setUserAsLoggedIn];
+        }];
     }];
 }
 

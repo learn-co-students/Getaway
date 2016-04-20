@@ -109,8 +109,6 @@
     [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }
                                              forState:UIControlStateSelected];
     
-
-  
 //    // Push notification setup
 //    UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
 //    [application registerUserNotificationSettings:notificationSettings];

@@ -14,7 +14,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) ZOLDataStore *database;
+@property (strong, nonatomic) ZOLDataStore *dataStore;
 @property (nonatomic) BOOL userDidntHaveiCloudAccountAtLogIn;
 
 @end
