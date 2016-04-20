@@ -113,12 +113,12 @@
     
     [sharedDatastore.client saveRecord:newImageRecord toDataBase:sharedDatastore.client.database];
     
-    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil ];
+   // [self  dismissViewControllerAnimated:NO completion:nil ];
     
-    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-//    UINavigationController *navigationViewController = [storyboard instantiateViewControllerWithIdentifier:@"navController"];
-//    [self presentViewController:navigationViewController animated:NO completion:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+    UITabBarController *tabVC = [storyboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+    [tabVC setSelectedIndex:2];
+    [self presentViewController:tabVC animated:NO completion:nil];
     
     
 //    [sharedDatastore.feed addObject:self.acceptedImage];
