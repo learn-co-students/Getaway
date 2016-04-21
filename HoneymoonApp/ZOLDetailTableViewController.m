@@ -20,9 +20,6 @@
 
 @implementation ZOLDetailTableViewController
 
--(void)viewDidAppear:(BOOL)animated{
-
-}
 
 - (IBAction)back:(id)sender {
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
@@ -31,9 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.tableView.contentInset = UIEdgeInsetsMake(-44, 0, 0, 0);
-    
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
                                                   forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [UIImage new];
@@ -41,7 +36,7 @@
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
     
-  //  [[self navigationController] setNavigationBarHidden:YES animated:YES];
+  //[[self navigationController] setNavigationBarHidden:YES animated:YES];
 
     UIImageView *headerView = [UIImageView new];
     
@@ -53,36 +48,28 @@
     [labelHeadline setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:35]];
     labelHeadline.adjustsFontSizeToFitWidth = YES;
     
+//    DarkOverlayView
+//    UIImageView *overlayView = [UIImageView new];
+//    overlayView.translatesAutoresizingMaskIntoConstraints = NO;
+//    [overlayView setBackgroundColor:[UIColor colorWithRed:255 green:0  blue:0 alpha:1]];
+//    [headerView addSubview:overlayView];
+//    //overlay constraints
+//    [overlayView.widthAnchor constraintEqualToConstant:123];
+//    [overlayView.heightAnchor constraintEqualToConstant:234];
+//    [overlayView.centerXAnchor constraintEqualToAnchor:headerView.centerXAnchor];
+//    [overlayView.centerYAnchor constraintEqualToAnchor:headerView.centerYAnchor];
     
-    //DarkOverlayView
-    UIImageView *overlayView = [UIImageView new];
-    
-    [overlayView setBackgroundColor:[UIColor colorWithRed:255 green:255 blue:255 alpha:0.35]];
-    
-    [overlayView.widthAnchor constraintEqualToAnchor:self.view.widthAnchor];
-    [overlayView.heightAnchor constraintEqualToAnchor:self.view.heightAnchor];
-    [overlayView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor];
-    [overlayView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor];
-    
-    [headerView addSubview:overlayView];
-    
-    
-    //Explore
+    //Explore icon
     UIImageView *exploreIconView = [UIImageView new];
-    
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     labelHeadline.translatesAutoresizingMaskIntoConstraints = NO;
     exploreIconView.translatesAutoresizingMaskIntoConstraints = NO;
-    
     exploreIconView.image = [UIImage imageNamed:@"explore"];
-    
     [headerView addSubview:exploreIconView];
-    
     [exploreIconView.centerYAnchor constraintEqualToAnchor:headerView.centerYAnchor constant:275].active = YES;
     [exploreIconView.centerXAnchor constraintEqualToAnchor:headerView.centerXAnchor].active = YES;
     [exploreIconView.widthAnchor constraintEqualToConstant:80].active = YES;
     [exploreIconView.heightAnchor constraintEqualToConstant:60].active = YES;
-
     
     //header
     [headerView addSubview:labelHeadline ];
@@ -90,14 +77,13 @@
     headerView.contentMode = UIViewContentModeScaleAspectFill;
     
     //Constraints
- 
     [labelHeadline.centerXAnchor constraintEqualToAnchor: headerView.centerXAnchor].active = YES;
     self.labelYConstraint = [labelHeadline.centerYAnchor constraintEqualToAnchor:headerView.centerYAnchor];
     self.labelYConstraint.active = YES;
     [labelHeadline.heightAnchor constraintEqualToConstant:20];
     [labelHeadline.widthAnchor constraintEqualToAnchor: headerView.widthAnchor].active = YES;
     
-    //
+    //Parralaxheader
     self.tableView.parallaxHeader.view = headerView;
     self.tableView.parallaxHeader.height = self.tableView.frame.size.height;
     self.tableView.parallaxHeader.mode =  MXParallaxHeaderModeTopFill;

@@ -13,6 +13,7 @@
 
 @interface ZOLProfileViewController ()
 @property (strong, nonatomic)IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) IBOutlet UILabel *myFeedButton;
 @property(nonatomic) BOOL isComingFromProfilePage;
 
 
@@ -34,9 +35,12 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
- 
-  
+   // self.myFeedButton.frame = self.myFeedButton.bounds;
+    self.myFeedButton.layer.borderColor = [UIColor colorWithRed:239 green:239 blue:244 alpha:1].CGColor;
+    self.myFeedButton.layer.borderWidth = 1.0;
+   // self.myFeedButton.backgroundColor = [UIColor clearColor];
+    self.myFeedButton.layer.cornerRadius = 5;
+    self.myFeedButton.layer.masksToBounds = YES;
     
     //Retrieve document from directory
     NSString * documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
