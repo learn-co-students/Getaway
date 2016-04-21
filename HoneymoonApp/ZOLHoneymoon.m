@@ -43,8 +43,8 @@
         NSLog(@"honeymoon images populated");
         if (operationError)
         {
-            NSLog(@"Error in populateHoneymoonImages - description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
-            [self populateHoneymoonImages];
+            NSLog(@"Error in populateHoneymoonImages - description: %@, code: %lu, domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
+                [self populateHoneymoonImages];
         }
     };
     

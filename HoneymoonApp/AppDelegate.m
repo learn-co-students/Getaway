@@ -109,6 +109,10 @@
     [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }
                                              forState:UIControlStateSelected];
     
+     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                            [UIFont fontWithName:@"HelveticaNeue" size:12], NSFontAttributeName, nil]
+                                  forState:UIControlStateNormal];
+    
 //    // Push notification setup
 //    UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
 //    [application registerUserNotificationSettings:notificationSettings];
