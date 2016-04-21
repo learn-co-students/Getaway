@@ -78,11 +78,6 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
     ZOLTabBarViewController *newVC = [storyboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
     [self presentViewController:newVC animated:YES completion:nil];
-    
-//    [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:^{
-//
-//    }];
-    
 }
 
 - (void)viewDidLoad {
