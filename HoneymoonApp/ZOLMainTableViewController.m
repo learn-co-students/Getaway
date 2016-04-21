@@ -21,6 +21,11 @@
 
 @implementation ZOLMainTableViewController
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.tableView reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -75,6 +80,7 @@
     
     cell.image.image = thisHoneymoon.coverPicture;
     cell.cellRating = thisHoneymoon.rating;
+    cell.userLabel.text = thisHoneymoon.userName;
     [cell drawStarRating];
     
     cell.headlineLabel.text = thisHoneymoon.honeymoonDescription;

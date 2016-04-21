@@ -20,6 +20,7 @@
         NSLog(@"Initializing User properties");
         _userHoneymoon = [[ZOLHoneymoon alloc]init];
         _client = [[ZOLCloudKitClient alloc]init];
+        _username = [[NSUserDefaults standardUserDefaults]stringForKey:@"username"];
     }
     
     return self;

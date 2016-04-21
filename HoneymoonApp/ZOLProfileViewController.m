@@ -13,7 +13,9 @@
 
 @interface ZOLProfileViewController ()
 @property (strong, nonatomic)IBOutlet UIImageView *imageView;
-@property (strong, nonatomic) IBOutlet UILabel *myFeedButton;
+@property (weak, nonatomic) IBOutlet UILabel *username;
+@property (weak, nonatomic) IBOutlet UIButton *myFeedButton;
+
 @property(nonatomic) BOOL isComingFromProfilePage;
 
 
@@ -29,16 +31,14 @@
     }
 }
 
-
-
-
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-   // self.myFeedButton.frame = self.myFeedButton.bounds;
+    
+    self.dataStore = [ZOLDataStore dataStore];
+    
     self.myFeedButton.layer.borderColor = [UIColor colorWithRed:239 green:239 blue:244 alpha:1].CGColor;
     self.myFeedButton.layer.borderWidth = 1.0;
-   // self.myFeedButton.backgroundColor = [UIColor clearColor];
     self.myFeedButton.layer.cornerRadius = 5;
     self.myFeedButton.layer.masksToBounds = YES;
     
@@ -53,7 +53,8 @@
     
     self.imageView.image = retrievedProfileImage;
     
-    
+    NSString *username = [[NSUserDefaults standardUserDefaults]stringForKey:@"username"];
+    self.username.text = username;
 }
 
 //Allows you to reload an image from the documents directory.
@@ -71,11 +72,32 @@
     
     NSDictionary* userInfo = @{@"key": messageToCamera};
     
- [[NSNotificationCenter defaultCenter]postNotificationName:@"Coming From Profile Page" object:self userInfo:userInfo];
-    
-    
-    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"Coming From Profile Page" object:self userInfo:userInfo];
 }
+
+- (IBAction)changeUsernameTapped:(id)sender {
+    UIAlertController *changeUsername = [UIAlertController alertControllerWithTitle:@"Change User Name" message:@"Select a new User Name" preferredStyle:UIAlertControllerStyleAlert];
+    
+    [changeUsername addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"New User Name";
+    }];
+    
+    UIAlertAction *changeName = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[NSUserDefaults standardUserDefaults] setObject:changeUsername.textFields.lastObject.text forKey:@"username"];
+        self.dataStore.user.username = changeUsername.textFields.lastObject.text;
+        self.username.text = changeUsername.textFields.lastObject.text;
+    }];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    
+    [changeUsername addAction:changeName];
+    [changeUsername addAction:cancel];
+    
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [self presentViewController:changeUsername animated:YES completion:nil];
+    }];
+}
+
 
 //#pragma mark - Navigation
 

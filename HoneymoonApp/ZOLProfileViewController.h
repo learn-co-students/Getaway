@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZOLDataStore.h"
 
 @interface ZOLProfileViewController : UIViewController
 @property(nonatomic) BOOL isComingFromCamera;
+@property (nonatomic, strong) ZOLDataStore *dataStore;
 @end

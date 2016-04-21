@@ -44,7 +44,7 @@
 {
     NSPredicate *publishedHoneymoons = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
     CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
-    NSArray *keysNeeded = @[@"Description", @"Published", @"RatingStars"];
+    NSArray *keysNeeded = @[@"Description", @"Published", @"RatingStars", @"Name"];
     
     [self.client queryRecordsWithQuery:intializeMainFeed orCursor:nil fromDatabase:self.client.database forKeys:keysNeeded withQoS:NSQualityOfServiceDefault everyRecord:^(CKRecord *record) {
         ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
@@ -57,6 +57,7 @@
         thisHoneymoon.rating = [ratingVal floatValue];
         thisHoneymoon.honeymoonDescription = record[@"Description"];
         thisHoneymoon.honeymoonID = record.recordID;
+        thisHoneymoon.userName = record[@"Name"];
         
         CKReference *honeymoonRef = [[CKReference alloc]initWithRecordID:thisHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
         NSPredicate *findImages = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", honeymoonRef];
