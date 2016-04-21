@@ -146,9 +146,9 @@
                         [[NSUserDefaults standardUserDefaults] setObject:defaultUsername forKey:@"username"];
                     }
                     
-                    [self.dataStore.user getAllTheRecords];
-                    
                     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentErrorAlert:) name:@"HoneymoonError" object:nil];
+                    
+                    [self.dataStore.user getAllTheRecords];
                     
                     [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
                     
