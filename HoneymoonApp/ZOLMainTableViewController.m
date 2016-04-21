@@ -21,6 +21,11 @@
 
 @implementation ZOLMainTableViewController
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.tableView reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -31,7 +36,7 @@
     CKQuery *honeymoonImageQuery = [[CKQuery alloc] initWithRecordType:@"Honeymoon" predicate:imagePredicate];
     NSArray *relevantKeys = @[@"CoverPicture", @"Published"];
     
-    [self.dataStore.client queryRecordsWithQuery:honeymoonImageQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys everyRecord:^(CKRecord *record) {
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImageQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
         //Put the image we get into the relevant cell
         for (ZOLHoneymoon *honeymoon in self.dataStore.mainFeed)
         {
@@ -51,7 +56,7 @@
         if (error)
         {
         }
-        NSLog(@"Image query done");
+        NSLog(@"Honeymoon CoverImage query done");
     }];
 }
 
@@ -64,6 +69,7 @@
     return 1;
 }
 
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.dataStore.mainFeed.count;
 }
@@ -75,6 +81,7 @@
     
     cell.image.image = thisHoneymoon.coverPicture;
     cell.cellRating = thisHoneymoon.rating;
+    cell.userLabel.text = thisHoneymoon.userName;
     [cell drawStarRating];
     
     cell.headlineLabel.text = thisHoneymoon.honeymoonDescription;
@@ -99,7 +106,7 @@
 
 - (IBAction)mainFeedPullToRefresh:(UIRefreshControl *)sender {
     //Grab the next honeymoons in the main feed query
-    [self.dataStore.client queryRecordsWithQuery:nil orCursor:self.dataStore.mainFeedCursor fromDatabase:self.dataStore.client.database forKeys:nil everyRecord:^(CKRecord *record) {
+    [self.dataStore.client queryRecordsWithQuery:nil orCursor:self.dataStore.mainFeedCursor fromDatabase:self.dataStore.client.database forKeys:nil withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
         ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
         
         CKAsset *coverPictureAsset = record[@"CoverPicture"];
@@ -118,7 +125,7 @@
         CKQuery *findImagesQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
         NSArray *captionKey = @[@"Caption", @"Honeymoon"];
         
-        [self.dataStore.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:captionKey everyRecord:^(CKRecord *record) {
+        [self.dataStore.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:captionKey withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
             
             ZOLImage *thisImage = [[ZOLImage alloc]init];
             thisImage.caption = record[@"Caption"];
@@ -161,6 +168,9 @@
      self.refreshControl = nil;
     [self.refreshControl removeFromSuperview];
 }
+
+//-(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

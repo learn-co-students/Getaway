@@ -29,7 +29,6 @@
 
 -(instancetype)init
 {
-    NSLog(@"datastore init");
     self = [super init];
     
     if (self)
@@ -47,9 +46,9 @@
     NSArray *networkErrorCompolation =@[@"CKErrorNetworkUnavailable", @"CKErrorNetworkFailure", @"CKErrorServiceUnavailable"];
     NSPredicate *publishedHoneymoons = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
     CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
-    NSArray *keysNeeded = @[@"Description", @"Published", @"RatingStars"];
+    NSArray *keysNeeded = @[@"Description", @"Published", @"RatingStars", @"Name"];
     
-    [self.client queryRecordsWithQuery:intializeMainFeed orCursor:nil fromDatabase:self.client.database forKeys:keysNeeded everyRecord:^(CKRecord *record) {
+    [self.client queryRecordsWithQuery:intializeMainFeed orCursor:nil fromDatabase:self.client.database forKeys:keysNeeded withQoS:NSQualityOfServiceDefault everyRecord:^(CKRecord *record) {
         ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
         
         CKAsset *coverPictureAsset = record[@"CoverPicture"];
@@ -60,13 +59,14 @@
         thisHoneymoon.rating = [ratingVal floatValue];
         thisHoneymoon.honeymoonDescription = record[@"Description"];
         thisHoneymoon.honeymoonID = record.recordID;
+        thisHoneymoon.userName = record[@"Name"];
         
         CKReference *honeymoonRef = [[CKReference alloc]initWithRecordID:thisHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
         NSPredicate *findImages = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", honeymoonRef];
         CKQuery *findImagesQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
         NSArray *captionKey = @[@"Caption", @"Honeymoon"];
         
-        [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database forKeys:captionKey everyRecord:^(CKRecord *record) {
+        [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database forKeys:captionKey withQoS:NSQualityOfServiceDefault everyRecord:^(CKRecord *record) {
             ZOLImage *thisImage = [[ZOLImage alloc]init];
             thisImage.caption = record[@"Caption"];
             thisImage.imageRecordID = record.recordID;
@@ -90,6 +90,7 @@
 //            }
             
             NSLog(@"Error initializing main feed: %@", error.localizedDescription);
+            
             completionBlock(error);
              //do we really want to pass an error here?
             
@@ -104,6 +105,16 @@
             completionBlock(nil);
         }
     }];
+}
+
+-(void)displayGenericError
+{
+    UIAlertController *genericErrorAlert = [UIAlertController alertControllerWithTitle:@"An Error Occured" message:@"Please check your internet connection, if the problem persists contact the Getaway Team" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *dismiss = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:nil];
+    
+    [genericErrorAlert addAction:dismiss];
+        
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:genericErrorAlert animated:YES completion:nil];
 }
 
 

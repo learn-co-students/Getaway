@@ -7,6 +7,7 @@
 //
 
 #import "ZOLHeadlineEditViewController.h"
+#import "ZOLTabBarViewController.h"
 
 @interface ZOLHeadlineEditViewController () <UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UITextField *textField;
@@ -39,16 +40,49 @@
     honeymoonToSave[@"Description"] = userHoneymoon.honeymoonDescription;
     honeymoonToSave[@"Published"] = @"YES";
     honeymoonToSave[@"RatingStars"] = @(userHoneymoon.rating);
-    honeymoonToSave[@"Name"] = userHoneymoon.userName;
+    honeymoonToSave[@"Name"] = self.dataStore.user.username;
+    userHoneymoon.userName = self.dataStore.user.username;
     
     [self.dataStore.client.database saveRecord:honeymoonToSave completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
         if (error)
         {
-            NSLog(@"Something went wrong with this one too!: %@", error.localizedDescription);
+            NSLog(@"Something went wrong saving a honeymoon: %@", error.localizedDescription);
         }
     }];
-//    [self.dataStore.client saveRecord:honeymoonToSave toDataBase:self.dataStore.client.database];
-    [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+    
+    BOOL honeymoonFound = NO;
+    NSUInteger foundIndex = 0;
+    
+    for (ZOLHoneymoon *honeymoon in self.dataStore.mainFeed)
+    {
+        CKRecordID *thisHMID = honeymoon.honeymoonID;
+        
+        if ([thisHMID isEqual:userHoneymoon.honeymoonID])
+        {
+            honeymoonFound = YES;
+            foundIndex = [self.dataStore.mainFeed indexOfObject:honeymoon];
+            break;
+        }
+    }
+    
+    if (honeymoonFound)
+    {
+        [self.dataStore.mainFeed removeObjectAtIndex:foundIndex];
+        [self.dataStore.mainFeed insertObject:userHoneymoon atIndex:0];
+    }
+    else
+    {
+        [self.dataStore.mainFeed insertObject:userHoneymoon atIndex:0];
+    }
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+    ZOLTabBarViewController *newVC = [storyboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+    [self presentViewController:newVC animated:YES completion:nil];
+    
+//    [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:^{
+//
+//    }];
+    
 }
 
 - (void)viewDidLoad {

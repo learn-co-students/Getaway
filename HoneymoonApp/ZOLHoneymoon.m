@@ -32,33 +32,36 @@
 
 -(void)populateHoneymoonImages
 {
-    CKReference *referenceToHoneymoon = [[CKReference alloc]initWithRecordID:self.honeymoonID action:CKReferenceActionDeleteSelf];
-    NSPredicate *honeymoonSearch = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", referenceToHoneymoon];
-    CKQuery *findImages = [[CKQuery alloc]initWithRecordType:@"Image" predicate:honeymoonSearch];
-    CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findImages];
-    NSArray *captionKey = @[@"Caption", @"Honeymoon"];
-    findHMOp.desiredKeys = captionKey;
-    
-    findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError) {
-        NSLog(@"honeymoon images populated");
-        if (operationError)
-        {
-            NSLog(@"Error in populateHoneymoonImages - description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
-            [self populateHoneymoonImages];
-        }
-    };
-    
-    findHMOp.recordFetchedBlock = ^(CKRecord *record){
-        ZOLImage *imageToAdd = [[ZOLImage alloc]init];
-        NSString *captionText = record[@"Caption"];
-
-        imageToAdd.caption = captionText;
-        imageToAdd.imageRecordID = record.recordID;
+    if (self.honeymoonID)
+    {
+        CKReference *referenceToHoneymoon = [[CKReference alloc]initWithRecordID:self.honeymoonID action:CKReferenceActionDeleteSelf];
+        NSPredicate *honeymoonSearch = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", referenceToHoneymoon];
+        CKQuery *findImages = [[CKQuery alloc]initWithRecordType:@"Image" predicate:honeymoonSearch];
+        CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findImages];
+        NSArray *captionKey = @[@"Caption", @"Honeymoon"];
+        findHMOp.desiredKeys = captionKey;
         
-        [self.honeymoonImages addObject:imageToAdd];
-    };
-    
-    [[[CKContainer defaultContainer] publicCloudDatabase] addOperation:findHMOp];
+        findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError) {
+            NSLog(@"honeymoon images populated");
+            if (operationError)
+            {
+                NSLog(@"Error in populateHoneymoonImages - description: %@, code: %lu, domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
+                    [self populateHoneymoonImages];
+            }
+        };
+        
+        findHMOp.recordFetchedBlock = ^(CKRecord *record){
+            ZOLImage *imageToAdd = [[ZOLImage alloc]init];
+            NSString *captionText = record[@"Caption"];
+
+            imageToAdd.caption = captionText;
+            imageToAdd.imageRecordID = record.recordID;
+            
+            [self.honeymoonImages addObject:imageToAdd];
+        };
+        
+        [[[CKContainer defaultContainer] publicCloudDatabase] addOperation:findHMOp];
+    }
 }
 
 //Take the data gathered from the user and save their updated honeymoon to CloudKit
