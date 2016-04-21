@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -29,12 +30,21 @@
                                 <rect key="frame" x="282" y="314" width="37" height="37"/>
                                 <color key="color" red="0.59607843140000005" green="0.1019607843" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GetawayLogoText.v1" translatesAutoresizingMaskIntoConstraints="NO" id="5U9-vJ-Drn">
+                                <rect key="frame" x="210" y="162" width="180" height="96"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="180" id="5TG-zG-qcH"/>
+                                    <constraint firstAttribute="width" secondItem="5U9-vJ-Drn" secondAttribute="height" multiplier="15:8" id="ACW-W8-YpA"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.38635352253913879" green="0.86177140474319458" blue="0.75946849584579468" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.99607843137254903" green="0.73333333333333328" blue="0.070588235294117646" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="yeK-da-Z9w" firstAttribute="centerY" secondItem="o3J-F1-Zwb" secondAttribute="centerY" id="6r3-3g-f1v"/>
+                            <constraint firstItem="5U9-vJ-Drn" firstAttribute="centerX" secondItem="o3J-F1-Zwb" secondAttribute="centerX" id="83W-2u-YQ9"/>
                             <constraint firstItem="9gj-Xu-ThQ" firstAttribute="centerX" secondItem="o3J-F1-Zwb" secondAttribute="centerX" id="WDf-H4-AKr"/>
                             <constraint firstItem="yeK-da-Z9w" firstAttribute="centerX" secondItem="o3J-F1-Zwb" secondAttribute="centerX" id="gkV-qf-Hin"/>
+                            <constraint firstItem="5U9-vJ-Drn" firstAttribute="centerY" secondItem="o3J-F1-Zwb" secondAttribute="centerY" multiplier="0.7" id="iPd-rA-PcO"/>
                             <constraint firstItem="9gj-Xu-ThQ" firstAttribute="top" secondItem="yeK-da-Z9w" secondAttribute="bottom" constant="-1" id="vcN-1N-YGZ"/>
                         </constraints>
                     </view>
@@ -142,4 +152,7 @@
             <point key="canvasLocation" x="1355" y="1252"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="GetawayLogoText.v1" width="512" height="91"/>
+    </resources>
 </document>
