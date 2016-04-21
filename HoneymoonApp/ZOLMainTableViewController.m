@@ -158,6 +158,8 @@
 -(void)stopRefreshSpin: (NSNotification *)notification
 {
     [self.refreshControl endRefreshing];
+     self.refreshControl = nil;
+    [self.refreshControl removeFromSuperview];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -18,15 +18,12 @@
 
 @property (strong, nonatomic) ZOLDataStore *dataStore;
 @property (nonatomic, strong) CKRecordID *idForUser;
-//@property (nonatomic, strong) ZOLUser *idForUserClass;
+@property (nonatomic, strong) NSArray *networkErrorCompolation;
 
-
-//-(BOOL)doWeHaveInternetAccess;
-- (void)presentNextVC;
+-(BOOL) isNetworkReachable;
+- (void) presentNextVC;
 //- (void)loginNewUser;
-- (void)zolaAppWillWaitForYou;
-- (void)tellAppDelegateTheUserDoesntHaveiCloudAccount;
-
-
+- (void) zolaAppWillWaitForYou;
+- (void) tellAppDelegateTheUserDoesntHaveiCloudAccount;
 
 @end

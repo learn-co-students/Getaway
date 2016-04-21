@@ -107,6 +107,7 @@
     {
         NSLog(@"queryRecordsWithQuery needs a query OR cursor, not both or neither");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"QueryRefreshIssue" object:nil];
+        
     }
     
     operation.desiredKeys = keys;

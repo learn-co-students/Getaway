@@ -48,7 +48,7 @@
             
             if (operationError)
             {
-                NSLog(@"Error searching for user honeymoon, description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
+                NSLog(@"Error searching for user honeymoon, description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, (long)operationError.code, operationError.domain);
                 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"HoneymoonError" object:nil];
 

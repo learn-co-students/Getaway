@@ -10,6 +10,7 @@
 #import "ZOLiCloudLoginViewController.h"
 #import "ZOLTabBarViewController.h"
 #import "AppDelegate.h"
+#import <SystemConfiguration/SCNetworkReachability.h>
 
 @interface ZOLiCloudLoginViewController ()
 
@@ -66,6 +67,8 @@
     // 2. If account status is NO, alert user to sign in
     // 3. If account status is YES, set up database and proceed to next VC
     // 4. If account status is not determined, alert user of error tell them thier iCloud id is weird
+    self.networkErrorCompolation =@[@"CKErrorNetworkUnavailable", @"CKErrorNetworkFailure", @"CKErrorServiceUnavailable", @"NSURLErrorDomain", @"NSURLErrorDomain", @"NSURLErrorNotConnectedToInternet", @"Network", @"Internet", @"offline"];
+
     
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError * _Nullable error) {
         NSLog(@"Entered account status code block!");
@@ -106,6 +109,46 @@
             CKContainer *defaultContainer = [CKContainer defaultContainer];
             
             [defaultContainer fetchUserRecordIDWithCompletionHandler:^void(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
+                
+                //if we have an error specific to a network connection problem...
+                if ([[self networkErrorCompolation] containsObject: NSURLErrorDomain]) {
+                    NSLog(@"There was an error with internet connection!");
+                    
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+
+                    UIAlertController *netConnectionError = [UIAlertController alertControllerWithTitle:@"Internet Woes" message:@"Experiencing unstable internet connection" preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *netConnectionAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [self isNetworkReachable];
+                        [netConnectionError addAction:netConnectionAction];
+                        [self presentViewController: netConnectionError animated:YES completion:nil];
+                        NSLog(@"hit Network reachable checker");
+                  
+                        
+                        
+                        if ([self isNetworkReachable]){
+                            NSLog(@"isNetWorkReachable = YES");
+                        
+                            
+                            [self checkAndHandleiCloudStatus];
+                        }
+                        
+                        else{
+                            
+                            UIAlertController *stillNoNetwork = [UIAlertController alertControllerWithTitle:@"Reoccuring Network Issue" message:@"Unable to reach a network connection at this time. Reopen the app when you are within a network." preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertAction *stillNoNetworkAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                            [stillNoNetwork addAction:stillNoNetworkAction];
+                            [self presentViewController:stillNoNetwork animated:YES completion:nil];
+                            [self.activityIndicator stopAnimating];
+                            //Can we include a logo pic here? Apple suggests we go not programatically close the app.
+                        }
+                    }];
+                        
+                    
+       
+                    
+                      }];
+                }
+                // if any other error...
                 if (error) {
                     NSLog(@"Error fetching User Record ID: %@", error.localizedDescription);
                     UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"No User Record Found"
@@ -120,6 +163,7 @@
                     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                         [self presentViewController:userAlert animated:YES completion:nil];
                     }];
+
 
                 }
                 else {
@@ -171,6 +215,7 @@
                                                                         preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [self checkAndHandleiCloudStatus];
+                //if we call this method here, wouldn't we enter an infinite loop?
             }];
             
             [userAlert addAction:retryAction];
@@ -179,8 +224,28 @@
                 [self presentViewController:userAlert animated:YES completion:nil];
             }];
         }
+        
+    
     }];
-};
+
+}
+
+- (BOOL)isNetworkReachable{
+    
+    SCNetworkReachabilityFlags flags;
+    SCNetworkReachabilityRef address;
+    address = SCNetworkReachabilityCreateWithName(NULL, "www.apple.com" );
+    Boolean success = SCNetworkReachabilityGetFlags(address, &flags);
+    CFRelease(address);
+    
+    bool canReach = success
+    && !(flags & kSCNetworkReachabilityFlagsConnectionRequired)
+    && (flags & kSCNetworkReachabilityFlagsReachable);
+    
+    return canReach;
+}
+
+
 
 -(void)presentErrorAlert: (NSNotification *)notification {
     UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"ERROR!"
@@ -251,6 +316,7 @@
 //
 //}];
 //}
+
 
 
 -(void)zolaAppWillWaitForYou {

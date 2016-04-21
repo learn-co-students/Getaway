@@ -12,6 +12,7 @@
 
 @implementation ZOLDataStore
 
+
 # pragma mark - Singleton
 
 + (instancetype)dataStore
@@ -43,6 +44,7 @@
 
 -(void)populateMainFeedWithCompletion:(void (^)(NSError *error))completionBlock
 {
+    NSArray *networkErrorCompolation =@[@"CKErrorNetworkUnavailable", @"CKErrorNetworkFailure", @"CKErrorServiceUnavailable"];
     NSPredicate *publishedHoneymoons = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
     CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
     NSArray *keysNeeded = @[@"Description", @"Published", @"RatingStars"];
@@ -81,8 +83,16 @@
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
         if (error)
         {
+            
+//            if (error == CKErrorNetworkUnavailable || error == CKErrorNetworkFailure || error == CKErrorServiceUnavailable) {
+//                NSLog(@"There was an error with internet connection!");
+//                
+//            }
+            
             NSLog(@"Error initializing main feed: %@", error.localizedDescription);
             completionBlock(error);
+             //do we really want to pass an error here?
+            
         }
         else
         {
