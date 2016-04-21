@@ -9,7 +9,6 @@
 #import "ZOLUser.h"
 
 
-
 @implementation ZOLUser
 
 -(instancetype)init

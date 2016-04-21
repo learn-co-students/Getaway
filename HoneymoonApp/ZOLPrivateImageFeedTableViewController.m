@@ -27,7 +27,7 @@
     CKQuery *honeymoonImageQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:userHoneymoonPredicate];
     NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
     
-    [self.dataStore.client queryRecordsWithQuery:honeymoonImageQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys everyRecord:^(CKRecord *record) {
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImageQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
         //Put the image we get into the relevant cell
         for (ZOLImage *image in self.localImageArray)
         {

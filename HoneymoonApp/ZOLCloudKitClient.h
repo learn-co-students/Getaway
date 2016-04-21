@@ -24,6 +24,7 @@
                     orCursor: (CKQueryCursor *)cursor
                 fromDatabase: (CKDatabase *)database
                      forKeys: (NSArray *)keys
+                     withQoS: (NSQualityOfService)serviceQuality
                  everyRecord: (void(^)(CKRecord *record))recordBlock
              completionBlock: (void(^)(CKQueryCursor *cursor, NSError *error))completionBlock;
 
