@@ -47,7 +47,7 @@
     CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
     NSArray *keysNeeded = @[@"Description", @"Published", @"RatingStars"];
     
-    [self.client queryRecordsWithQuery:intializeMainFeed orCursor:nil fromDatabase:self.client.database forKeys:keysNeeded everyRecord:^(CKRecord *record) {
+    [self.client queryRecordsWithQuery:intializeMainFeed orCursor:nil fromDatabase:self.client.database forKeys:keysNeeded withQoS:NSQualityOfServiceDefault everyRecord:^(CKRecord *record) {
         ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
         
         CKAsset *coverPictureAsset = record[@"CoverPicture"];
@@ -64,7 +64,7 @@
         CKQuery *findImagesQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
         NSArray *captionKey = @[@"Caption", @"Honeymoon"];
         
-        [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database forKeys:captionKey everyRecord:^(CKRecord *record) {
+        [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database forKeys:captionKey withQoS:NSQualityOfServiceDefault everyRecord:^(CKRecord *record) {
             ZOLImage *thisImage = [[ZOLImage alloc]init];
             thisImage.caption = record[@"Caption"];
             thisImage.imageRecordID = record.recordID;
@@ -82,6 +82,7 @@
         if (error)
         {
             NSLog(@"Error initializing main feed: %@", error.localizedDescription);
+            
             completionBlock(error);
         }
         else
@@ -94,6 +95,16 @@
             completionBlock(nil);
         }
     }];
+}
+
+-(void)displayGenericError
+{
+    UIAlertController *genericErrorAlert = [UIAlertController alertControllerWithTitle:@"An Error Occured" message:@"Please check your internet connection, if the problem persists contact the Getaway Team" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *dismiss = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:nil];
+    
+    [genericErrorAlert addAction:dismiss];
+        
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:genericErrorAlert animated:YES completion:nil];
 }
 
 

@@ -18,8 +18,7 @@
 @property (nonatomic, strong) ZOLHoneymoon *userHoneymoon;
 @property (nonatomic, strong) ZOLCloudKitClient *client;
 @property (nonatomic, strong) ZOLUser *idForUser;
-@property (nonatomic, strong) NSString *firstName;
-@property (nonatomic, strong) NSString *lastName;
+@property (nonatomic, strong) NSString *username;
 
 - (void)getAllTheRecords;
 - (void)createBlankHoneymoon;

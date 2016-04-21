@@ -89,6 +89,7 @@
                     orCursor: (CKQueryCursor *)cursor
                 fromDatabase: (CKDatabase *)database
                      forKeys: (NSArray *)keys
+                     withQoS: (NSQualityOfService)serviceQuality
                  everyRecord: (void(^)(CKRecord *record))recordBlock
              completionBlock: (void(^)(CKQueryCursor *cursor, NSError *error))completionBlock
 {
@@ -109,6 +110,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"QueryRefreshIssue" object:nil];
     }
     
+    operation.qualityOfService = serviceQuality;
     operation.desiredKeys = keys;
 //    operation.resultsLimit = 3;
     operation.recordFetchedBlock = ^(CKRecord *record)

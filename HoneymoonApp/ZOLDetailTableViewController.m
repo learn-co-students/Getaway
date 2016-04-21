@@ -89,7 +89,7 @@
     CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
     NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
     
-    [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys everyRecord:^(CKRecord *record) {
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
         for (ZOLImage *image in self.localImageArray)
         {
             if ([image.imageRecordID isEqual:record.recordID])
@@ -99,7 +99,6 @@
                 NSUInteger rowOfImage = [self.localImageArray indexOfObject:image];
                 NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    NSLog(@"About to reload cell at indexpath: %lu", indexPathForImage.row);
                     [self.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
                 }];
             }

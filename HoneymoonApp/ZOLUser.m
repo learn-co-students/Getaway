@@ -9,7 +9,6 @@
 #import "ZOLUser.h"
 
 
-
 @implementation ZOLUser
 
 -(instancetype)init
@@ -32,7 +31,7 @@
     if (self.userID) {
         
         CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.userID action:CKReferenceActionDeleteSelf];
-        NSPredicate *userSearch = [NSPredicate predicateWithFormat:@"User == %@", referenceToUser];
+        NSPredicate *userSearch = [NSPredicate predicateWithFormat:@"%K == %@", @"User", referenceToUser];
         CKQuery *findHoneymoon = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:userSearch];
         CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findHoneymoon];
         findHMOp.resultsLimit = 1;

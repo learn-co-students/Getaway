@@ -59,6 +59,7 @@
     self.logInButton.hidden = YES;
     [self.activityIndicator startAnimating];
     [self checkAndHandleiCloudStatus];
+    
 };
 
 -(void)checkAndHandleiCloudStatus {
@@ -107,7 +108,7 @@
             
             [defaultContainer fetchUserRecordIDWithCompletionHandler:^void(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
                 if (error) {
-                    NSLog(@"Error fetching User Record ID: %@", error.localizedDescription);
+                    NSLog(@"Error fetching User Record ID: %@, code: %lu, domain: %@", error.localizedDescription, error.code, error.domain);
                     UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"No User Record Found"
                                                                                        message:@"An error occured while attempting to get your user record, please try again"
                                                                                 preferredStyle:UIAlertControllerStyleAlert];
@@ -129,23 +130,21 @@
                     
                     self.dataStore.user.userID = recordID;
                     
-                    [defaultContainer requestApplicationPermission:CKApplicationPermissionUserDiscoverability completionHandler:^(CKApplicationPermissionStatus applicationPermissionStatus, NSError * _Nullable error) {
-                        if (applicationPermissionStatus == CKApplicationPermissionStatusGranted)
+                    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
+                    
+                    if (!username)
+                    {
+                        NSMutableString *uniqueNum = [[NSMutableString alloc]init];
+                        for (NSUInteger i = 0; i < 10; i++)
                         {
-                            [defaultContainer discoverUserInfoWithUserRecordID:self.dataStore.user.userID completionHandler:^(CKDiscoveredUserInfo * _Nullable userInfo, NSError * _Nullable error) {
-                                if (error)
-                                {
-                                    NSLog(@"Error fetching username: %@", error.localizedDescription);
-                                }
-                                else
-                                {
-                                    self.dataStore.user.firstName = userInfo.displayContact.givenName;
-                                    self.dataStore.user.lastName = userInfo.displayContact.familyName;
-                                    self.dataStore.user.userHoneymoon.userName = [NSString stringWithFormat:@"%@ %@", self.dataStore.user.firstName, self.dataStore.user.lastName];
-                                }
-                            }];
+                            NSUInteger randomNum = arc4random_uniform(10);
+                            [uniqueNum appendString:[NSString stringWithFormat:@"%lu", randomNum]];
                         }
-                    }];
+                        NSString *defaultUsername = [NSString stringWithFormat:@"User%@", uniqueNum];
+                        self.dataStore.user.username = defaultUsername;
+                        self.dataStore.user.userHoneymoon.userName = defaultUsername;
+                        [[NSUserDefaults standardUserDefaults] setObject:defaultUsername forKey:@"username"];
+                    }
                     
                     [self.dataStore.user getAllTheRecords];
                     
@@ -155,10 +154,19 @@
                     
                         if(error) {
                             NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
+                            UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
+                                                                                               message:@"An error occured, check your internet connection and try again. If this problem persists, please contact the Getaway team"
+                                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil];
+                            
+                            [feedAlert addAction:retryAction];
+                            
+                            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                [self presentViewController:feedAlert animated:YES completion:nil];
+                            }];
                         }
                         else {
                             [self presentNextVC];
-                            
                         }
                     }];
                 };
