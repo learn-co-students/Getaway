@@ -28,7 +28,6 @@
 
 -(instancetype)init
 {
-    NSLog(@"datastore init");
     self = [super init];
     
     if (self)

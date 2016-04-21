@@ -125,7 +125,6 @@
                 }
                 else {
                     self.idForUser = recordID;
-                    NSLog(@"Initializing datastore");
                     self.dataStore = [ZOLDataStore dataStore];
                     
                     self.dataStore.user.userID = recordID;
