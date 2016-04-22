@@ -20,7 +20,7 @@
 @property (nonatomic, strong) CKRecordID *idForUser;
 @property (nonatomic, strong) NSArray *networkErrorCompolation;
 
--(BOOL) isNetworkReachable;
+- (BOOL) isNetworkReachable;
 - (void) presentNextVC;
 //- (void)loginNewUser;
 - (void) zolaAppWillWaitForYou;

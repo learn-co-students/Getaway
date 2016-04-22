@@ -23,10 +23,11 @@
 
 @implementation ZOLiCloudLoginViewController
 
-- (void)viewDidLoad
+
+-(void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     //-(BOOL)internetIsReachable{
     //
     //        Reachability *r = [Reachability reachabilityWithHostName:@"www.apple.com"];
@@ -52,24 +53,53 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recievedNotificationFromAppDelegate:) name:@"USER_RETURNED_MID_LOGIN" object:nil];
 }
 
--(void)recievedNotificationFromAppDelegate:(NSNotification *)aNotification{
+-(void) recievedNotificationFromAppDelegate:(NSNotification *)aNotification
+{
     [self checkAndHandleiCloudStatus];
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void) viewWillAppear:(BOOL)animated
+{
     self.logInButton.hidden = YES;
-    [self.activityIndicator startAnimating];
-    [self checkAndHandleiCloudStatus];
+   [self.activityIndicator startAnimating];
+//    
+//    if ([self isNetworkReachable]) {
+//        [self checkAndHandleiCloudStatus];
+//    } else {
+//        //[self.activityIndicator startAnimating];
+//        
+//      //  [self ];
+//        // turn activity indicator off
+//        // show alert controller
+//        // add button to allow user to refresh
+//        // in button refresh method, add if/else to handle when internet is re-established(checkInterNetStatus method)
+//    }
+//    
     
 };
 
--(void)checkAndHandleiCloudStatus {
+-(void) checkInternetStatus
+{
+    
+    // if internet is back on
+    //      hide or remove button/refresh
+    //      turn on activity indicator
+    //      call checkAndHandleiCloudStatus method
+    // else
+    //      either another alert
+    //      don't hide or remove button/refresh yet
+    
+}
+
+-(void) checkAndHandleiCloudStatus
+{
     // 1. Get account status
     // 2. If account status is NO, alert user to sign in
     // 3. If account status is YES, set up database and proceed to next VC
     // 4. If account status is not determined, alert user of error tell them thier iCloud id is weird
-    self.networkErrorCompolation =@[@"CKErrorNetworkUnavailable", @"CKErrorNetworkFailure", @"CKErrorServiceUnavailable", @"NSURLErrorDomain", @"NSURLErrorDomain", @"NSURLErrorNotConnectedToInternet", @"Network", @"Internet", @"offline"];
-
+//    self.networkErrorCompolation =@[@"CKErrorNetworkUnavailable", @"CKErrorNetworkFailure", @"CKErrorServiceUnavailable", @"NSURLErrorDomain", @"NSURLErrorDomain", @"NSURLErrorNotConnectedToInternet", @"Network", @"Internet", @"offline"];
+    
+   // [self isNetworkReachable];
     
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError * _Nullable error) {
         NSLog(@"Entered account status code block!");
@@ -112,60 +142,66 @@
             [defaultContainer fetchUserRecordIDWithCompletionHandler:^void(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
                 
                 //if we have an error specific to a network connection problem...
-                if ([[self networkErrorCompolation] containsObject: NSURLErrorDomain]) {
+                
+                if (error.code == 3) {
                     NSLog(@"There was an error with internet connection!");
                     
                     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-
-                    UIAlertController *netConnectionError = [UIAlertController alertControllerWithTitle:@"Internet Woes" message:@"Experiencing unstable internet connection" preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *netConnectionAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        
+                        UIAlertController *netConnectionError = [UIAlertController alertControllerWithTitle:@"Internet Woes" message:@"Experiencing unstable internet connection" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *netConnectionAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            
+                        }];
+                        
+                        if ([self isNetworkReachable]) {
+                            // do stuff
+                        }
+                        
                         [self isNetworkReachable];
+                        NSLog(@"Checking if network is avaiable");
                         [netConnectionError addAction:netConnectionAction];
                         [self presentViewController: netConnectionError animated:YES completion:nil];
                         NSLog(@"hit Network reachable checker");
-                  
+                        
                         
                         
                         if ([self isNetworkReachable]){
                             NSLog(@"isNetWorkReachable = YES");
-                        
+                            
                             
                             [self checkAndHandleiCloudStatus];
                         }
                         
-                        else{
-                            
-                            UIAlertController *stillNoNetwork = [UIAlertController alertControllerWithTitle:@"Reoccuring Network Issue" message:@"Unable to reach a network connection at this time. Reopen the app when you are within a network." preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *stillNoNetworkAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                            [stillNoNetwork addAction:stillNoNetworkAction];
-                            [self presentViewController:stillNoNetwork animated:YES completion:nil];
-                            [self.activityIndicator stopAnimating];
-                            //Can we include a logo pic here? Apple suggests we go not programatically close the app.
-                        }
-                    }];
+//                        else if{
+//                            
+//                            UIAlertController *stillNoNetwork = [UIAlertController alertControllerWithTitle:@"Reoccuring Network Issue" message:@"Unable to reach a network connection at this time. Reopen the app when you are within a network." preferredStyle:UIAlertControllerStyleAlert];
+//                            UIAlertAction *stillNoNetworkAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+//                            [stillNoNetwork addAction:stillNoNetworkAction];
+//                            [self presentViewController:stillNoNetwork animated:YES completion:nil];
+//                            [self.activityIndicator stopAnimating];
+//                            //Can we include a logo pic here? Apple suggests we go not programatically close the app.
+//                        }
+//                        
                         
-                    
-       
-                    
-                      }];
-                }
-                // if any other error...
-                if (error) {
-                    NSLog(@"Error fetching User Record ID: %@, code: %lu, domain: %@", error.localizedDescription, error.code, error.domain);
-                    UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"No User Record Found"
-                                                                                       message:@"An error occured while attempting to get your user record, please try again"
-                                                                                preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        [self checkAndHandleiCloudStatus];
                     }];
+//                }
+//                // if any other error...
+//                else if (error.code !=3) {
+//                    NSLog(@"Error fetching User Record ID: %@, code: %d, domain: %@", error.localizedDescription, error.code, error.domain);
+//                    UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"No User Record Found"
+//                                                                                       message:@"An error occured while attempting to get your user record, please try again"
+//                                                                                preferredStyle:UIAlertControllerStyleAlert];
+//                    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                        [self checkAndHandleiCloudStatus];
+//                    }];
+//                    
+//                    [userAlert addAction:retryAction];
+//                    
+//                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//                        [self presentViewController:userAlert animated:YES completion:nil];
+//                    }];
+//                    
                     
-                    [userAlert addAction:retryAction];
-                    
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        [self presentViewController:userAlert animated:YES completion:nil];
-                    }];
-
-
                 }
                 else {
                     self.idForUser = recordID;
@@ -194,7 +230,7 @@
                     [self.dataStore.user getAllTheRecords];
                     
                     [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
-                    
+                        
                         if(error) {
                             NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
                             UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
@@ -232,12 +268,13 @@
             }];
         }
         
-    
+        
     }];
-
+    
 }
 
-- (BOOL)isNetworkReachable{
+-(BOOL)isNetworkReachable
+{
     
     SCNetworkReachabilityFlags flags;
     SCNetworkReachabilityRef address;
@@ -254,7 +291,8 @@
 
 
 
--(void)presentErrorAlert: (NSNotification *)notification {
+-(void)presentErrorAlert: (NSNotification *)notification
+{
     UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"ERROR!"
                                                                        message:@"An error occured, please try again"
                                                                 preferredStyle:UIAlertControllerStyleAlert];
@@ -270,7 +308,8 @@
     
 }
 
--(void)presentNextVC {
+-(void)presentNextVC
+{
     
     NSLog(@"present next VC was called");
     
@@ -285,48 +324,19 @@
     }];
 }
 
+-(void)setUserAsLoggedIn
+{
+    NSLog(@"Hey, we are logged in, store YES in userdefaults with KEY LoggedIn");
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LoggedIn"];
+}
 
-//Would we want to get rid of the login screen after we've loaded the mainFeed??
-//-(void)dealloc {
-//
-//    NSLog(@"VC is dead dead dead");
-//}
+-(void)tellAppDelegateTheUserDoesntHaveiCloudAccount
+{
+    ((AppDelegate *)[UIApplication sharedApplication].delegate).userDidntHaveiCloudAccountAtLogIn = YES;
+}
 
-
-//
-//- (void)loginNewUser {
-//
-////  self.logInButton.hidden = NO;
-//[self.activityIndicator startAnimating];
-//
-//
-//UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-//ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
-//
-//NSLog(@"Login Tapped");
-//NSLog(@"%d", [self.activityIndicator isAnimating]);
-//
-//[self fetchingYourData];
-//
-//[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//    NSLog(@"Initializing datastore");
-//    self.dataStore = [ZOLDataStore dataStore];
-//    [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
-//        if (error)
-//            NSLog(@"Error initing the datastore");
-//        else{
-//            NSLog(@"Attempting to present VC");
-//            [self presentViewController:mainVC animated:YES completion:nil];
-//        }
-//    }];
-//
-//
-//}];
-//}
-
-
-
--(void)zolaAppWillWaitForYou {
+-(void)zolaAppWillWaitForYou
+{
     
     UIAlertController *waitForUserToLogIn = [UIAlertController alertControllerWithTitle:@"Go ahead and login to iCloud" message:@"We'll wait for you to get back!" preferredStyle:UIAlertControllerStyleAlert];
     
@@ -337,18 +347,15 @@
     [self presentViewController:waitForUserToLogIn animated:YES completion:nil];
 }
 
+
+
 //- (IBAction)loginTapped:(id)sender {
 //[self loginNewUser];
 //}
 
--(void)tellAppDelegateTheUserDoesntHaveiCloudAccount {
-    ((AppDelegate *)[UIApplication sharedApplication].delegate).userDidntHaveiCloudAccountAtLogIn = YES;
-}
 
--(void)setUserAsLoggedIn {
-    NSLog(@"Hey, we are logged in, store YES in userdefaults with KEY LoggedIn");
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LoggedIn"];
-}
+
+
 
 
 
