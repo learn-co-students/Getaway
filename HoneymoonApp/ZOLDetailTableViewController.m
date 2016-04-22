@@ -98,17 +98,19 @@
     CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
     NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
     
+    
+    __weak typeof(self) tmpself = self;
     [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
-        for (ZOLImage *image in self.localImageArray)
+        for (ZOLImage *image in tmpself.localImageArray)
         {
             if ([image.imageRecordID isEqual:record.recordID])
             {
-                UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
+                UIImage *retrievedImage = [tmpself.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
                 image.picture = retrievedImage;
-                NSUInteger rowOfImage = [self.localImageArray indexOfObject:image];
+                NSUInteger rowOfImage = [tmpself.localImageArray indexOfObject:image];
                 NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
+                    [tmpself.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
                 }];
             }
         }

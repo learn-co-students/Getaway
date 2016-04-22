@@ -45,6 +45,8 @@
     
     //Set the background image to the chosen cover image.
     self.backgroundImage.image = self.coverImage;
+    
+    self.dataStore.user.userHoneymoon.coverPicture = self.coverImage;
 }
 - (IBAction)didChangeValue:(HCSStarRatingView *)sender {
     self.rating = sender.value;
