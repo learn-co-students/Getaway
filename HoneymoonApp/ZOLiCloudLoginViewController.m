@@ -17,7 +17,7 @@
 @property (nonatomic, assign) BOOL newUserHasAnAccount;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *logInButton;
-@property (nonatomic, strong) CKRecordID *idForUserClassFile;
+//@property (nonatomic, strong) CKRecordID *idForUserClassFile;
 
 @end
 
@@ -28,43 +28,24 @@
 {
     [super viewDidLoad];
     
-    //-(BOOL)internetIsReachable{
-    //
-    //        Reachability *r = [Reachability reachabilityWithHostName:@"www.apple.com"];
-    //        NetworkStatus internetStatus = [r currentReachabilityStatus];
-    //
-    //        NSLog(@"internet status------%u",ReachableViaWiFi);
-    //        if ((internetStatus != ReachableViaWiFi) && (internetStatus != ReachableViaWWAN))
-    //        {
-    //            NSLog(@"There is no internet avaiable");
-    //            //do something for internet connection...
-    //            return NO;
-    //
-    //        }
-    //
-    //        else{
-    //            NSLog(@"We have internet connection!!");
-    //        }
-    //        return YES;
-    //}
-    
-    NSLog(@"self.newUserHasAnaccount = %@", self.newUserHasAnAccount ? @"YES" : @"NO");
+
+    NSLog(@"(1)self.newUserHasAnaccount = %@", self.newUserHasAnAccount ? @"YES" : @"NO");
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recievedNotificationFromAppDelegate:) name:@"USER_RETURNED_MID_LOGIN" object:nil];
 }
 
--(void) recievedNotificationFromAppDelegate:(NSNotification *)aNotification
+-(void)recievedNotificationFromAppDelegate:(NSNotification *)aNotification
 {
     [self checkAndHandleiCloudStatus];
 }
 
--(void) viewWillAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
     self.logInButton.hidden = YES;
    [self.activityIndicator startAnimating];
 //    
 //    if ([self isNetworkReachable]) {
-//        [self checkAndHandleiCloudStatus];
+        [self checkAndHandleiCloudStatus];
 //    } else {
 //        //[self.activityIndicator startAnimating];
 //        
@@ -78,21 +59,10 @@
     
 };
 
--(void) checkInternetStatus
-{
-    
-    // if internet is back on
-    //      hide or remove button/refresh
-    //      turn on activity indicator
-    //      call checkAndHandleiCloudStatus method
-    // else
-    //      either another alert
-    //      don't hide or remove button/refresh yet
-    
-}
 
 -(void) checkAndHandleiCloudStatus
 {
+    NSLog(@"(2)check and handle icloud");
     // 1. Get account status
     // 2. If account status is NO, alert user to sign in
     // 3. If account status is YES, set up database and proceed to next VC
@@ -153,25 +123,26 @@
                             
                         }];
                         
-                        if ([self isNetworkReachable]) {
-                            // do stuff
-                        }
-                        
-                        [self isNetworkReachable];
-                        NSLog(@"Checking if network is avaiable");
                         [netConnectionError addAction:netConnectionAction];
-                        [self presentViewController: netConnectionError animated:YES completion:nil];
-                        NSLog(@"hit Network reachable checker");
+                        [self presentViewController:netConnectionError animated:YES completion:nil];
+                        [self.activityIndicator stopAnimating];
+                        self.logInButton.hidden = NO;
                         
-                        
-                        
-                        if ([self isNetworkReachable]){
-                            NSLog(@"isNetWorkReachable = YES");
-                            
-                            
-                            [self checkAndHandleiCloudStatus];
-                        }
-                        
+//                        [self isNetworkReachable];
+//                        NSLog(@"Checking if network is avaiable");
+//                        [netConnectionError addAction:netConnectionAction];
+//                        [self presentViewController: netConnectionError animated:YES completion:nil];
+//                        NSLog(@"hit Network reachable checker");
+//                        
+//                        
+//                        
+//                        if ([self isNetworkReachable]){
+//                            NSLog(@"isNetWorkReachable = YES");
+//                            
+//                            
+//                            [self checkAndHandleiCloudStatus];
+                
+                
 //                        else if{
 //                            
 //                            UIAlertController *stillNoNetwork = [UIAlertController alertControllerWithTitle:@"Reoccuring Network Issue" message:@"Unable to reach a network connection at this time. Reopen the app when you are within a network." preferredStyle:UIAlertControllerStyleAlert];
@@ -184,25 +155,33 @@
 //                        
                         
                     }];
+        }
 //                }
-//                // if any other error...
-//                else if (error.code !=3) {
-//                    NSLog(@"Error fetching User Record ID: %@, code: %d, domain: %@", error.localizedDescription, error.code, error.domain);
-//                    UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"No User Record Found"
-//                                                                                       message:@"An error occured while attempting to get your user record, please try again"
-//                                                                                preferredStyle:UIAlertControllerStyleAlert];
-//                    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                        [self checkAndHandleiCloudStatus];
-//                    }];
-//                    
-//                    [userAlert addAction:retryAction];
-//                    
-//                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//                        [self presentViewController:userAlert animated:YES completion:nil];
-//                    }];
-//                    
+                // if any other error...
+                if (error.code !=3 && error !=nil) {
+                    NSLog(@"Error fetching User Record ID: %@, code: %d, domain: %@", error.localizedDescription, error.code, error.domain);
+                    UIAlertController *userIDError = [UIAlertController alertControllerWithTitle:@"No User Record Found"
+                                                                                       message:@"An error occured while attempting to get your user record, please try again"
+                                                                                preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                       
+                        [self checkAndHandleiCloudStatus];
+                    }];
+               
+                                        [userIDError addAction:retryAction];
                     
+                                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                          
+                                            [self presentViewController:userIDError animated:YES completion:nil];
+                                        }];
                 }
+           
+//
+
+                    
+                    
+                    
+            //IF no errors were found in obtaining the userID-->
                 else {
                     self.idForUser = recordID;
                     self.dataStore = [ZOLDataStore dataStore];
@@ -217,7 +196,7 @@
                         for (NSUInteger i = 0; i < 10; i++)
                         {
                             NSUInteger randomNum = arc4random_uniform(10);
-                            [uniqueNum appendString:[NSString stringWithFormat:@"%lu", randomNum]];
+                            [uniqueNum appendString:[NSString stringWithFormat:@"%lu", (unsigned long)randomNum]];
                         }
                         NSString *defaultUsername = [NSString stringWithFormat:@"User%@", uniqueNum];
                         self.dataStore.user.username = defaultUsername;
@@ -250,6 +229,8 @@
                     }];
                 };
             }];
+            
+            //}];
         }
         else if (accountStatus == CKAccountStatusRestricted)
         {
@@ -348,6 +329,37 @@
 }
 
 
+- (IBAction)loginTapped:(id)sender {
+    
+    [self isNetworkReachable];
+    
+    // if user has internet
+    //      hide or remove button/refresh
+    //      call checkAndHandleiCloudStatus method
+    //      [self checkAndHandleiCloudStatus];
+    
+    
+    // else
+    //      (N3)
+    //      either another alert
+    //      don't hide or remove button/refresh
+    
+    if ([self isNetworkReachable]) {
+        NSLog(@"Recalling 'checkAndHandleiCloudStatus AFTER network error ^_^");
+        [self checkAndHandleiCloudStatus];
+    }
+    
+    else{
+        NSLog(@"no net for realzies fools!!!");
+       // self.activityIndicator.hidden = NO;
+        [self.activityIndicator startAnimating];
+        [self isNetworkReachable];
+        //[self noNetworkError];
+        
+    
+    
+    }
+};
 
 //- (IBAction)loginTapped:(id)sender {
 //[self loginNewUser];
@@ -355,9 +367,26 @@
 
 
 
-
-
-
+////additionan internet checker method:
+//-(BOOL)internetIsReachable{
+//
+//        Reachability *r = [Reachability reachabilityWithHostName:@"www.apple.com"];
+//        NetworkStatus internetStatus = [r currentReachabilityStatus];
+//
+//        NSLog(@"internet status------%u",ReachableViaWiFi);
+//        if ((internetStatus != ReachableViaWiFi) && (internetStatus != ReachableViaWWAN))
+//        {
+//            NSLog(@"There is no internet avaiable");
+//            //do something for internet connection...
+//            return NO;
+//
+//        }
+//
+//        else{
+//            NSLog(@"We have internet connection!!");
+//        }
+//        return YES;
+//}
 
 
 @end
