@@ -14,6 +14,7 @@
 
 @interface ZOLiCloudLoginViewController ()
 
+
 @property (nonatomic, assign) BOOL newUserHasAnAccount;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *logInButton;
@@ -182,7 +183,7 @@
                     
                     
             //IF no errors were found in obtaining the userID-->
-                else {
+                else if (error == nil){
                     self.idForUser = recordID;
                     self.dataStore = [ZOLDataStore dataStore];
                     
@@ -295,9 +296,10 @@
     NSLog(@"present next VC was called");
     
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+//    ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
     
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
         [self presentViewController:mainVC animated:YES completion:^{
             [self.activityIndicator stopAnimating];
             [self setUserAsLoggedIn];
@@ -350,7 +352,7 @@
     }
     
     else{
-        NSLog(@"no net for realzies fools!!!");
+        NSLog(@"no interwebs for realzies fools!!!");
        // self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
         [self isNetworkReachable];
