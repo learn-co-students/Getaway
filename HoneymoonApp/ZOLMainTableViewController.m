@@ -36,19 +36,20 @@
     CKQuery *honeymoonImageQuery = [[CKQuery alloc] initWithRecordType:@"Honeymoon" predicate:imagePredicate];
     NSArray *relevantKeys = @[@"CoverPicture", @"Published"];
     
+    __weak typeof(self) tmpself = self;
     [self.dataStore.client queryRecordsWithQuery:honeymoonImageQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
         //Put the image we get into the relevant cell
-        for (ZOLHoneymoon *honeymoon in self.dataStore.mainFeed)
+        for (ZOLHoneymoon *honeymoon in tmpself.dataStore.mainFeed)
         {
             if ([honeymoon.honeymoonID.recordName isEqualToString:record.recordID.recordName])
             {
-                UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"CoverPicture"]];
+                UIImage *retrievedImage = [tmpself.dataStore.client retrieveUIImageFromAsset:record[@"CoverPicture"]];
                 honeymoon.coverPicture = retrievedImage;
-                NSUInteger rowOfHoneymoon = [self.dataStore.mainFeed indexOfObject:honeymoon];
+                NSUInteger rowOfHoneymoon = [tmpself.dataStore.mainFeed indexOfObject:honeymoon];
                 NSIndexPath *indexPathForHoneymoon = [NSIndexPath indexPathForRow:rowOfHoneymoon inSection:0];
                 
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPathForHoneymoon] withRowAnimation:UITableViewRowAnimationNone];
+                    [tmpself.tableView reloadRowsAtIndexPaths:@[indexPathForHoneymoon] withRowAnimation:UITableViewRowAnimationNone];
                 }];
             }
         }

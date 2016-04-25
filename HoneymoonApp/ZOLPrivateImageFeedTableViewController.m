@@ -27,20 +27,21 @@
     CKQuery *honeymoonImageQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:userHoneymoonPredicate];
     NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
     
+    __weak typeof(self) tmpself = self;
     [self.dataStore.client queryRecordsWithQuery:honeymoonImageQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
         //Put the image we get into the relevant cell
-        for (ZOLImage *image in self.localImageArray)
+        for (ZOLImage *image in tmpself.localImageArray)
         {
             NSLog(@"putting image into private image feed");
             if ([image.imageRecordID.recordName isEqualToString:record.recordID.recordName])
             {
-                UIImage *retrievedImage = [self.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
+                UIImage *retrievedImage = [tmpself.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
                 image.picture = retrievedImage;
-                NSUInteger rowOfImage = [self.localImageArray indexOfObject:image];
+                NSUInteger rowOfImage = [tmpself.localImageArray indexOfObject:image];
                 NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
                 
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
+                    [tmpself.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
                 }];
             }
         }
