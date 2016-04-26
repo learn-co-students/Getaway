@@ -18,7 +18,6 @@
 @property (nonatomic, assign) BOOL newUserHasAnAccount;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *logInButton;
-//@property (nonatomic, strong) CKRecordID *idForUserClassFile;
 
 @end
 
@@ -75,17 +74,19 @@
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError * _Nullable error) {
         NSLog(@"Entered account status code block!");
         
-        if (error) {
+        if (error)
+        {
             NSLog(@"Error logging a first-time user! Error type: %@", error.localizedDescription);
             [self checkAndHandleiCloudStatus];
         }
         
-        if (accountStatus == CKAccountStatusNoAccount) {
+        if (accountStatus == CKAccountStatusNoAccount)
+        {
             [self.activityIndicator stopAnimating];
             self.activityIndicator.hidden = YES;
             NSLog(@"No iCloud account active, give 'sign in to icloud' alert");
             
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"iCloud Log In Required"
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"iCloud Login Required"
                                                                            message:@"Go to Settings, tap iCloud, and enter your Apple ID. Switch iCloud Drive on. \n\nIf you don't have an iCloud account, tap 'Create a new Apple ID'."
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -96,7 +97,8 @@
                 [self tellAppDelegateTheUserDoesntHaveiCloudAccount];
             }];
         }
-        else if (accountStatus == CKAccountStatusCouldNotDetermine) {
+        else if (accountStatus == CKAccountStatusCouldNotDetermine)
+        {
             UIAlertController *accountNotDetermined = [UIAlertController alertControllerWithTitle:@"Your iCloud account could not be determined" message:@"Please resolve iCloud account issue" preferredStyle:UIAlertControllerStyleAlert];
             [accountNotDetermined addAction:[UIAlertAction actionWithTitle:@"Okay"style:UIAlertActionStyleCancel handler:nil]];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -104,16 +106,17 @@
                 [self tellAppDelegateTheUserDoesntHaveiCloudAccount];
             }];
         }
-        else if (accountStatus == CKAccountStatusAvailable) {
+        else if (accountStatus == CKAccountStatusAvailable)
+        {
             
             NSLog(@"The user who has logged into our app previously has been reverified upon launch");
-            
             CKContainer *defaultContainer = [CKContainer defaultContainer];
             
             [defaultContainer fetchUserRecordIDWithCompletionHandler:^void(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
                 
                 //if we have an error specific to a network connection problem...
-                if (error.code == 3) {
+                if (error.code == 3)
+                {
                     NSLog(@"There was an error with internet connection!");
                     
                     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -126,44 +129,18 @@
                         [netConnectionError addAction:netConnectionAction];
                         [self presentViewController:netConnectionError animated:YES completion:nil];
                         [self.activityIndicator stopAnimating];
-                        self.logInButton.hidden = NO;
-                        
-                        //                        [self isNetworkReachable];
-                        //                        NSLog(@"Checking if network is avaiable");
-                        //                        [netConnectionError addAction:netConnectionAction];
-                        //                        [self presentViewController: netConnectionError animated:YES completion:nil];
-                        //                        NSLog(@"hit Network reachable checker");
-                        //
-                        //
-                        //
-                        //                        if ([self isNetworkReachable]){
-                        //                            NSLog(@"isNetWorkReachable = YES");
-                        //
-                        //
-                        //                            [self checkAndHandleiCloudStatus];
-                        
-                        
-                        //                        else if{
-                        //
-                        //                            UIAlertController *stillNoNetwork = [UIAlertController alertControllerWithTitle:@"Reoccuring Network Issue" message:@"Unable to reach a network connection at this time. Reopen the app when you are within a network." preferredStyle:UIAlertControllerStyleAlert];
-                        //                            UIAlertAction *stillNoNetworkAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                        //                            [stillNoNetwork addAction:stillNoNetworkAction];
-                        //                            [self presentViewController:stillNoNetwork animated:YES completion:nil];
-                        //                            [self.activityIndicator stopAnimating];
-                        //                            //Can we include a logo pic here? Apple suggests we go not programatically close the app.
-                        //                        }
-                        //
+                         self.logInButton.hidden = NO;
                         
                     }];
                 }
-                //                }
+                
                 // if any other error(not related to internet errors)...
                 if (error.code !=3 && error !=nil) {
-                    NSLog(@"Error fetching User Record ID: %@, code: %li, domain: %@", error.localizedDescription, error.code, error.domain);
+                    NSLog(@"Error fetching User Record ID: %@, code: %ld, domain: %@", error.localizedDescription, error.code, error.domain);
                     UIAlertController *userIDError = [UIAlertController alertControllerWithTitle:@"No User Record Found"
-                                                                                         message:@"An error occured while attempting to get your user record, please try again"
+                                                                                         message:@"An error occured while attempting to get your user record, please try again."
                                                                                   preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                         
                         [self checkAndHandleiCloudStatus];
                     }];
@@ -175,14 +152,10 @@
                         [self presentViewController:userIDError animated:YES completion:nil];
                     }];
                 }
-                
-                //
-                
-                
-                
-                
-                //IF no errors were found in obtaining the userID-->
-                else if (error == nil){
+       
+                //if no errors were found in obtaining the userID-->
+                else if (error == nil)
+                {
                     self.idForUser = recordID;
                     self.dataStore = [ZOLDataStore dataStore];
                     
@@ -207,15 +180,20 @@
                     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentErrorAlert:) name:@"HoneymoonError" object:nil];
                     
                     [self.dataStore.user getAllTheRecords];
-                    
-                    [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
+                    [self.dataStore populateMainFeedWithCompletion:^(NSError *error)
+                    {
                         
-                        if(error) {
-                            NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
+                        if(error)
+                        {
+                            NSLog(@"****error in populateMainFeedWithCompletion: %@", error.localizedDescription);
                             UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
-                                                                                               message:@"A system error occured in obtsining your information. Please try refreshing. If this problem persists, please contact the Getaway team"
-                                                                                        preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                                                                                               message:@"A system error occured in obtaining your information. Please try refreshing. If this problem persists, please contact the Getaway team"
+                                                                                    preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Refresh" style:UIAlertActionStyleDefault handler: ^(UIAlertAction *_Nonnull action)
+                            {
+                                [NSUserDefaults resetStandardUserDefaults];
+                                [self checkAndHandleiCloudStatus];
+                            }];
                             
                             [feedAlert addAction:retryAction];
                             
@@ -223,7 +201,8 @@
                                 [self presentViewController:feedAlert animated:YES completion:nil];
                             }];
                         }
-                        else {
+                        else
+                        {
                             [self presentNextVC];
                         }
                     }];
@@ -234,24 +213,24 @@
         }
         else if (accountStatus == CKAccountStatusRestricted)
         {
-            UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"Application Blocked!"
+            UIAlertController *userRestrictinoAlert = [UIAlertController alertControllerWithTitle:@"Application Blocked!"
                                                                                message:@"This application is blocked in Parental Settings"
                                                                         preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+            {
                 [self checkAndHandleiCloudStatus];
                 //if we call this method here, wouldn't we enter an infinite loop?
             }];
             
-            [userAlert addAction:retryAction];
+            [userRestrictinoAlert addAction:retryAction];
             
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [self presentViewController:userAlert animated:YES completion:nil];
+                [self presentViewController:userRestrictinoAlert animated:YES completion:nil];
             }];
         }
-        
-        
-    }];
     
+    }];
+
 }
 
 -(BOOL)isNetworkReachable
@@ -325,69 +304,30 @@
     [waitForUserToLogIn addAction:[UIAlertAction actionWithTitle:@"OK"
                                                            style:UIAlertActionStyleCancel
                                                          handler:nil]];
-    
     [self presentViewController:waitForUserToLogIn animated:YES completion:nil];
 }
 
 
-- (IBAction)loginTapped:(id)sender {
+- (IBAction)loginTapped:(id)sender
+{
     
     [self isNetworkReachable];
     
-    // if user has internet
-    //      hide or remove button/refresh
-    //      call checkAndHandleiCloudStatus method
-    //      [self checkAndHandleiCloudStatus];
-    
-    
-    // else
-    //      (N3)
-    //      either another alert
-    //      don't hide or remove button/refresh
-    
-    if ([self isNetworkReachable]) {
+    if ([self isNetworkReachable])
+    {
         NSLog(@"Recalling 'checkAndHandleiCloudStatus AFTER network error ^_^");
         [self checkAndHandleiCloudStatus];
     }
     
-    else{
+    else
+    {
         NSLog(@"no interwebs for realzies fools!!!");
         // self.activityIndicator.hidden = NO;
         [self.activityIndicator startAnimating];
         [self isNetworkReachable];
         //[self noNetworkError];
-        
-        
-        
+  
     }
 };
-
-//- (IBAction)loginTapped:(id)sender {
-//[self loginNewUser];
-//}
-
-
-
-////additionan internet checker method:
-//-(BOOL)internetIsReachable{
-//
-//        Reachability *r = [Reachability reachabilityWithHostName:@"www.apple.com"];
-//        NetworkStatus internetStatus = [r currentReachabilityStatus];
-//
-//        NSLog(@"internet status------%u",ReachableViaWiFi);
-//        if ((internetStatus != ReachableViaWiFi) && (internetStatus != ReachableViaWWAN))
-//        {
-//            NSLog(@"There is no internet avaiable");
-//            //do something for internet connection...
-//            return NO;
-//
-//        }
-//
-//        else{
-//            NSLog(@"We have internet connection!!");
-//        }
-//        return YES;
-//}
-
 
 @end
