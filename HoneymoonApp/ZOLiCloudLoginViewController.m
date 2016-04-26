@@ -156,15 +156,17 @@
                 //if no errors were found in obtaining the userID-->
                 else if (error == nil)
                 {
+                    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
+
                     self.idForUser = recordID;
                     self.dataStore = [ZOLDataStore dataStore];
                     
                     self.dataStore.user.userID = recordID;
                     
-                    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
                     
                     if (!username)
                     {
+                        NSLog(@"NO USERNAME FOUND");
                         NSMutableString *uniqueNum = [[NSMutableString alloc]init];
                         for (NSUInteger i = 0; i < 10; i++)
                         {
@@ -175,6 +177,13 @@
                         self.dataStore.user.username = defaultUsername;
                         self.dataStore.user.userHoneymoon.userName = defaultUsername;
                         [[NSUserDefaults standardUserDefaults] setObject:defaultUsername forKey:@"username"];
+                       
+                        //I think we should let the user know we've created a random username for them.
+                        UIAlertController *randUserNameCreated = [UIAlertController alertControllerWithTitle:@"New Username Created" message:@"We've created a random username for you. Feel free to cusomize it on your profile!" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *randUserNameAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                       
+                        [randUserNameCreated addAction:randUserNameAction];
+                        [self presentViewController:randUserNameCreated animated:YES completion:nil];
                     }
                     
                     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentErrorAlert:) name:@"HoneymoonError" object:nil];
@@ -182,12 +191,11 @@
                     [self.dataStore.user getAllTheRecords];
                     [self.dataStore populateMainFeedWithCompletion:^(NSError *error)
                     {
-                        
                         if(error)
                         {
                             NSLog(@"****error in populateMainFeedWithCompletion: %@", error.localizedDescription);
                             UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
-                                                                                               message:@"A system error occured in obtaining your information. Please try refreshing. If this problem persists, please contact the Getaway team"
+                                                 message:@"A system error occured in obtaining your information. Please try refreshing. If this problem persists, please contact the Getaway team"
                                                                                     preferredStyle:UIAlertControllerStyleAlert];
                             UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Refresh" style:UIAlertActionStyleDefault handler: ^(UIAlertAction *_Nonnull action)
                             {
