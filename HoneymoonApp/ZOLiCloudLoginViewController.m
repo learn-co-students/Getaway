@@ -8,6 +8,7 @@
 
 
 #import "ZOLiCloudLoginViewController.h"
+#import <SystemConfiguration/SystemConfiguration.h>
 #import "ZOLTabBarViewController.h"
 #import "AppDelegate.h"
 
@@ -52,7 +53,9 @@
 }
 
 -(void)recievedNotificationFromAppDelegate:(NSNotification *)aNotification{
+
     [self checkAndHandleiCloudStatus];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -72,10 +75,10 @@
         NSLog(@"Entered account status code block!");
         
         if (error) {
-            NSLog(@"Error logging a first-time user! Error type: %@", error.localizedDescription);
-            [self checkAndHandleiCloudStatus];
-        }
-        
+            [self networkHandeler];
+
+    
+            }
         if (accountStatus == CKAccountStatusNoAccount) {
             [self.activityIndicator stopAnimating];
             self.activityIndicator.hidden = YES;
@@ -107,21 +110,11 @@
             CKContainer *defaultContainer = [CKContainer defaultContainer];
             
             [defaultContainer fetchUserRecordIDWithCompletionHandler:^void(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
+                
                 if (error) {
                     NSLog(@"Error fetching User Record ID: %@, code: %lu, domain: %@", error.localizedDescription, error.code, error.domain);
-                    UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"No User Record Found"
-                                                                                       message:@"An error occured while attempting to get your user record, please try again"
-                                                                                preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        [self checkAndHandleiCloudStatus];
-                    }];
+                    [self networkHandeler];
                     
-                    [userAlert addAction:retryAction];
-                    
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        [self presentViewController:userAlert animated:YES completion:nil];
-                    }];
-
                 }
                 else {
                     self.idForUser = recordID;
@@ -221,13 +214,6 @@
 }
 
 
-//Would we want to get rid of the login screen after we've loaded the mainFeed??
-//-(void)dealloc {
-//
-//    NSLog(@"VC is dead dead dead");
-//}
-
-
 //
 //- (void)loginNewUser {
 //
@@ -283,6 +269,50 @@
     NSLog(@"Hey, we are logged in, store YES in userdefaults with KEY LoggedIn");
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LoggedIn"];
 }
+
+-(BOOL)isNetworkReachable
+{
+    
+    SCNetworkReachabilityFlags flags;
+    SCNetworkReachabilityRef address;
+    address = SCNetworkReachabilityCreateWithName(NULL, "www.apple.com" );
+    Boolean success = SCNetworkReachabilityGetFlags(address, &flags);
+    CFRelease(address);
+    
+    bool canReach = success
+    && !(flags & kSCNetworkReachabilityFlagsConnectionRequired)
+    && (flags & kSCNetworkReachabilityFlagsReachable);
+    
+    return canReach;
+}
+
+- (void) networkHandeler
+{
+[self isNetworkReachable];
+
+if ([self isNetworkReachable])
+{
+    [self checkAndHandleiCloudStatus];
+}
+else
+{
+    NSLog(@"No network connection!");
+    UIAlertController *userAlert = [UIAlertController alertControllerWithTitle:@"No User Record Found"
+                                                                       message:@"An error occured while attempting to get your user record, please try again"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self checkAndHandleiCloudStatus];
+    }];
+    
+    [userAlert addAction:retryAction];
+    
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [self presentViewController:userAlert animated:YES completion:nil];
+    }];
+}
+    
+}
+
 
 
 
