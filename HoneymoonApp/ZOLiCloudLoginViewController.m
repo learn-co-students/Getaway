@@ -113,7 +113,6 @@
             [defaultContainer fetchUserRecordIDWithCompletionHandler:^void(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
                 
                 //if we have an error specific to a network connection problem...
-                
                 if (error.code == 3) {
                     NSLog(@"There was an error with internet connection!");
                     
@@ -158,9 +157,9 @@
                     }];
                 }
                 //                }
-                // if any other error...
+                // if any other error(not related to internet errors)...
                 if (error.code !=3 && error !=nil) {
-                    NSLog(@"Error fetching User Record ID: %@, code: %d, domain: %@", error.localizedDescription, error.code, error.domain);
+                    NSLog(@"Error fetching User Record ID: %@, code: %li, domain: %@", error.localizedDescription, error.code, error.domain);
                     UIAlertController *userIDError = [UIAlertController alertControllerWithTitle:@"No User Record Found"
                                                                                          message:@"An error occured while attempting to get your user record, please try again"
                                                                                   preferredStyle:UIAlertControllerStyleAlert];
@@ -214,9 +213,9 @@
                         if(error) {
                             NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
                             UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
-                                                                                               message:@"An error occured, check your internet connection and try again. If this problem persists, please contact the Getaway team"
+                                                                                               message:@"A system error occured in obtsining your information. Please try refreshing. If this problem persists, please contact the Getaway team"
                                                                                         preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil];
+                            UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
                             
                             [feedAlert addAction:retryAction];
                             
@@ -231,7 +230,7 @@
                 };
             }];
             
-            //}];
+            
         }
         else if (accountStatus == CKAccountStatusRestricted)
         {

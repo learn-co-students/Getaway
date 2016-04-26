@@ -118,7 +118,8 @@
         NSLog(@"Detail image query done");
         if (error)
         {
-            NSLog(@"Error with detail image query: %@", error.localizedDescription);
+            NSLog(@"Error with detail image query: %@ error code:%li", error.localizedDescription, error.code);
+            
         }
     }];
 }
