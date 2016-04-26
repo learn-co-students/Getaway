@@ -19,14 +19,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yeK-da-Z9w">
-                                <rect key="frame" x="241" y="285" width="118" height="30"/>
-                                <state key="normal" title="Login with iCloud"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yeK-da-Z9w" userLabel="Network Refresh Button">
+                                <rect key="frame" x="243" y="285" width="115" height="30"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Refresh Network">
+                                            <attributes>
+                                                <font key="NSFont" size="20" name="HelveticaNeue"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                                <state key="focused">
+                                    <attributedString key="attributedTitle"/>
+                                </state>
                                 <connections>
-                                    <action selector="loginTapped:" destination="oxB-wh-Leb" eventType="touchUpInside" id="rBV-82-eWi"/>
+                                    <action selector="networkRefreshTapped:" destination="oxB-wh-Leb" eventType="touchUpInside" id="XFp-jb-syh"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="9gj-Xu-ThQ">
+                            <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="9gj-Xu-ThQ">
                                 <rect key="frame" x="282" y="314" width="37" height="37"/>
                                 <color key="color" red="0.59607843140000005" green="0.1019607843" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
@@ -51,7 +62,7 @@
                     <navigationItem key="navigationItem" id="aA2-1r-aOF"/>
                     <connections>
                         <outlet property="activityIndicator" destination="9gj-Xu-ThQ" id="tVA-h5-gto"/>
-                        <outlet property="logInButton" destination="yeK-da-Z9w" id="QmR-M7-wlY"/>
+                        <outlet property="refreshButtonTapped" destination="yeK-da-Z9w" id="YHR-Gy-U2q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SYs-wZ-kag" userLabel="First Responder" sceneMemberID="firstResponder"/>

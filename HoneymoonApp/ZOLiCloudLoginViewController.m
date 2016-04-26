@@ -17,7 +17,7 @@
 
 @property (nonatomic, assign) BOOL newUserHasAnAccount;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (weak, nonatomic) IBOutlet UIButton *logInButton;
+@property (weak, nonatomic) IBOutlet UIButton *refreshButtonTapped;
 
 @end
 
@@ -41,7 +41,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    self.logInButton.hidden = YES;
+    self.refreshButtonTapped.hidden = YES;
     [self.activityIndicator startAnimating];
     //
     //    if ([self isNetworkReachable]) {
@@ -129,7 +129,7 @@
                         [netConnectionError addAction:netConnectionAction];
                         [self presentViewController:netConnectionError animated:YES completion:nil];
                         [self.activityIndicator stopAnimating];
-                         self.logInButton.hidden = NO;
+                         self.refreshButtonTapped.hidden = NO;
                         
                     }];
                 }
@@ -316,9 +316,8 @@
 }
 
 
-- (IBAction)loginTapped:(id)sender
+- (IBAction)networkRefreshTapped:(id)sender
 {
-    
     [self isNetworkReachable];
     
     if ([self isNetworkReachable])
@@ -334,8 +333,9 @@
         [self.activityIndicator startAnimating];
         [self isNetworkReachable];
         //[self noNetworkError];
-  
+        
     }
-};
+    
+}
 
 @end
