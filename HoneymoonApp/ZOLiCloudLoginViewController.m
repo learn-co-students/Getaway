@@ -61,15 +61,16 @@ self.logInButton.hidden = YES;
             self.activityIndicator.hidden = YES;
             NSLog(@"No iCloud account active, give 'sign in to icloud' alert");
             
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"iCloud Log In Required"
-                                                                           message:@"Go to Settings, tap iCloud, and enter your Apple ID. Switch iCloud Drive on. \n\nIf you don't have an iCloud account, tap 'Create a new Apple ID'."
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action)
-            {
-                [self zolaAppWillWaitForYou];
-            }]];
-            
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                           UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"iCloud Log In Required"
+                                                                                          message:@"Go to Settings, tap iCloud, and enter your Apple ID. Switch iCloud Drive on. \n\nIf you don't have an iCloud account, tap 'Create a new Apple ID'."
+                                                                                   preferredStyle:UIAlertControllerStyleAlert];
+                           [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action)
+                                             {
+                                                 [self zolaAppWillWaitForYou];
+                                             }]];
+                           
+
                 [self presentViewController:alert animated:YES completion:nil];
                 [self tellAppDelegateTheUserDoesntHaveiCloudAccount];
             }];
@@ -127,8 +128,6 @@ self.logInButton.hidden = YES;
                     [self.dataStore.user getAllTheRecords];
                     [self.dataStore populateMainFeedWithCompletion:^(NSError *error)
                     {
-                        
-                        
                          if (error)
                          {
                              if (error.code == 3)
@@ -137,14 +136,15 @@ self.logInButton.hidden = YES;
                              }
                              
                             NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
-                            UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
-                                                 message:@"An error occured while loading user data. Retry to refresh."
-                                          preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:nil];
-                            
-                            [feedAlert addAction:retryAction];
+
                             
                             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
+                                                                                                   message:@"An error occured while loading user data. Retry to refresh."
+                                                                                            preferredStyle:UIAlertControllerStyleAlert];
+                                UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:nil];
+                                
+                                [feedAlert addAction:retryAction];
                                 [self presentViewController:feedAlert animated:YES completion:nil];
                             }];
                                [self.dataStore.user getAllTheRecords];
@@ -161,16 +161,17 @@ self.logInButton.hidden = YES;
         }
         else if (accountStatus == CKAccountStatusRestricted)
         {
-            UIAlertController *userRestrictionAlert = [UIAlertController alertControllerWithTitle:@"Application Blocked!"
-                                 message:@"This application is blocked in Parental Settings"
-                          preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [self checkAndHandleiCloudStatus];
-            }];
-            
-            [userRestrictionAlert addAction:retryAction];
+
             
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                UIAlertController *userRestrictionAlert = [UIAlertController alertControllerWithTitle:@"Application Blocked!"
+                                                                                              message:@"This application is blocked in Parental Settings"
+                                                                                       preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [self checkAndHandleiCloudStatus];
+                }];
+                
+                [userRestrictionAlert addAction:retryAction];
                 [self presentViewController:userRestrictionAlert animated:YES completion:nil];
             }];
         }
@@ -179,16 +180,17 @@ self.logInButton.hidden = YES;
 
 - (void)presentRecordFetchErrorAlert: (NSNotification *)notification
 {
-UIAlertController *recordErrorAlert = [UIAlertController alertControllerWithTitle:@"ERROR!"
-                                                                          message:@"An error occured, please try again"
-                                                                   preferredStyle:UIAlertControllerStyleAlert];
-UIAlertAction *recordErrorAction = [UIAlertAction actionWithTitle:@"Retry"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-{
-    [self.dataStore.user getAllTheRecords];
-}];
-[recordErrorAlert addAction:recordErrorAction];
+
 
 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    UIAlertController *recordErrorAlert = [UIAlertController alertControllerWithTitle:@"ERROR!"
+                                                                              message:@"An error occured, please try again"
+                                                                       preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *recordErrorAction = [UIAlertAction actionWithTitle:@"Retry"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+    {
+        [self.dataStore.user getAllTheRecords];
+    }];
+    [recordErrorAlert addAction:recordErrorAction];
     [self presentViewController:recordErrorAlert animated:YES completion:nil];
 }];
 
@@ -199,11 +201,12 @@ UIAlertAction *recordErrorAction = [UIAlertAction actionWithTitle:@"Retry"  styl
 
 NSLog(@"present next VC was called");
 
-UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+
 
 [[NSOperationQueue mainQueue] addOperationWithBlock:^
     {
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+        ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
     [self presentViewController:mainVC animated:YES completion:^{
         [self.activityIndicator stopAnimating];
         [self setUserAsLoggedIn];
