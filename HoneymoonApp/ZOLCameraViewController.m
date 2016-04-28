@@ -145,14 +145,19 @@
         }];
         
     } else {
-        self.openCam = NO;
-        [self.tabBarController dismissViewControllerAnimated:NO completion:^{
+            self.openCam = NO;
+            [self.tabBarController dismissViewControllerAnimated:NO completion:^{
+                
+                UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
+                ZOLTabBarViewController *tabBarViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
+                
+                self.openCam = YES;
+                
+                [tabBarViewController setSelectedIndex:1];
+                
+                [self presentViewController: tabBarViewController animated:YES completion:nil];
             
-            UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-            ZOLAcceptPhotoViewController *acceptViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
-
-            self.openCam = YES;
-            [self.tabBarController presentViewController:acceptViewController animated:YES completion:nil];
+            
         }];
     }
 }
