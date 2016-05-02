@@ -119,7 +119,6 @@
                     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentRecordFetchErrorAlert:) name:@"HoneymoonError" object:nil];
                     
                     [self.dataStore.user getAllTheRecords];
-                    
                     [self populateMainFeed];
                 };
                 
@@ -148,7 +147,6 @@
         if (error)
         {
             NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
-            
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
                                                                                    message:@"An error occured while loading user data. Retry to refresh."
@@ -185,7 +183,6 @@
 - (void)presentNextVC
 {
     NSLog(@"present next VC was called");
-
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
         ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
