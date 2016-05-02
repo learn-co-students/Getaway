@@ -50,7 +50,6 @@
     {
         NSLog(@"Entered account status code block!");
         
-
         if (accountStatus == CKAccountStatusNoAccount)
         {
             [self.activityIndicator stopAnimating];
@@ -61,15 +60,13 @@
                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"iCloud Log In Required"
                                                                                           message:@"Go to Settings, tap iCloud, and enter your Apple ID. Switch iCloud Drive on. \n\nIf you don't have an iCloud account, tap 'Create a new Apple ID'."
                                                                                    preferredStyle:UIAlertControllerStyleAlert];
-                           [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action)
-                                             {
-                                                 [self zolaAppWillWaitForYou];
-                                             }]];
+                           [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action){
+                               [self zolaAppWillWaitForYou];
+                             }]];
                            
-
-                [self presentViewController:alert animated:YES completion:nil];
-                [self tellAppDelegateTheUserDoesntHaveiCloudAccount];
-            }];
+                           [self presentViewController:alert animated:YES completion:nil];
+                           [self tellAppDelegateTheUserDoesntHaveiCloudAccount];
+                       }];
         }
         
         else if (accountStatus == CKAccountStatusCouldNotDetermine)
@@ -122,33 +119,8 @@
                     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentRecordFetchErrorAlert:) name:@"HoneymoonError" object:nil];
                     
                     [self.dataStore.user getAllTheRecords];
-                    [self.dataStore populateMainFeedWithCompletion:^(NSError *error){
-                         if (error)
-                         {
-                             if (error.code == 3)
-                             {
-                                 [self networkHandler];
-                             }
-                             
-                            NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
-
-                            
-                            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
-                                                                                                   message:@"An error occured while loading user data. Retry to refresh."
-                                                                                            preferredStyle:UIAlertControllerStyleAlert];
-                                UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:nil];
-                                
-                                [feedAlert addAction:retryAction];
-                                [self presentViewController:feedAlert animated:YES completion:nil];
-                            }];
-                            [self.dataStore.user getAllTheRecords];
-                        }
-                        else
-                        {
-                            [self presentNextVC];
-                        }
-                    }];
+                    
+                    [self populateMainFeed];
                 };
                 
             }];
@@ -168,7 +140,33 @@
             }];
         }
     }];
-};
+}
+
+-(void)populateMainFeed
+{
+    [self.dataStore populateMainFeedWithCompletion:^(NSError *error){
+        if (error)
+        {
+            NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
+            
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
+                                                                                   message:@"An error occured while loading user data. Retry to refresh."
+                                                                            preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [self populateMainFeed];
+                }];
+                
+                [feedAlert addAction:retryAction];
+                [self presentViewController:feedAlert animated:YES completion:nil];
+            }];
+        }
+        else
+        {
+            [self presentNextVC];
+        }
+    }];
+}
 
 - (void)presentRecordFetchErrorAlert: (NSNotification *)notification
 {
@@ -176,8 +174,7 @@
         UIAlertController *recordErrorAlert = [UIAlertController alertControllerWithTitle:@"ERROR!"
                                                                                   message:@"An error occured, please try again"
                                                                            preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *recordErrorAction = [UIAlertAction actionWithTitle:@"Retry"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-        {
+        UIAlertAction *recordErrorAction = [UIAlertAction actionWithTitle:@"Retry"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action){
             [self.dataStore.user getAllTheRecords];
         }];
         [recordErrorAlert addAction:recordErrorAction];

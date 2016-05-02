@@ -32,7 +32,6 @@
         //Put the image we get into the relevant cell
         for (ZOLImage *image in tmpself.localImageArray)
         {
-            NSLog(@"putting image into private image feed");
             if ([image.imageRecordID.recordName isEqualToString:record.recordID.recordName])
             {
                 UIImage *retrievedImage = [tmpself.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];

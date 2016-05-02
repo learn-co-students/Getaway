@@ -18,13 +18,12 @@
 
 @end
 
-@implementation ZOLDetailTableViewController
 
+@implementation ZOLDetailTableViewController
 
 - (IBAction)back:(id)sender {
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
