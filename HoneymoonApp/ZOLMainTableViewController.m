@@ -56,6 +56,7 @@
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
         if (error)
         {
+            NSLog(@"Error loading images for main feed: %@", error.localizedDescription);
         }
         NSLog(@"Honeymoon CoverImage query done");
     }];
