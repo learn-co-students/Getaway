@@ -3,6 +3,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -25,10 +27,7 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9AI-nD-A7f">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="527"/>
-
                                             <color key="backgroundColor" red="0.99607843139999996" green="0.73333333329999995" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-
-
                                         </imageView>
                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R7x-WL-3q8">
                                             <rect key="frame" x="-1" y="1" width="376" height="527"/>
@@ -169,16 +168,32 @@
                                     <segue destination="U5f-MX-AfH" kind="show" identifier="profileToCamera" id="YZ4-rg-5df"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PPo-3h-TRP">
-                                <rect key="frame" x="124" y="353" width="127" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PPo-3h-TRP">
+                                <rect key="frame" x="124" y="352" width="127" height="30"/>
                                 <state key="normal" title="change user name"/>
                                 <connections>
                                     <action selector="changeUsernameTapped:" destination="Nyi-ca-wQd" eventType="touchUpInside" id="N5x-Zo-IHd"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Take photos to begin your own getaway" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dBz-pw-w1I">
+                                <rect key="frame" x="36" y="567" width="303" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DownArrow" translatesAutoresizingMaskIntoConstraints="NO" id="4tm-bm-ykT">
+                                <rect key="frame" x="173" y="605" width="30" height="16"/>
+                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="Tbm-j4-yPB"/>
+                                    <constraint firstAttribute="width" secondItem="4tm-bm-ykT" secondAttribute="height" multiplier="15:8" id="joU-Ti-epn"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="dBz-pw-w1I" firstAttribute="centerX" secondItem="eI5-pb-YSn" secondAttribute="centerX" id="36h-0q-Wlk"/>
+                            <constraint firstItem="4tm-bm-ykT" firstAttribute="centerX" secondItem="eI5-pb-YSn" secondAttribute="centerX" id="9Bi-Mu-ea9"/>
                             <constraint firstItem="O79-lC-Fhp" firstAttribute="width" secondItem="eI5-pb-YSn" secondAttribute="width" multiplier="0.8" id="De7-NT-Hgw"/>
                             <constraint firstItem="PPo-3h-TRP" firstAttribute="top" secondItem="O79-lC-Fhp" secondAttribute="bottom" constant="-15" id="Fvh-QW-Jco"/>
                             <constraint firstItem="p2M-Xc-rk7" firstAttribute="width" secondItem="eI5-pb-YSn" secondAttribute="width" multiplier="0.375" id="L9H-MY-6XE"/>
@@ -186,11 +201,13 @@
                             <constraint firstItem="lbh-PG-5vz" firstAttribute="centerX" secondItem="eI5-pb-YSn" secondAttribute="centerX" id="S8g-5o-gdF"/>
                             <constraint firstItem="p2M-Xc-rk7" firstAttribute="height" secondItem="eI5-pb-YSn" secondAttribute="height" multiplier="0.25" id="SMM-Kz-aaF"/>
                             <constraint firstItem="lbh-PG-5vz" firstAttribute="top" secondItem="p2M-Xc-rk7" secondAttribute="bottom" constant="10" id="VE2-c9-S3V"/>
+                            <constraint firstItem="dBz-pw-w1I" firstAttribute="centerY" secondItem="eI5-pb-YSn" secondAttribute="bottom" constant="-90" id="XIM-kY-fQi"/>
                             <constraint firstItem="UBt-kX-Gv4" firstAttribute="centerX" secondItem="O79-lC-Fhp" secondAttribute="centerX" id="Z3W-oY-86W"/>
                             <constraint firstItem="p2M-Xc-rk7" firstAttribute="centerY" secondItem="eI5-pb-YSn" secondAttribute="centerY" multiplier="0.5" id="jFZ-Dc-jXp"/>
                             <constraint firstItem="O79-lC-Fhp" firstAttribute="height" secondItem="eI5-pb-YSn" secondAttribute="height" multiplier="0.1" id="mBy-Ms-6c7"/>
                             <constraint firstItem="UBt-kX-Gv4" firstAttribute="centerY" secondItem="eI5-pb-YSn" secondAttribute="centerY" constant="100" id="oRl-qQ-btq"/>
                             <constraint firstItem="PPo-3h-TRP" firstAttribute="centerX" secondItem="O79-lC-Fhp" secondAttribute="centerX" id="odY-7y-SVL"/>
+                            <constraint firstItem="4tm-bm-ykT" firstAttribute="centerY" secondItem="dBz-pw-w1I" secondAttribute="centerY" constant="35" id="pCI-lB-DCa"/>
                             <constraint firstItem="O79-lC-Fhp" firstAttribute="centerX" secondItem="eI5-pb-YSn" secondAttribute="centerX" id="qVs-3y-Cnf"/>
                             <constraint firstItem="O79-lC-Fhp" firstAttribute="centerY" secondItem="eI5-pb-YSn" secondAttribute="centerY" id="zf0-wV-pff"/>
                         </constraints>
@@ -803,10 +820,7 @@
                                     <constraint firstAttribute="height" constant="50" id="zoH-cN-Cnt"/>
                                 </constraints>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-
-                                <state key="normal" title="Accept" image="2C36B923-D67A-4080-A037-0DEAB0EDE54F"/>
-
-
+                                <state key="normal" title="Accept"/>
                                 <connections>
                                     <action selector="acceptButtonTapped:" destination="6Rs-zZ-eXn" eventType="touchUpInside" id="ffk-kA-sSu"/>
                                 </connections>
@@ -888,9 +902,7 @@
                                     <constraint firstAttribute="width" constant="48" id="cW8-yI-NWS"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-
                                 <state key="normal" title="Save" image="2E061A1A-2296-46C5-B931-930106EC5538"/>
-
                                 <connections>
                                     <action selector="saveButtonTapped:" destination="PCG-y8-OMZ" eventType="touchUpInside" id="cCw-AG-hpN"/>
                                 </connections>
@@ -971,15 +983,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="2C36B923-D67A-4080-A037-0DEAB0EDE54F" width="1200" height="1200">
-
-            <mutableData key="keyedArchiveRepresentation">
-
-</mutableData>
-        </image>
+        <image name="2E061A1A-2296-46C5-B931-930106EC5538" width="263" height="304"/>
         <image name="CameraReverse" width="700" height="582"/>
         <image name="CapturePhoto2" width="64" height="64"/>
-
+        <image name="DownArrow" width="304" height="182"/>
         <image name="Flagged" width="263" height="304"/>
         <image name="PhotoLibrary" width="700" height="599"/>
     </resources>
