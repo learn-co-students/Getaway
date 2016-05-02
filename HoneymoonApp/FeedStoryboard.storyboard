@@ -25,11 +25,13 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9AI-nD-A7f">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="527"/>
-                                            <color key="backgroundColor" red="0.99607843137254903" green="0.73333333333333328" blue="0.070588235294117646" alpha="1" colorSpace="calibratedRGB"/>
+
+                                            <color key="backgroundColor" red="0.99607843139999996" green="0.73333333329999995" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+
+
                                         </imageView>
                                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R7x-WL-3q8">
                                             <rect key="frame" x="-1" y="1" width="376" height="527"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.3469436233108108" colorSpace="calibratedWhite"/>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xyd-Ad-4II">
                                             <rect key="frame" x="0.0" y="184" width="375" height="158"/>
@@ -274,6 +276,9 @@
                             <action selector="privatePullToRefresh:" destination="WjM-OO-sYS" eventType="valueChanged" id="9zC-eI-u3Z"/>
                         </connections>
                     </refreshControl>
+                    <connections>
+                        <outlet property="publishButton" destination="Bbq-DP-BYB" id="Lbe-cD-9Ke"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Twk-cZ-JQn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -336,9 +341,24 @@
                                 <action selector="back:" destination="j6e-PR-rSE" id="Rd8-3Q-UsQ"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Item" style="plain" id="qdI-aY-MW6">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yAK-G5-Y6y">
+                                <rect key="frame" x="334" y="9" width="25" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="Flagged">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="flagged:" destination="j6e-PR-rSE" eventType="touchUpInside" id="M2e-EH-Dvh"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="flaggedButton" destination="yAK-G5-Y6y" id="ZUu-v2-YBs"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wKt-PQ-4aZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -783,7 +803,7 @@
                                     <constraint firstAttribute="height" constant="50" id="zoH-cN-Cnt"/>
                                 </constraints>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Accept"/>
+                                <state key="normal" title="Accept" image="2C36B923-D67A-4080-A037-0DEAB0EDE54F"/>
                                 <connections>
                                     <action selector="acceptButtonTapped:" destination="6Rs-zZ-eXn" eventType="touchUpInside" id="ffk-kA-sSu"/>
                                 </connections>
@@ -865,7 +885,7 @@
                                     <constraint firstAttribute="width" constant="48" id="cW8-yI-NWS"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Save"/>
+                                <state key="normal" title="Save" image="2E061A1A-2296-46C5-B931-930106EC5538"/>
                                 <connections>
                                     <action selector="saveButtonTapped:" destination="PCG-y8-OMZ" eventType="touchUpInside" id="cCw-AG-hpN"/>
                                 </connections>
@@ -946,8 +966,14 @@
         </scene>
     </scenes>
     <resources>
+        <image name="2C36B923-D67A-4080-A037-0DEAB0EDE54F" width="1200" height="1200">
+            <mutableData key="keyedArchiveRepresentation">
+</mutableData>
+        </image>
         <image name="CameraReverse" width="700" height="582"/>
         <image name="CapturePhoto2" width="64" height="64"/>
+
+        <image name="Flagged" width="263" height="304"/>
         <image name="PhotoLibrary" width="700" height="599"/>
     </resources>
     <inferredMetricsTieBreakers>

@@ -8,45 +8,58 @@
 
 #import "ZOLScrollViewController.h"
 #import "ZOLRatingViewController.h"
+#import "ZOLDataStore.h"
+
+static const BOOL loggingEnabled = NO;
 
 @interface ZOLScrollViewController () <UIScrollViewDelegate>
 
-@property(strong, nonatomic) NSMutableArray *imagesArray;
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (strong, nonatomic) IBOutlet UIStackView *stackViewOutlet;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *widthConstraint;
-@property (strong, nonatomic) UIImage *selectedImage;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView; //consider collection view and coverPhotoCollectionView
+@property (strong, nonatomic) IBOutlet UIStackView *stackViewOutlet; //
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *widthConstraint; //scrollviewWidthConstraint
 
-//Set up arrows to show additional content
+@property (strong, nonatomic) UIImage *selectedImage;
+@property (strong, nonatomic) NSMutableArray *imagesArray;
 @property (strong, nonatomic) UIButton *rightArrow;
 @property (strong, nonatomic) UIButton *leftArrow;
 
-@property (nonatomic)BOOL scrollButtonTapped;
+@property (assign, nonatomic) BOOL scrollButtonTapped;
 
 @end
 
 @implementation ZOLScrollViewController
 
+//TODO create setup section with setup methods
+#pragma mark - Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.imagesArray = [[NSMutableArray alloc]init];
+    self.imagesArray = [[NSMutableArray alloc] init];
     self.dataStore = [ZOLDataStore dataStore];
     
-    for (ZOLImage *zolImage in self.dataStore.user.userHoneymoon.honeymoonImages)
-    {
+    
+    //TODO Create datastore H file method to return honeymoon images
+    //If no images how do you fail?
+    
+    for (ZOLImage *zolImage in self.dataStore.user.userHoneymoon.honeymoonImages) {
         UIImage *imageToAdd = zolImage.picture;
         [self.imagesArray addObject:imageToAdd];
     }
     
-    self.selectedImage = self.imagesArray[0];
+    //Do you know that item 0 exists??
+    if (self.imagesArray.count > 0) {
+        self.selectedImage = self.imagesArray[0];
+    }
     
-    for (UIImage *image in self.imagesArray)
-    {
+    
+    for (UIImage *image in self.imagesArray) {
         UIImageView *view = [[UIImageView alloc] initWithImage:image];
+        //Do imageViews default to userInteractionEnabled? If so remove line below.
         view.userInteractionEnabled = YES;
         UITapGestureRecognizer *viewTap = [[UITapGestureRecognizer alloc]
                                            initWithTarget:self action:@selector(handleTap:)];
+        //This gesture will go away if you use collectionView delegate for didSelectItemAtIndexPath
         [view addGestureRecognizer:viewTap];
         view.contentMode = UIViewContentModeScaleAspectFill;
         view.clipsToBounds = YES;
@@ -72,6 +85,7 @@
     UIImage *rightArrowButtonImage = [[UIImage imageNamed:@"RightArrow.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *leftArrowButtonImage = [[UIImage imageNamed:@"LeftArrow.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
+    
     [self.rightArrow setImage:rightArrowButtonImage forState:UIControlStateNormal];
     [self.leftArrow setImage:leftArrowButtonImage forState:UIControlStateNormal];
     
@@ -79,6 +93,7 @@
     [self.leftArrow setTintColor:[UIColor whiteColor]];
     [self.rightArrow setTintColor:[UIColor whiteColor]];
     
+    //Consider subclassing UIButton to expand the tappable area (pointInside)
     // Upon startup, we are furthest to the left
     self.rightArrow.hidden = NO;
     self.leftArrow.hidden = YES;
@@ -125,7 +140,34 @@
     [self.leftArrow addTarget:self action:@selector(leftArrowButtonTappedWithselector:) forControlEvents:UIControlEventTouchUpInside];
 }
 
--(IBAction)rightArrowButtonTappedWithselector:(id)sender
+#pragma mark - Actions
+
+- (void)handleTap:(UITapGestureRecognizer *)tapGestureRecognizer
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Choose cover photo"
+                                                                             message:@"Make this the cover photo?"
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:nil];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok"
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+                                                         //Set the selected image to outside/data property here.
+                                                         NSLog(@"Image: %@", self.selectedImage);
+                                                         //Go to next publish option.
+                                                         self.dataStore.user.userHoneymoon.coverPicture = self.selectedImage;
+                                                         
+                                                         [self performSegueWithIdentifier:@"ratingSegue" sender:self];
+                                                     }];
+    [alertController addAction:cancelAction];
+    [alertController addAction:okAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (IBAction)rightArrowButtonTappedWithselector:(id)sender
 {
     if(self.scrollView.contentOffset.x < (self.scrollView.contentSize.width - self.scrollView.frame.size.width))
     {
@@ -141,7 +183,7 @@
     }
 }
 
--(IBAction)leftArrowButtonTappedWithselector:(id)sender
+- (IBAction)leftArrowButtonTappedWithselector:(id)sender
 {
     //As long as the offset is greater than the screen size allow for scrolling.
     if(self.scrollView.contentOffset.x >= self.scrollView.frame.size.width)
@@ -165,6 +207,8 @@
     NSLog(@"screenWidth:%f",screenWidth);
 }
 
+#pragma mark - UIScrollViewDelegate
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     NSUInteger pageNumber = self.scrollView.contentOffset.x /
@@ -173,64 +217,46 @@
     NSLog(@"Page number: %lu", pageNumber);
     NSLog(@"Image: %@", self.selectedImage);
     
-    //Set up arrows to indicate more content
-    CGFloat totalWidth = self.scrollView.contentSize.width;
-    CGFloat offsetX = self.scrollView.contentOffset.x;
-    CGFloat screenWidth = self.scrollView.frame.size.width;
-    //Is scroll at far right? Hide the right arrow.
-    if (offsetX >= (totalWidth - screenWidth))
-    {
-        self.rightArrow.hidden = YES;
-        self.leftArrow.hidden = NO;
-    } else if (offsetX < screenWidth)
-    {
-        self.rightArrow.hidden = NO;
-        self.leftArrow.hidden = YES;
-    } else {
-        
-        self.rightArrow.hidden = NO;
-        self.leftArrow.hidden = NO;
+        //Set up arrows to indicate more content
+        CGFloat totalWidth = self.scrollView.contentSize.width;
+        CGFloat offsetX = self.scrollView.contentOffset.x;
+        CGFloat screenWidth = self.scrollView.frame.size.width;
+        //Is scroll at far right? Hide the right arrow.
+        if (offsetX >= (totalWidth - screenWidth))
+        {
+            self.rightArrow.hidden = YES;
+            self.leftArrow.hidden = NO;
+        } else if (offsetX < screenWidth)
+        {
+            self.rightArrow.hidden = NO;
+            self.leftArrow.hidden = YES;
+        } else {
+            
+            self.rightArrow.hidden = NO;
+            self.leftArrow.hidden = NO;
+        }
+
+    if (loggingEnabled) {
+        NSLog(@"totalWidth:%f",totalWidth);
+        NSLog(@"offSetX:%f",offsetX);
+        NSLog(@"screenWidth:%f",screenWidth);
     }
-
-    NSLog(@"totalWidth:%f",totalWidth);
-    NSLog(@"offSetX:%f",offsetX);
-    NSLog(@"screenWidth:%f",screenWidth);
 }
 
-- (void)handleTap:(UITapGestureRecognizer *)tapGestureRecognizer
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Choose cover photo"
-                                                                             message:@"Make this the cover photo?"
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
-                                                           style:UIAlertActionStyleDefault
-                                                         handler:nil];
-    
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok"
-                                                       style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction * _Nonnull action) {
-                                                         //Set the selected image to outside/data property here.
-                                                         NSLog(@"Image: %@", self.selectedImage);
-                                                         //Go to next publish option.
-                                                         self.dataStore.user.userHoneymoon.coverPicture = self.selectedImage;
-                                                         
-    [self performSegueWithIdentifier:@"ratingSegue" sender:self];
-                                                     }];
-    [alertController addAction:cancelAction];
-    [alertController addAction:okAction];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
+#pragma mark - Navigation
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"ratingSegue"]) {
         ZOLRatingViewController *ratingViewController = segue.destinationViewController;
         ratingViewController.coverImage = self.selectedImage;
     }
 }
 
+#pragma mark - Setup
+
+- (void)setupButtons
+{
+    
+}
+
 @end
-
-
-
-
