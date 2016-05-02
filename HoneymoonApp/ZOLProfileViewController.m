@@ -24,7 +24,12 @@
 @implementation ZOLProfileViewController
 
 -(void)viewDidAppear:(BOOL)animated {
-
+    
+    if(self.dataStore.user.userHoneymoon.honeymoonImages.count)
+    {
+        self.myFeedButton.hidden = NO;
+    }
+    
     if (self.isComingFromCamera) {
         [self performSegueWithIdentifier:@"profileToFeed" sender:nil];
         self.isComingFromCamera = NO;
@@ -36,6 +41,7 @@
     [super viewDidLoad];
     
     self.dataStore = [ZOLDataStore dataStore];
+    self.myFeedButton.hidden = YES;
     
     self.myFeedButton.layer.borderColor = [UIColor colorWithRed:239 green:239 blue:244 alpha:1].CGColor;
     self.myFeedButton.layer.borderWidth = 1.0;

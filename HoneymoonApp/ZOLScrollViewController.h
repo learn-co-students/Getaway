@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ZOLDataStore.h"
+
+@class ZOLDataStore;
 
 @interface ZOLScrollViewController : UIViewController
 
