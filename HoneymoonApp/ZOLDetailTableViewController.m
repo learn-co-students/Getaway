@@ -15,6 +15,7 @@
 @interface ZOLDetailTableViewController ()
 
 @property (nonatomic,strong) NSLayoutConstraint *labelYConstraint;
+@property (strong, nonatomic) IBOutlet UIButton *flaggedButton;
 
 @end
 
@@ -25,6 +26,37 @@
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
+- (IBAction)flagged:(id)sender {
+    UIAlertController *flagUserAlertController = [UIAlertController alertControllerWithTitle:@"Report inappropriate or offensive content"
+                                                                             message:@"Would you like to report this user?"
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                             self.flaggedButton.tintColor = [UIColor whiteColor];
+                                                         
+                                                         }];
+    
+    
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Report"
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+                                                         //Flag this user
+                                                         NSLog(@"USER FLAGGED");
+                                                         
+                                                         [self flaggedHoneymoon];
+                                                         
+                                            self.flaggedButton.tintColor = [UIColor redColor];
+                                                         
+                                                         
+                                                     }];
+    [flagUserAlertController addAction:cancelAction];
+    [flagUserAlertController addAction:okAction];
+    [self presentViewController:flagUserAlertController animated:YES completion:nil];
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -37,7 +69,7 @@
     self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
     
   //[[self navigationController] setNavigationBarHidden:YES animated:YES];
-
+    
     UIImageView *headerView = [UIImageView new];
     
     //Headline label
@@ -121,6 +153,16 @@
             NSLog(@"Error with detail image query: %@", error.localizedDescription);
         }
     }];
+}
+
+- (void) flaggedHoneymoon {
+//    CKRecord *flaggedHoneymoonRecord = [[CKRecord alloc] initWithRecordType:@"Honeymoon" recordID:self.selectedHoneymoonID];
+
+    CKRecord *flaggedHoneymoonRecord = [self.dataStore.client fetchRecordWithRecordID:self.selectedHoneymoonID];
+    flaggedHoneymoonRecord[@"Flagged"] = @"YES";
+    CKModifyRecordsOperation *flaggedRecord = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:@[flaggedHoneymoonRecord] recordIDsToDelete:nil];
+    [self.dataStore.client.database addOperation:flaggedRecord];
+    
 }
 
 - (void)didReceiveMemoryWarning {

@@ -12,6 +12,8 @@
 
 @interface ZOLPrivateImageFeedTableViewController ()
 
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *publishButton;
+
 @end
 
 @implementation ZOLPrivateImageFeedTableViewController
@@ -19,6 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.publishButton.enabled = NO;
     self.dataStore = [ZOLDataStore dataStore];
     self.localImageArray = self.dataStore.user.userHoneymoon.honeymoonImages;
     
@@ -46,7 +49,9 @@
             }
         }
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
-        //do something when we're done?
+        if(!error) {
+            self.publishButton.enabled = YES;
+        }
         NSLog(@"Image query done");
     }];
 }
