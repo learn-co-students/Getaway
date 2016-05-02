@@ -61,7 +61,7 @@
             }
             else
             {
-                [self.userHoneymoon populateHoneymoonImages];
+//                [self.userHoneymoon populateHoneymoonImages];
             }
         };
         
