@@ -27,9 +27,7 @@
 -(NSURL *)writeImage:(UIImage *)image toTemporaryDirectoryWithQuality:(CGFloat)compressionQuality
 {
     NSString *path = [NSTemporaryDirectory() stringByAppendingString:@"newImageUpload.tmp"];
-    
     NSURL *tempFile = [NSURL fileURLWithPath:path];
-    
     NSData *imageData = UIImageJPEGRepresentation(image, compressionQuality);
     
     [imageData writeToURL:tempFile atomically:YES];

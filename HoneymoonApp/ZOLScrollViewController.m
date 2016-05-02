@@ -167,34 +167,34 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-        NSUInteger pageNumber = self.scrollView.contentOffset.x /
-        self.scrollView.bounds.size.width;
-        self.selectedImage = [self.imagesArray objectAtIndex:pageNumber];
-        NSLog(@"Page number: %lu", pageNumber);
-        NSLog(@"Image: %@", self.selectedImage);
+    NSUInteger pageNumber = self.scrollView.contentOffset.x /
+    self.scrollView.bounds.size.width;
+    self.selectedImage = [self.imagesArray objectAtIndex:pageNumber];
+    NSLog(@"Page number: %lu", pageNumber);
+    NSLog(@"Image: %@", self.selectedImage);
+    
+    //Set up arrows to indicate more content
+    CGFloat totalWidth = self.scrollView.contentSize.width;
+    CGFloat offsetX = self.scrollView.contentOffset.x;
+    CGFloat screenWidth = self.scrollView.frame.size.width;
+    //Is scroll at far right? Hide the right arrow.
+    if (offsetX >= (totalWidth - screenWidth))
+    {
+        self.rightArrow.hidden = YES;
+        self.leftArrow.hidden = NO;
+    } else if (offsetX < screenWidth)
+    {
+        self.rightArrow.hidden = NO;
+        self.leftArrow.hidden = YES;
+    } else {
         
-        //Set up arrows to indicate more content
-        CGFloat totalWidth = self.scrollView.contentSize.width;
-        CGFloat offsetX = self.scrollView.contentOffset.x;
-        CGFloat screenWidth = self.scrollView.frame.size.width;
-        //Is scroll at far right? Hide the right arrow.
-        if (offsetX >= (totalWidth - screenWidth))
-        {
-            self.rightArrow.hidden = YES;
-            self.leftArrow.hidden = NO;
-        } else if (offsetX < screenWidth)
-        {
-            self.rightArrow.hidden = NO;
-            self.leftArrow.hidden = YES;
-        } else {
-            
-            self.rightArrow.hidden = NO;
-            self.leftArrow.hidden = NO;
-        }
+        self.rightArrow.hidden = NO;
+        self.leftArrow.hidden = NO;
+    }
 
-        NSLog(@"totalWidth:%f",totalWidth);
-        NSLog(@"offSetX:%f",offsetX);
-        NSLog(@"screenWidth:%f",screenWidth);
+    NSLog(@"totalWidth:%f",totalWidth);
+    NSLog(@"offSetX:%f",offsetX);
+    NSLog(@"screenWidth:%f",screenWidth);
 }
 
 - (void)handleTap:(UITapGestureRecognizer *)tapGestureRecognizer
