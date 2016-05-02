@@ -125,10 +125,10 @@
     self.dataStore = [ZOLDataStore dataStore];
     
     //TODO: Grab the cover image and display that on top
-    CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
-    NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
-    CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
-    NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
+    __block CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
+    __block NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
+    __block CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
+    __block NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
     
     
     __weak typeof(self) tmpself = self;
@@ -146,12 +146,28 @@
                 }];
             }
         }
-    } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+    }
+                                 completionBlock:^(CKQueryCursor *cursor, NSError *error)
+    {
         NSLog(@"Detail image query done");
         if (error)
         {
-            NSLog(@"Error with detail image query: %@", error.localizedDescription);
+            NSLog(@"(1)Error with detail image query. Here is the errorCode: %ld", error.code);
+            NSLog(@"Here is the CLOUDKIT error (CKerrorInternalError)%ld", CKErrorInternalError);
+            
+            //NSNumber *secondsToRetry = error.userInfo[CKErrorRetryAfterKey];
+            if (CKErrorRetryAfterKey)
+            {
+                NSLog(@"Retrying the image Query from View Did Load DJFGLKFDJGKLDFJD");
+                [self retryQueryRecordsWithQueryMethod];
+            }
         }
+        
+        else
+        {
+            NSLog(@"No error completing the cursor queue");
+        }
+     
     }];
 }
 
@@ -165,26 +181,76 @@
     
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return self.localImageArray.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-   
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     ZOLDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detailCell" forIndexPath:indexPath];
     ZOLImage *thisImage = self.localImageArray[indexPath.row];
     cell.image.image = thisImage.picture;
     cell.text.text = thisImage.caption;
     return cell;
+}
+
+-(void)retryQueryRecordsWithQueryMethod
+{
+    __block CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
+    __block NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
+    __block CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
+    __block NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
+    __weak typeof(self) tmpself = self;
+    
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery
+                                        orCursor:nil
+                                    fromDatabase:self.dataStore.client.database
+                                         forKeys:relevantKeys
+                                         withQoS:NSQualityOfServiceUserInitiated
+                                     everyRecord:^(CKRecord *record)
+     {
+         for (ZOLImage *image in tmpself.localImageArray)
+         {
+             if ([image.imageRecordID isEqual:record.recordID])
+             {
+                 UIImage *retrievedImage = [tmpself.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
+                 image.picture = retrievedImage;
+                 NSUInteger rowOfImage = [tmpself.localImageArray indexOfObject:image];
+                 NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
+                 [[NSOperationQueue mainQueue] addOperationWithBlock:^
+	                 {
+                         [tmpself.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
+                     }];
+             }
+         }
+     } completionBlock:^(CKQueryCursor *cursor, NSError *error)
+	    {
+            
+            if (error)
+            {
+                NSLog(@"Experienced error in 'retryQueryRecordsWithQueryMethod' method error code: %lu", error.code);
+                
+                UIAlertController *secondTryError = [UIAlertController alertControllerWithTitle:@"Refresh Needed"
+                                                                                        message:@"In order to retrieve this content the app needs to be refreshed. Please go back to the main feed and reselect this honeymoon." preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *secondTryErrorAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                               style:UIAlertActionStyleDefault
+                                                                             handler:nil];
+                [secondTryError addAction: secondTryErrorAction];
+                [self presentViewController:secondTryError animated:YES completion:nil];
+            }
+            
+        }];
 }
 
 /*
