@@ -15,18 +15,17 @@
 @interface ZOLDetailTableViewController ()
 
 @property (nonatomic,strong) NSLayoutConstraint *labelYConstraint;
-
 @end
 
 @implementation ZOLDetailTableViewController
 
-
-- (IBAction)back:(id)sender {
+- (IBAction)back:(id)sender
+{
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
-
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.tableView.contentInset = UIEdgeInsetsMake(-44, 0, 0, 0);
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
@@ -93,14 +92,19 @@
     self.dataStore = [ZOLDataStore dataStore];
     
     //TODO: Grab the cover image and display that on top
-    CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
-    NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
-    CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
-    NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
-    
+    __block CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
+    __block NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
+    __block CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
+    __block NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
     
     __weak typeof(self) tmpself = self;
-    [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery
+                                        orCursor:nil
+                                    fromDatabase:self.dataStore.client.database
+                                         forKeys:relevantKeys
+                                         withQoS:NSQualityOfServiceUserInitiated
+                                     everyRecord:^(CKRecord *record)
+    {
         for (ZOLImage *image in tmpself.localImageArray)
         {
             if ([image.imageRecordID isEqual:record.recordID])
@@ -114,30 +118,47 @@
                 }];
             }
         }
-    } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+    }
+                                 completionBlock:^(CKQueryCursor *cursor, NSError *error)
+    {
         NSLog(@"Detail image query done");
         if (error)
         {
-            NSLog(@"Error with detail image query: %@", error.localizedDescription);
+            NSLog(@"(1)Error with detail image query. Here is the errorCode: %ld", error.code);
+            NSLog(@"Here is the CLOUDKIT error info(ErrorDomain):%@\n\n AND(CKerrorInternalError)%ld", CKErrorDomain, CKErrorInternalError);
+
+            //NSNumber *secondsToRetry = error.userInfo[CKErrorRetryAfterKey];
+            if (CKErrorRetryAfterKey)
+            {
+                NSLog(@"Retrying the image Query from View Did Load DJFGLKFDJGKLDFJD");
+                [self retryQueryRecordsWithQueryMethod];
+            }
+        }
+        
+        else
+        {
+            NSLog(@"No error completing the cursor queue");
         }
     }];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return self.localImageArray.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-   
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     ZOLDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detailCell" forIndexPath:indexPath];
     ZOLImage *thisImage = self.localImageArray[indexPath.row];
     cell.image.image = thisImage.picture;
@@ -145,48 +166,48 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+-(void)retryQueryRecordsWithQueryMethod
+{
+    __block CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
+    __block NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
+    __block CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
+    __block NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
+    __weak typeof(self) tmpself = self;
+        
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery
+                                        orCursor:nil
+                                    fromDatabase:self.dataStore.client.database
+                                         forKeys:relevantKeys
+                                         withQoS:NSQualityOfServiceUserInitiated
+                                     everyRecord:^(CKRecord *record)
+     {
+         for (ZOLImage *image in tmpself.localImageArray)
+         {
+             if ([image.imageRecordID isEqual:record.recordID])
+             {
+                 UIImage *retrievedImage = [tmpself.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
+                 image.picture = retrievedImage;
+                 NSUInteger rowOfImage = [tmpself.localImageArray indexOfObject:image];
+                 NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
+                 [[NSOperationQueue mainQueue] addOperationWithBlock:^
+                 {
+                     [tmpself.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
+                 }];
+             }
+         }
+     } completionBlock:^(CKQueryCursor *cursor, NSError *error)
+    {
+         
+         if (error)
+         {
+             NSLog(@"Experienced error in 'retryQueryRecordsWithQueryMethod' method error code: %lu", error.code);
+             
+             UIAlertController *secondTryError = [UIAlertController alertControllerWithTitle:@"Refresh Needed" message:@"In order to retrieve this content the app needs to be refreshed. Please go back to the main feed and reselect this honeymoon." preferredStyle:UIAlertControllerStyleAlert];
+             UIAlertAction *secondTryErrorAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+             [secondTryError addAction: secondTryErrorAction];
+             [self presentViewController:secondTryError animated:YES completion:nil];
+         }
+         
+     }];
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end
