@@ -24,32 +24,28 @@
 
 - (void)viewDidLoad
 {
-[super viewDidLoad];
+    [super viewDidLoad];
 
-NSLog(@"self.newUserHasAnaccount = %@", self.newUserHasAnAccount ? @"YES" : @"NO");
+    NSLog(@"self.newUserHasAnaccount = %@", self.newUserHasAnAccount ? @"YES" : @"NO");
 
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recievedNotificationFromAppDelegate:) name:@"USER_RETURNED_MID_LOGIN" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recievedNotificationFromAppDelegate:) name:@"USER_RETURNED_MID_LOGIN" object:nil];
 }
 
 - (void)recievedNotificationFromAppDelegate:(NSNotification *)aNotification
 {
-
-[self networkHandeler];
-
+    [self networkHandler];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-self.logInButton.hidden = YES;
-[self.activityIndicator startAnimating];
-[self networkHandeler];
-
+    self.logInButton.hidden = YES;
+    [self.activityIndicator startAnimating];
+    [self networkHandler];
 };
 
 
 - (void)checkAndHandleiCloudStatus
 {
-
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError * _Nullable error)
     {
         NSLog(@"Entered account status code block!");
@@ -97,7 +93,7 @@ self.logInButton.hidden = YES;
                 if (error)
                 {
                     NSLog(@"Error fetching User Record ID: %@, code: %lu, domain: %@", error.localizedDescription, error.code, error.domain);
-                    [self networkHandeler];
+                    [self networkHandler];
                 }
                 
                 else if (error == nil)
@@ -126,13 +122,12 @@ self.logInButton.hidden = YES;
                     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentRecordFetchErrorAlert:) name:@"HoneymoonError" object:nil];
                     
                     [self.dataStore.user getAllTheRecords];
-                    [self.dataStore populateMainFeedWithCompletion:^(NSError *error)
-                    {
+                    [self.dataStore populateMainFeedWithCompletion:^(NSError *error){
                          if (error)
                          {
                              if (error.code == 3)
                              {
-                                 [self networkHandeler];
+                                 [self networkHandler];
                              }
                              
                             NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
@@ -147,9 +142,8 @@ self.logInButton.hidden = YES;
                                 [feedAlert addAction:retryAction];
                                 [self presentViewController:feedAlert animated:YES completion:nil];
                             }];
-                               [self.dataStore.user getAllTheRecords];
+                            [self.dataStore.user getAllTheRecords];
                         }
-                        
                         else
                         {
                             [self presentNextVC];
@@ -161,8 +155,6 @@ self.logInButton.hidden = YES;
         }
         else if (accountStatus == CKAccountStatusRestricted)
         {
-
-            
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 UIAlertController *userRestrictionAlert = [UIAlertController alertControllerWithTitle:@"Application Blocked!"
                                                                                               message:@"This application is blocked in Parental Settings"
@@ -180,87 +172,76 @@ self.logInButton.hidden = YES;
 
 - (void)presentRecordFetchErrorAlert: (NSNotification *)notification
 {
-
-
-[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-    UIAlertController *recordErrorAlert = [UIAlertController alertControllerWithTitle:@"ERROR!"
-                                                                              message:@"An error occured, please try again"
-                                                                       preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *recordErrorAction = [UIAlertAction actionWithTitle:@"Retry"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-    {
-        [self.dataStore.user getAllTheRecords];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        UIAlertController *recordErrorAlert = [UIAlertController alertControllerWithTitle:@"ERROR!"
+                                                                                  message:@"An error occured, please try again"
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *recordErrorAction = [UIAlertAction actionWithTitle:@"Retry"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+        {
+            [self.dataStore.user getAllTheRecords];
+        }];
+        [recordErrorAlert addAction:recordErrorAction];
+        [self presentViewController:recordErrorAlert animated:YES completion:nil];
     }];
-    [recordErrorAlert addAction:recordErrorAction];
-    [self presentViewController:recordErrorAlert animated:YES completion:nil];
-}];
-
 }
 
 - (void)presentNextVC
 {
+    NSLog(@"present next VC was called");
 
-NSLog(@"present next VC was called");
-
-
-
-[[NSOperationQueue mainQueue] addOperationWithBlock:^
-    {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
         ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
-    [self presentViewController:mainVC animated:YES completion:^{
-        [self.activityIndicator stopAnimating];
-        [self setUserAsLoggedIn];
+        [self presentViewController:mainVC animated:YES completion:^{
+            [self.activityIndicator stopAnimating];
+            [self setUserAsLoggedIn];
+        }];
     }];
-        
-}];
 }
 
 - (void)zolaAppWillWaitForYou
 {
+    UIAlertController *waitForUserToLogIn = [UIAlertController alertControllerWithTitle:@"Go ahead and login to iCloud" message:@"We'll wait for you to get back!" preferredStyle:UIAlertControllerStyleAlert];
 
-UIAlertController *waitForUserToLogIn = [UIAlertController alertControllerWithTitle:@"Go ahead and login to iCloud" message:@"We'll wait for you to get back!" preferredStyle:UIAlertControllerStyleAlert];
+    [waitForUserToLogIn addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil]];
 
-[waitForUserToLogIn addAction:[UIAlertAction actionWithTitle:@"OK"
-                                                       style:UIAlertActionStyleCancel
-                                                     handler:nil]];
-
-[self presentViewController:waitForUserToLogIn animated:YES completion:nil];
+    [self presentViewController:waitForUserToLogIn animated:YES completion:nil];
 }
 
 - (void)tellAppDelegateTheUserDoesntHaveiCloudAccount
 {
-((AppDelegate *)[UIApplication sharedApplication].delegate).userDidntHaveiCloudAccountAtLogIn = YES;
+    ((AppDelegate *)[UIApplication sharedApplication].delegate).userDidntHaveiCloudAccountAtLogIn = YES;
 }
 
 - (void)setUserAsLoggedIn
 {
-NSLog(@"Hey, we are logged in, store YES in userdefaults with KEY LoggedIn");
-[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LoggedIn"];
+    NSLog(@"Hey, we are logged in, store YES in userdefaults with KEY LoggedIn");
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LoggedIn"];
 }
 
 - (BOOL)isNetworkReachable
 {
-SCNetworkReachabilityFlags flags;
-SCNetworkReachabilityRef address;
-address = SCNetworkReachabilityCreateWithName(NULL, "www.apple.com" );
-Boolean success = SCNetworkReachabilityGetFlags(address, &flags);
-CFRelease(address);
+    SCNetworkReachabilityFlags flags;
+    SCNetworkReachabilityRef address;
+    address = SCNetworkReachabilityCreateWithName(NULL, "www.apple.com");
+    Boolean success = SCNetworkReachabilityGetFlags(address, &flags);
+    CFRelease(address);
 
-bool canReach = success
-&& !(flags & kSCNetworkReachabilityFlagsConnectionRequired)
-&& (flags & kSCNetworkReachabilityFlagsReachable);
+    bool canReach = success
+    && !(flags & kSCNetworkReachabilityFlagsConnectionRequired)
+    && (flags & kSCNetworkReachabilityFlagsReachable);
 
-return canReach;
+    return canReach;
 }
 
-- (void)networkHandeler
+- (void)networkHandler
 {
-[self isNetworkReachable];
-
-if ([self isNetworkReachable])
-{
-    [self checkAndHandleiCloudStatus];
-}
+    if ([self isNetworkReachable])
+    {
+        [self checkAndHandleiCloudStatus];
+    }
     else
     {
         NSLog(@"No network connection!");
@@ -277,7 +258,6 @@ if ([self isNetworkReachable])
             [self presentViewController:networkIssueAlert animated:YES completion:nil];
         }];
     }
-
 }
 
 
