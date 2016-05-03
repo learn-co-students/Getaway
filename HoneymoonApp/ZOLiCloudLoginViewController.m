@@ -74,9 +74,15 @@
         
         else if (accountStatus == CKAccountStatusCouldNotDetermine)
         {
-            UIAlertController *accountNotDetermined = [UIAlertController alertControllerWithTitle:@"Your iCloud account could not be determined" message:@"Please resolve iCloud account issue" preferredStyle:UIAlertControllerStyleAlert];
-            [accountNotDetermined addAction:[UIAlertAction actionWithTitle:@"Okay"style:UIAlertActionStyleCancel handler:nil]];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            UIAlertController *accountNotDetermined = [UIAlertController alertControllerWithTitle:@"Your iCloud account could not be determined"
+                                                                                          message:@"Please resolve iCloud account issue"
+                                                                                   preferredStyle:UIAlertControllerStyleAlert];
+            [accountNotDetermined addAction:[UIAlertAction
+                                             actionWithTitle:@"Okay"
+                                             style:UIAlertActionStyleCancel
+                                             handler:nil]];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^
+            {
                 [self zolaAppWillWaitForYou];
                 [self tellAppDelegateTheUserDoesntHaveiCloudAccount];
             }];
@@ -122,7 +128,8 @@
                     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentRecordFetchErrorAlert:) name:@"HoneymoonError" object:nil];
                     
                     [self.dataStore.user getAllTheRecords];
-                    [self.dataStore populateMainFeedWithCompletion:^(NSError *error){
+                    [self.dataStore populateMainFeedWithCompletion:^(NSError *error)
+                    {
                          if (error)
                          {
                              if (error.code == 3)
@@ -131,17 +138,22 @@
                              }
                              
                             NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
-
                             
-                            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
-                                                                                                   message:@"An error occured while loading user data. Retry to refresh."
-                                                                                            preferredStyle:UIAlertControllerStyleAlert];
-                                UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:nil];
+                            [[NSOperationQueue mainQueue] addOperationWithBlock:^
+                             {
+                                UIAlertController *dataStoreFetchRecordsErrorAlert = [UIAlertController
+                                                                               alertControllerWithTitle:@"Refresh needed"
+                                                    
+                                                                               message:@"A refresh is needed on the main page.\n Hit the refresh button to proceed."
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                                 
+                                UIAlertAction *dataStoreFetchRecordsErrorAction = [UIAlertAction actionWithTitle:@"Refresh"
+                                                                                                    style:UIAlertActionStyleDefault handler:nil];
                                 
-                                [feedAlert addAction:retryAction];
-                                [self presentViewController:feedAlert animated:YES completion:nil];
+                                [dataStoreFetchRecordsErrorAlert addAction:dataStoreFetchRecordsErrorAction];
+                                [self presentViewController:dataStoreFetchRecordsErrorAlert animated:YES completion:nil];
                             }];
+                             
                             [self.dataStore.user getAllTheRecords];
                         }
                         else
@@ -155,11 +167,13 @@
         }
         else if (accountStatus == CKAccountStatusRestricted)
         {
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^
+            {
                 UIAlertController *userRestrictionAlert = [UIAlertController alertControllerWithTitle:@"Application Blocked!"
-                                                                                              message:@"This application is blocked in Parental Settings"
+                                                                                              message:@"This application is blocked in Parental Settings."
                                                                                        preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                {
                     [self checkAndHandleiCloudStatus];
                 }];
                 
@@ -172,9 +186,10 @@
 
 - (void)presentRecordFetchErrorAlert: (NSNotification *)notification
 {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        UIAlertController *recordErrorAlert = [UIAlertController alertControllerWithTitle:@"ERROR!"
-                                                                                  message:@"An error occured, please try again"
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^
+    {
+        UIAlertController *recordErrorAlert = [UIAlertController alertControllerWithTitle:@"Oops!"
+                                                                                  message:@"An error occurred grabbing your feed.\nRetry to refresh."
                                                                            preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *recordErrorAction = [UIAlertAction actionWithTitle:@"Retry"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
         {
@@ -189,10 +204,12 @@
 {
     NSLog(@"present next VC was called");
 
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^
+    {
         UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
         ZOLTabBarViewController *mainVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
-        [self presentViewController:mainVC animated:YES completion:^{
+        [self presentViewController:mainVC animated:YES completion:^
+        {
             [self.activityIndicator stopAnimating];
             [self setUserAsLoggedIn];
         }];
@@ -248,42 +265,18 @@
         UIAlertController *networkIssueAlert = [UIAlertController alertControllerWithTitle:@"Experiencing Network Issue"
                                                                            message:@"Network connection is necessary to use this app. Retry when you are in range."
                                                                     preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *networRetryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *networRetryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+        {
             [self checkAndHandleiCloudStatus];
         }];
 
         [networkIssueAlert addAction:networRetryAction];
 
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^
+        {
             [self presentViewController:networkIssueAlert animated:YES completion:nil];
         }];
     }
 }
-
-
-
-// IF WE WANT TO ALLOW THE USER TO MANUALLY REFRESH WITH A BUTTON-->
-//- (IBAction)networkRefreshTapped:(id)sender
-//{
-//    [self isNetworkReachable];
-//    
-//    if ([self isNetworkReachable])
-//    {
-//        NSLog(@"Recalling 'checkAndHandleiCloudStatus AFTER network error ^_^");
-//        [self checkAndHandleiCloudStatus];
-//    }
-//    
-//    else
-//    {
-//        NSLog(@"no interwebs for realzies fools!!!");
-//        // self.activityIndicator.hidden = NO;
-//        [self.activityIndicator startAnimating];
-//        [self isNetworkReachable];
-//        //[self noNetworkError];
-//        
-//    }
-//    
-//}
-
 
 @end
