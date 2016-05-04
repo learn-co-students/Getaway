@@ -37,6 +37,8 @@
         CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findHoneymoon];
         findHMOp.resultsLimit = 1;
         
+        NSLog(@"userSearch: %@\n\n, referenceToUser: %@\n\n, findHoneymoon: %@\n\n, self.userID: %@\n\n", userSearch.debugDescription, referenceToUser.debugDescription, findHoneymoon.debugDescription, self.userID.debugDescription);
+        
         __block CKRecord *userHoneyMoon;
         findHMOp.recordFetchedBlock = ^(CKRecord *record){
             userHoneyMoon = record;
@@ -48,7 +50,7 @@
             
             if (operationError)
             {
-                NSLog(@"Error searching for user honeymoon, description: %@, and code: %lu, and heck, heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
+                NSLog(@"Error searching for user honeymoon, description: %@, and code: %lu, and heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
                 
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"HoneymoonError" object:nil];
 
