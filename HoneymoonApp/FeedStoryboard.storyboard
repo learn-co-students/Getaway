@@ -17,6 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexBackgroundColor" red="0.99607843139999996" green="0.73333333329999995" blue="0.070588235289999995" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellMain" rowHeight="527" id="SH0-qY-gUI" customClass="ZOLMainCell">
                                 <rect key="frame" x="0.0" y="28" width="375" height="527"/>
@@ -820,7 +821,7 @@
                                     <constraint firstAttribute="height" constant="50" id="zoH-cN-Cnt"/>
                                 </constraints>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Accept" image="2C36B923-D67A-4080-A037-0DEAB0EDE54F"/>
+                                <state key="normal" title="Accept"/>
                                 <connections>
                                     <action selector="acceptButtonTapped:" destination="6Rs-zZ-eXn" eventType="touchUpInside" id="ffk-kA-sSu"/>
                                 </connections>
@@ -983,10 +984,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="2C36B923-D67A-4080-A037-0DEAB0EDE54F" width="1200" height="1200">
-            <mutableData key="keyedArchiveRepresentation">
-</mutableData>
-        </image>
         <image name="2E061A1A-2296-46C5-B931-930106EC5538" width="263" height="304"/>
         <image name="CameraReverse" width="700" height="582"/>
         <image name="CapturePhoto2" width="64" height="64"/>

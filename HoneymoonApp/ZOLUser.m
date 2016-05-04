@@ -36,9 +36,7 @@
         CKQuery *findHoneymoon = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:userSearch];
         CKQueryOperation *findHMOp = [[CKQueryOperation alloc]initWithQuery:findHoneymoon];
         findHMOp.resultsLimit = 1;
-        
-        NSLog(@"userSearch: %@\n\n, referenceToUser: %@\n\n, findHoneymoon: %@\n\n, self.userID: %@\n\n", userSearch.debugDescription, referenceToUser.debugDescription, findHoneymoon.debugDescription, self.userID.debugDescription);
-        
+
         __block CKRecord *userHoneyMoon;
         findHMOp.recordFetchedBlock = ^(CKRecord *record){
             userHoneyMoon = record;
@@ -63,7 +61,7 @@
             }
             else
             {
-//                [self.userHoneymoon populateHoneymoonImages];
+                [self.userHoneymoon populateHoneymoonImages];
             }
         };
         

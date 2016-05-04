@@ -236,7 +236,6 @@
          }
      } completionBlock:^(CKQueryCursor *cursor, NSError *error)
 	    {
-            
             if (error)
             {
                 NSLog(@"Experienced error in 'retryQueryRecordsWithQueryMethod' method error code: %lu", error.code);
@@ -247,9 +246,10 @@
                                                                                style:UIAlertActionStyleDefault
                                                                              handler:nil];
                 [secondTryError addAction: secondTryErrorAction];
-                [self presentViewController:secondTryError animated:YES completion:nil];
+                [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+                    [self presentViewController:secondTryError animated:YES completion:nil];
+                }];
             }
-            
         }];
 }
 

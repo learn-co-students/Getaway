@@ -64,7 +64,7 @@
         CKQuery *findImagesQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
         NSArray *captionKey = @[@"Caption", @"Honeymoon"];
         
-        [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database forKeys:captionKey withQoS:NSQualityOfServiceDefault everyRecord:^(CKRecord *record) {
+        [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database forKeys:captionKey withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
             ZOLImage *thisImage = [[ZOLImage alloc]init];
             thisImage.caption = record[@"Caption"];
             thisImage.imageRecordID = record.recordID;
@@ -77,7 +77,7 @@
             }
         }];
         
-        [self.mainFeed insertObject:thisHoneymoon atIndex:0];
+        [self.mainFeed addObject:thisHoneymoon];
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
         if (error)
         {

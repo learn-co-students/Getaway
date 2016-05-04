@@ -9,15 +9,13 @@
 #import "ZOLProfileViewController.h"
 #import "ZOLCameraViewController.h"
 
-
-
 @interface ZOLProfileViewController ()
+
 @property (strong, nonatomic)IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *username;
 @property (weak, nonatomic) IBOutlet UIButton *myFeedButton;
 
 @property(nonatomic) BOOL isComingFromProfilePage;
-
 
 @end
 
@@ -25,9 +23,15 @@
 
 -(void)viewDidAppear:(BOOL)animated {
     
+    self.dataStore = [ZOLDataStore dataStore];
+    
     if(self.dataStore.user.userHoneymoon.honeymoonImages.count)
     {
         self.myFeedButton.hidden = NO;
+    }
+    else
+    {
+        [self.dataStore.user getAllTheRecords];
     }
     
     if (self.isComingFromCamera) {
@@ -40,7 +44,6 @@
     
     [super viewDidLoad];
     
-    self.dataStore = [ZOLDataStore dataStore];
     self.myFeedButton.hidden = YES;
     
     self.myFeedButton.layer.borderColor = [UIColor colorWithRed:239 green:239 blue:244 alpha:1].CGColor;

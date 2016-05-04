@@ -102,37 +102,37 @@
                     [self networkHandler];
                 }
                 
-                else if (error == nil)
+//                else if (error == nil)
+//                {
+                self.idForUser = recordID;
+                self.dataStore = [ZOLDataStore dataStore];
+                
+                self.dataStore.user.userID = recordID;
+                
+                NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
+                
+                if (!username)
                 {
-                    self.idForUser = recordID;
-                    self.dataStore = [ZOLDataStore dataStore];
-                    
-                    self.dataStore.user.userID = recordID;
-                    
-                    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:@"username"];
-                    
-                    if (!username)
+                    NSMutableString *uniqueNum = [[NSMutableString alloc]init];
+                    for (NSUInteger i = 0; i < 10; i++)
                     {
-                        NSMutableString *uniqueNum = [[NSMutableString alloc]init];
-                        for (NSUInteger i = 0; i < 10; i++)
-                        {
-                            NSUInteger randomNum = arc4random_uniform(10);
-                            [uniqueNum appendString:[NSString stringWithFormat:@"%lu", randomNum]];
-                        }
-                        NSString *defaultUsername = [NSString stringWithFormat:@"User%@", uniqueNum];
-                        self.dataStore.user.username = defaultUsername;
-                        self.dataStore.user.userHoneymoon.userName = defaultUsername;
-                        [[NSUserDefaults standardUserDefaults] setObject:defaultUsername forKey:@"username"];
+                        NSUInteger randomNum = arc4random_uniform(10);
+                        [uniqueNum appendString:[NSString stringWithFormat:@"%lu", randomNum]];
                     }
+                    NSString *defaultUsername = [NSString stringWithFormat:@"User%@", uniqueNum];
+                    self.dataStore.user.username = defaultUsername;
+                    self.dataStore.user.userHoneymoon.userName = defaultUsername;
+                    [[NSUserDefaults standardUserDefaults] setObject:defaultUsername forKey:@"username"];
+                }
 
-                    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentRecordFetchErrorAlert:) name:@"HoneymoonError" object:nil];
+//                    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentRecordFetchErrorAlert:) name:@"HoneymoonError" object:nil];
                     
-                    NSLog(@"'presentRecordFetchErrorAlert'. objects involved in FIRST of two calls: dataStore: %@\n USER:%@\n userName:%@", self.dataStore, self.dataStore.user, self.dataStore.user.username);
-                    NSLog(@"presentRecordFetchErrorAlert'. objects involved in SECOND call--> userHoneymoon:%@ \n userName.honeymoon:%@", self.dataStore.user.userHoneymoon, self.dataStore.user.userHoneymoon.userName);
-                    
-                    [self.dataStore.user getAllTheRecords];
-                    [self populateMainFeed];
-                };     
+//                    NSLog(@"'presentRecordFetchErrorAlert'. objects involved in FIRST of two calls: dataStore: %@\n USER:%@\n userName:%@", self.dataStore, self.dataStore.user, self.dataStore.user.username);
+//                    NSLog(@"presentRecordFetchErrorAlert'. objects involved in SECOND call--> userHoneymoon:%@ \n userName.honeymoon:%@", self.dataStore.user.userHoneymoon, self.dataStore.user.userHoneymoon.userName);
+                
+                [self.dataStore.user getAllTheRecords];
+                [self populateMainFeed];
+//                };
             }];
         }
         else if (accountStatus == CKAccountStatusRestricted)
@@ -157,29 +157,29 @@
 -(void)populateMainFeed
 {
     [self.dataStore populateMainFeedWithCompletion:^(NSError *error){
-        if (error)
-        {
+//        if (error)
+//        {
            if (error.code == 3)
            {
                [self networkHandler];
            }
-            NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
-                                                                                   message:@"An error occured while loading user data. Retry to refresh."
-                                                                            preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [self populateMainFeed];
-                }];
-                
-                [feedAlert addAction:retryAction];
-                [self presentViewController:feedAlert animated:YES completion:nil];
-            }];
-        }
-        else
-        {
+//            NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
+//            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//                UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
+//                                                                                   message:@"An error occured while loading user data. Retry to refresh."
+//                                                                            preferredStyle:UIAlertControllerStyleAlert];
+//                UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                    [self populateMainFeed];
+//                }];
+//                
+//                [feedAlert addAction:retryAction];
+//                [self presentViewController:feedAlert animated:YES completion:nil];
+//            }];
+//        }
+//        else
+//        {
             [self presentNextVC];
-        }
+//        }
     }];
 }
 

@@ -33,10 +33,6 @@
     [self.starRatingView.widthAnchor constraintEqualToConstant:100].active = YES;
     
     self.headlineLabel.adjustsFontSizeToFitWidth = YES;
-
-    
-    
-
 }
 
 
@@ -46,8 +42,6 @@
 {
     self.starRatingView.value = self.cellRating;
     [self.contentView addSubview:self.starRatingView];
- 
-
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
