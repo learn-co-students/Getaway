@@ -49,23 +49,23 @@
     [[CKContainer defaultContainer] accountStatusWithCompletionHandler:^(CKAccountStatus accountStatus, NSError * _Nullable error)
     {
         NSLog(@"Entered account status code block!");
-        
-
+    
         if (accountStatus == CKAccountStatusNoAccount)
         {
             [self.activityIndicator stopAnimating];
             self.activityIndicator.hidden = YES;
             NSLog(@"No iCloud account active, give 'sign in to icloud' alert");
             
-                       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                           UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"iCloud Log In Required"
-                                                                                          message:@"Go to Settings, tap iCloud, and enter your Apple ID. Switch iCloud Drive on. \n\nIf you don't have an iCloud account, tap 'Create a new Apple ID'."
-                                                                                   preferredStyle:UIAlertControllerStyleAlert];
-                           [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action)
-                                             {
-                                                 [self zolaAppWillWaitForYou];
-                                             }]];
-                           
+               [[NSOperationQueue mainQueue] addOperationWithBlock:^
+            {
+                   UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"iCloud Log In Required"
+                                                                                  message:@"Go to Settings, tap iCloud, and enter your Apple ID. Switch iCloud Drive on. \n\nIf you don't have an iCloud account, tap 'Create a new Apple ID'."
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+                   [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action)
+                                     {
+                                         [self zolaAppWillWaitForYou];
+                                     }]];
+                   
 
                 [self presentViewController:alert animated:YES completion:nil];
                 [self tellAppDelegateTheUserDoesntHaveiCloudAccount];
@@ -74,8 +74,8 @@
         
         else if (accountStatus == CKAccountStatusCouldNotDetermine)
         {
-            UIAlertController *accountNotDetermined = [UIAlertController alertControllerWithTitle:@"Your iCloud account could not be determined"
-                                                                                          message:@"Please resolve iCloud account issue"
+            UIAlertController *accountNotDetermined = [UIAlertController alertControllerWithTitle:@"Your iCloud account could not be determined."
+                                                                                          message:@"Please resolve iCloud account issue."
                                                                                    preferredStyle:UIAlertControllerStyleAlert];
             [accountNotDetermined addAction:[UIAlertAction
                                              actionWithTitle:@"Okay"
@@ -124,10 +124,17 @@
                         self.dataStore.user.userHoneymoon.userName = defaultUsername;
                         [[NSUserDefaults standardUserDefaults] setObject:defaultUsername forKey:@"username"];
                     }
-                    
+
                     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentRecordFetchErrorAlert:) name:@"HoneymoonError" object:nil];
                     
+                    NSLog(@"'presentRecordFetchErrorAlert'. objects involved in FIRST of two calls: dataStore: %@\n USER:%@\n userName:%@", self.dataStore, self.dataStore.user, self.dataStore.user.username);
+                    NSLog(@"presentRecordFetchErrorAlert'. objects involved in SECOND call--> userHoneymoon:%@ \n userName.honeymoon:%@", self.dataStore.user.userHoneymoon, self.dataStore.user.userHoneymoon.userName);
+                    
                     [self.dataStore.user getAllTheRecords];
+                    
+                    NSLog(@"'getAllTheRecords'. objects involved in FIRST of two calls: dataStore: %@\n USER:%@\n userName:%@", self.dataStore, self.dataStore.user, self.dataStore.user.username);
+                    NSLog(@"getAllsTheRecords'. objects involved in SECOND call--> userHoneymoon:%@\n userName.honeymoon:%@", self.dataStore.user.userHoneymoon, self.dataStore.user.userHoneymoon.userName);
+                    
                     [self.dataStore populateMainFeedWithCompletion:^(NSError *error)
                     {
                          if (error)
@@ -141,10 +148,12 @@
                             
                             [[NSOperationQueue mainQueue] addOperationWithBlock:^
                              {
+                                 NSLog(@"'populateMainFeedWithCompletion' IN MAIN QUEUE. objects involved in FIRST of two calls: dataStore: %@\n USER:%@\n userName:%@", self.dataStore, self.dataStore.user, self.dataStore.user.username);
+                                 NSLog(@"populateMainFeedWithCompletion' IN MAIN QUEUE. objects involved in SECOND call--> userHoneymoon:%@\n userName.honeymoon:%@", self.dataStore.user.userHoneymoon, self.dataStore.user.userHoneymoon.userName);
                                 UIAlertController *dataStoreFetchRecordsErrorAlert = [UIAlertController
                                                                                alertControllerWithTitle:@"Refresh needed"
                                                     
-                                                                               message:@"A refresh is needed on the main page.\n Hit the refresh button to proceed."
+                                                                               message:@"A refresh is needed on the main page.\n Hit the refresh button to proceed.[IF WE REFRESH the dataStore, we hit a an inifinite loop. If we call the 'checkAndHandleiCloud' meth, we also hit a loop...]"
                                                                         preferredStyle:UIAlertControllerStyleAlert];
                                  
                                 UIAlertAction *dataStoreFetchRecordsErrorAction = [UIAlertAction actionWithTitle:@"Refresh"
@@ -154,7 +163,8 @@
                                 [self presentViewController:dataStoreFetchRecordsErrorAlert animated:YES completion:nil];
                             }];
                              
-                            [self.dataStore.user getAllTheRecords];
+                             [self checkAndHandleiCloudStatus];
+                            //[self.dataStore.user getAllTheRecords];
                         }
                         else
                         {
@@ -191,8 +201,10 @@
         UIAlertController *recordErrorAlert = [UIAlertController alertControllerWithTitle:@"Oops!"
                                                                                   message:@"An error occurred grabbing your feed.\nRetry to refresh."
                                                                            preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *recordErrorAction = [UIAlertAction actionWithTitle:@"Retry"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+        UIAlertAction *recordErrorAction = [UIAlertAction actionWithTitle:@"Retry"  style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * _Nonnull action)
         {
+            //[self checkAndHandleiCloudStatus];
             [self.dataStore.user getAllTheRecords];
         }];
         [recordErrorAlert addAction:recordErrorAction];
