@@ -21,20 +21,9 @@
 
 @implementation ZOLMainTableViewController
 
--(void)viewWillAppear:(BOOL)animated
-{
-//    self.dataStore = [ZOLDataStore dataStore];
-//    
-//    if (self.dataStore.mainFeed.count == 0)
-//    {
-//        for (NSUInteger i = 0; i < 3; i++)
-//        {
-//            [self.dataStore.mainFeed addObject:@"Error"];
-//        }
-//    }
-//    
-//    [self.tableView reloadData];
-}
+//-(void)viewWillAppear:(BOOL)animated
+//{
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

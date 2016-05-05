@@ -125,10 +125,10 @@
     self.dataStore = [ZOLDataStore dataStore];
     
     //TODO: Grab the cover image and display that on top
-    __block CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
-    __block NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
-    __block CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
-    __block NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
+    CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
+    NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
+    CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
+    NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
     
     
     __weak typeof(self) tmpself = self;
@@ -147,7 +147,7 @@
             }
         }
     }
-                                 completionBlock:^(CKQueryCursor *cursor, NSError *error)
+        completionBlock:^(CKQueryCursor *cursor, NSError *error)
     {
         NSLog(@"Detail image query done");
         if (error)
@@ -172,13 +172,10 @@
 }
 
 - (void) flaggedHoneymoon {
-//    CKRecord *flaggedHoneymoonRecord = [[CKRecord alloc] initWithRecordType:@"Honeymoon" recordID:self.selectedHoneymoonID];
-
     CKRecord *flaggedHoneymoonRecord = [self.dataStore.client fetchRecordWithRecordID:self.selectedHoneymoonID];
     flaggedHoneymoonRecord[@"Flagged"] = @"YES";
     CKModifyRecordsOperation *flaggedRecord = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:@[flaggedHoneymoonRecord] recordIDsToDelete:nil];
     [self.dataStore.client.database addOperation:flaggedRecord];
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -207,10 +204,10 @@
 
 -(void)retryQueryRecordsWithQueryMethod
 {
-    __block CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
-    __block NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
-    __block CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
-    __block NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
+    CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
+    NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
+    CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
+    NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
     __weak typeof(self) tmpself = self;
     
     [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery
