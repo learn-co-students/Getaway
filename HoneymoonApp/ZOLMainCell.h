@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *image;
 @property (nonatomic, assign) CGFloat cellRating;
 @property (nonatomic, strong) HCSStarRatingView *starRatingView;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 
 -(void)drawStarRating;
 

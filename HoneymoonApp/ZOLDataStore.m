@@ -58,6 +58,7 @@
         thisHoneymoon.honeymoonDescription = record[@"Description"];
         thisHoneymoon.honeymoonID = record.recordID;
         thisHoneymoon.userName = record[@"Name"];
+        thisHoneymoon.createdDate = record.creationDate;
         
         CKReference *honeymoonRef = [[CKReference alloc]initWithRecordID:thisHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
         NSPredicate *findImages = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", honeymoonRef];

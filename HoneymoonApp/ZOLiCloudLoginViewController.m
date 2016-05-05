@@ -157,29 +157,12 @@
 -(void)populateMainFeed
 {
     [self.dataStore populateMainFeedWithCompletion:^(NSError *error){
-//        if (error)
-//        {
-           if (error.code == 3)
-           {
-               [self networkHandler];
-           }
-//            NSLog(@"error in populateMainFeedWithCompletion: %@", error.localizedDescription);
-//            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//                UIAlertController *feedAlert = [UIAlertController alertControllerWithTitle:@"Error!"
-//                                                                                   message:@"An error occured while loading user data. Retry to refresh."
-//                                                                            preferredStyle:UIAlertControllerStyleAlert];
-//                UIAlertAction *retryAction = [UIAlertAction actionWithTitle:@"Retry" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                    [self populateMainFeed];
-//                }];
-//                
-//                [feedAlert addAction:retryAction];
-//                [self presentViewController:feedAlert animated:YES completion:nil];
-//            }];
-//        }
-//        else
-//        {
-            [self presentNextVC];
-//        }
+       if (error.code == 3)
+       {
+           [self networkHandler];
+       }
+
+        [self presentNextVC];
     }];
 }
 

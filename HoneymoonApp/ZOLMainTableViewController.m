@@ -36,6 +36,8 @@
     }
     
     [self.tableView reloadData];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRefreshSpin:) name:@"QueryRefreshIssue" object:nil];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -49,7 +51,6 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
     if (self.dataStore.mainFeed.count == 0)
     {
         return 3;
@@ -72,13 +73,19 @@
         cell.userLabel.text = thisHoneymoon.userName;
         [cell drawStarRating];
         cell.userInteractionEnabled = YES;
-        
+
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
+        dateFormat.dateStyle = NSDateFormatterMediumStyle;
+        NSString *dateString = [dateFormat stringFromDate:thisHoneymoon.createdDate];
+
+        cell.dateLabel.text = dateString;
         cell.headlineLabel.text = thisHoneymoon.honeymoonDescription;
     }
     else
     {
         cell.userLabel.text = @"";
         cell.headlineLabel.text = @"";
+        cell.dateLabel.text = @"";
         cell.cellRating = 0;
         [cell drawStarRating];
         cell.userInteractionEnabled = NO;
@@ -176,9 +183,7 @@
             }];
         }];
     }
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRefreshSpin:) name:@"QueryRefreshIssue" object:nil];
 }
-
 
 -(void)stopRefreshSpin: (NSNotification *)notification
 {
@@ -218,7 +223,6 @@
         }
         NSLog(@"Honeymoon CoverImage query done");
     }];
-    
 }
 
 -(void)retryFetchCoverPhotos{

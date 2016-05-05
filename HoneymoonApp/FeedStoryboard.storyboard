@@ -30,8 +30,25 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="527"/>
                                             <color key="backgroundColor" red="0.99607843139999996" green="0.73333333329999995" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </imageView>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R7x-WL-3q8">
-                                            <rect key="frame" x="-1" y="1" width="376" height="527"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R7x-WL-3q8">
+                                            <rect key="frame" x="-1" y="0.0" width="376" height="527"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DATE" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lBL-8F-bvw">
+                                                    <rect key="frame" x="20" y="44" width="338" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="Db7-1o-deV"/>
+                                                        <constraint firstAttribute="height" constant="21" id="nCN-Gc-nw2"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="nCN-Gc-nw2"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
+                                            </subviews>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xyd-Ad-4II">
                                             <rect key="frame" x="0.0" y="184" width="375" height="158"/>
@@ -43,6 +60,7 @@
                                             <rect key="frame" x="19" y="44" width="338" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="Nz6-AV-Xup"/>
+                                                <constraint firstAttribute="width" constant="338" id="ksN-yr-WFJ"/>
                                                 <constraint firstAttribute="height" constant="21" id="yzi-4f-YXu"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -56,11 +74,14 @@
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="lBL-8F-bvw" firstAttribute="width" secondItem="bov-AM-W10" secondAttribute="width" id="01t-ex-B2w"/>
                                         <constraint firstItem="R7x-WL-3q8" firstAttribute="height" secondItem="9AI-nD-A7f" secondAttribute="height" id="2eY-Y4-Ntq"/>
                                         <constraint firstItem="bov-AM-W10" firstAttribute="width" secondItem="9AI-nD-A7f" secondAttribute="width" id="2jg-JM-ZMu"/>
                                         <constraint firstItem="bov-AM-W10" firstAttribute="width" secondItem="IKS-r3-Fbg" secondAttribute="width" multiplier="0.9" constant="1" id="3ay-pa-Adl"/>
                                         <constraint firstItem="bov-AM-W10" firstAttribute="centerY" secondItem="9AI-nD-A7f" secondAttribute="centerY" id="53Y-Ps-2Ro"/>
+                                        <constraint firstItem="lBL-8F-bvw" firstAttribute="centerX" secondItem="bov-AM-W10" secondAttribute="centerX" id="AVi-Ua-m2a"/>
                                         <constraint firstItem="bov-AM-W10" firstAttribute="top" secondItem="9AI-nD-A7f" secondAttribute="top" id="BNe-rw-CJr"/>
+                                        <constraint firstItem="lBL-8F-bvw" firstAttribute="centerY" secondItem="bov-AM-W10" secondAttribute="centerY" id="Ftw-ac-Brg"/>
                                         <constraint firstItem="9AI-nD-A7f" firstAttribute="height" secondItem="IKS-r3-Fbg" secondAttribute="height" id="KR6-gK-Wyq"/>
                                         <constraint firstItem="9AI-nD-A7f" firstAttribute="width" secondItem="IKS-r3-Fbg" secondAttribute="width" id="Lu1-xt-BcH"/>
                                         <constraint firstAttribute="top" secondItem="9AI-nD-A7f" secondAttribute="top" id="Pfp-8i-fva"/>
@@ -84,6 +105,7 @@
                                     </variation>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="dateLabel" destination="lBL-8F-bvw" id="a9F-ZL-tsO"/>
                                     <outlet property="headlineLabel" destination="Xyd-Ad-4II" id="b7I-HF-TiI"/>
                                     <outlet property="heightConstraint" destination="KR6-gK-Wyq" id="tW7-9C-f9Q"/>
                                     <outlet property="image" destination="9AI-nD-A7f" id="e8Z-RI-y7b"/>

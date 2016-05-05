@@ -16,6 +16,7 @@
 
 @end
 
+
 @implementation ZOLPrivateImageFeedTableViewController
 
 - (void)viewDidLoad {
@@ -49,11 +50,14 @@
         }
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
         if(!error) {
-            self.publishButton.enabled = YES;
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                self.publishButton.enabled = YES;
+            }];
         }
         NSLog(@"Image query done");
     }];
 }
+
 - (IBAction)backButtonTapped:(UIBarButtonItem *)sender
 {
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
@@ -74,7 +78,6 @@
     return self.localImageArray.count;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ZOLPrivateTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"privateDetailCell" forIndexPath:indexPath];
     
@@ -90,8 +93,6 @@
     [self.tableView reloadData];
     [sender endRefreshing];
 }
-
-
 
 /*
 // Override to support conditional editing of the table view.

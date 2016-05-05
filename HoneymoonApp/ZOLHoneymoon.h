@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSString *honeymoonDescription;
 @property (nonatomic, strong) NSString *published;
 @property (nonatomic, strong) NSString *userName;
+@property (nonatomic, strong) NSDate *createdDate;
 
 -(void)populateHoneymoonImages;
 
