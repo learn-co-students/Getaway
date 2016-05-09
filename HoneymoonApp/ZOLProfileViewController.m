@@ -60,8 +60,9 @@
     self.imageView.layer.cornerRadius = self.imageView.frame.size.width / 2;
     self.imageView.layer.masksToBounds = YES;
     
-    self.imageView.image = retrievedProfileImage;
-    
+    if (retrievedProfileImage) {
+        self.imageView.image = retrievedProfileImage;
+    }
     NSString *username = [[NSUserDefaults standardUserDefaults]stringForKey:@"username"];
     self.username.text = username;
 }

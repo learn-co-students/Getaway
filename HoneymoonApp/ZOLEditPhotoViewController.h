@@ -13,6 +13,5 @@
 @interface ZOLEditPhotoViewController : UIViewController
 
 @property (nonatomic, strong) UIImage *acceptedImage;
-@property (nonatomic, strong) NSURL *acceptedImageURL;
 
 @end

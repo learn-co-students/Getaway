@@ -150,7 +150,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p2M-Xc-rk7">
                                 <rect key="frame" x="117" y="84" width="140" height="166"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e6T-Bl-LSU">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="A2 img2.png" translatesAutoresizingMaskIntoConstraints="NO" id="e6T-Bl-LSU">
                                         <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="150" id="RRf-tX-hTg"/>
@@ -1007,6 +1007,7 @@
     </scenes>
     <resources>
         <image name="2E061A1A-2296-46C5-B931-930106EC5538" width="263" height="304"/>
+        <image name="A2 img2.png" width="586" height="854"/>
         <image name="CameraReverse" width="700" height="582"/>
         <image name="CapturePhoto2" width="64" height="64"/>
         <image name="DownArrow" width="304" height="182"/>

@@ -44,7 +44,7 @@
     ZOLEditPhotoViewController *editViewController = [storyboard instantiateViewControllerWithIdentifier:@"editPhotoViewController"];
     
     editViewController.acceptedImage = self.currentImage;
-    editViewController.acceptedImageURL = self.currentImageURL;    
+//    editViewController.acceptedImageURL = self.currentImageURL;    
     
     [self presentViewController:editViewController animated:NO completion:^{
         

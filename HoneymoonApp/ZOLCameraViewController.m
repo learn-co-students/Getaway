@@ -36,8 +36,6 @@
     [self.flashButtonIcon setImage:[UIImage imageNamed:@"FlashInactive"] forState:UIControlStateNormal];
     self.flashMode = -1;
     self.openCam = YES;
-    
-
 }
 
 +(void)openCamFunction {
@@ -249,10 +247,10 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
 
     } else {
  
-        ZOLDataStore *dataStore = [ZOLDataStore dataStore];
+//        ZOLDataStore *dataStore = [ZOLDataStore dataStore];
         
         UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-        NSURL *imageURL = [dataStore.client writeImage:image toTemporaryDirectoryWithQuality:0];
+//        NSURL *imageURL = [dataStore.client writeImage:image toTemporaryDirectoryWithQuality:0];
 
         if (self.isCameraModeOn)
         {
@@ -273,7 +271,7 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
             UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
             ZOLAcceptPhotoViewController *acceptViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
                     acceptViewController.currentImage = image;
-                    acceptViewController.currentImageURL = imageURL;
+//                    acceptViewController.currentImageURL = imageURL;
             self.openCam = YES;
             [self.tabBarController presentViewController:acceptViewController animated:YES completion:nil];
         }];

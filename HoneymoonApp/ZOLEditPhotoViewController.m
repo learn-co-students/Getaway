@@ -17,7 +17,6 @@
 @interface ZOLEditPhotoViewController () <UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *descriptionTextField;
-@property (strong, nonatomic) IBOutlet UITextField *locationTextField;
 @property (strong, nonatomic) IBOutlet UIImageView *acceptedImageView;
 
 @property(nonatomic, strong)NSMutableArray *photosArray;
@@ -38,10 +37,8 @@
     
     NSAttributedString *descriptionPlaceholder = [[NSAttributedString alloc] initWithString:@"Add photo description..." attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
     
-    self.locationTextField.attributedPlaceholder = locationPlaceholder;
     self.descriptionTextField.attributedPlaceholder = descriptionPlaceholder;
     
-    self.locationTextField.delegate = self;
     self.descriptionTextField.delegate = self;
 }
 
@@ -50,15 +47,9 @@
     return YES;
 }
 
-
-
 - (IBAction)descriptionEditingBegan:(UITextField *)sender
 {
     [self.descriptionTextField setBackgroundColor:[UIColor darkGrayColor]];
-}
-- (IBAction)locationEditingBegan:(UITextField *)sender
-{
-    [self.locationTextField setBackgroundColor:[UIColor darkGrayColor]];
 }
 
 - (IBAction)descriptionEditingEnded:(UITextField *)sender
@@ -67,16 +58,9 @@
     [self.descriptionTextField resignFirstResponder];
 }
 
-- (IBAction)locationEditingEnded:(UITextField *)sender
-{
-    [self.locationTextField setBackgroundColor:[UIColor clearColor]];
-    [self.locationTextField resignFirstResponder];
-}
-
 - (IBAction)backgroundTapped:(UITapGestureRecognizer *)sender
 {
     [self.descriptionTextField resignFirstResponder];
-    [self.locationTextField resignFirstResponder];
 }
 
 - (IBAction)cancelButtonTapped:(UIButton *)sender
@@ -88,15 +72,12 @@
 {
     [self.photosArray addObject:self.acceptedImage];
     NSString *photoDescription = self.descriptionTextField.text;
-    NSString *photoLocation = self.locationTextField.text;
     
     NSLog(@"Photo in Array: %@", self.photosArray[0]);
     NSLog(@"Photo description: %@",photoDescription);
-    NSLog(@"Photo location: %@", photoLocation);
     
-    
-//    ZOLSimulatedFeedData *sharedDatastore = [ZOLSimulatedFeedData sharedDatastore];
     ZOLDataStore *sharedDatastore = [ZOLDataStore dataStore];
+    NSURL *imageURL = [sharedDatastore.client writeImage:self.acceptedImage toTemporaryDirectoryWithQuality:0];
    
     ZOLImage *newImage = [[ZOLImage alloc]init];
     newImage.picture = self.acceptedImage;
@@ -105,7 +86,7 @@
     [sharedDatastore.user.userHoneymoon.honeymoonImages insertObject:newImage atIndex:0];
     
     CKRecord *newImageRecord = [[CKRecord alloc] initWithRecordType:@"Image"];
-    CKAsset *newImageAsset = [[CKAsset alloc] initWithFileURL:self.acceptedImageURL];
+    CKAsset *newImageAsset = [[CKAsset alloc] initWithFileURL:imageURL];
     CKReference *honeymoonReference = [[CKReference alloc]initWithRecordID:sharedDatastore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
     
     [newImageRecord setObject:newImageAsset forKey:@"Picture"];
@@ -115,28 +96,6 @@
     [sharedDatastore.client saveRecord:newImageRecord toDataBase:sharedDatastore.client.database];
     
     [self performSegueWithIdentifier:@"unwindToPersonalFeed" sender:self];
-    
-
-    
-    
-    
-   // [self  dismissViewControllerAnimated:NO completion:nil ];
-    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
-//    UINavigationController *navVC = [storyboard instantiateViewControllerWithIdentifier:@"personalFeedNav"];
-//    [self presentViewController:navVC animated:NO completion:nil];
-    
-    
-//    [sharedDatastore.feed addObject:self.acceptedImage];
-
-//    [sharedDatastore.imageArray3 addObject:self.acceptedImage];
-    
-    
-//
-    
-    //[self dismissViewControllerAnimated:NO completion:nil];
-    
-   // [[NSNotificationCenter defaultCenter] postNotificationName:@"Dismiss AcceptVC" object:nil];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
