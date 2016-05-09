@@ -26,6 +26,21 @@
     self.dataStore = [ZOLDataStore dataStore];
     self.localImageArray = self.dataStore.user.userHoneymoon.honeymoonImages;
     
+    [self populateImages];
+}
+
+- (IBAction)backButtonTapped:(UIBarButtonItem *)sender
+{
+    [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+-(void)populateImages
+{
     CKReference *referenceToHoneymoon = [[CKReference alloc]initWithRecordID:self.dataStore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
     NSPredicate *userHoneymoonPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", referenceToHoneymoon];
     CKQuery *honeymoonImageQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:userHoneymoonPredicate];
@@ -49,23 +64,20 @@
             }
         }
     } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
-        if(!error) {
+        if (error)
+        {
+            NSLog(@"Error loading user's images: %@", error.localizedDescription);
+            NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(populateImages) userInfo:nil repeats:NO];
+            [retryTimer fire];
+        }
+        else
+        {
+            NSLog(@"Image query done");
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 self.publishButton.enabled = YES;
             }];
         }
-        NSLog(@"Image query done");
     }];
-}
-
-- (IBAction)backButtonTapped:(UIBarButtonItem *)sender
-{
-    [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source

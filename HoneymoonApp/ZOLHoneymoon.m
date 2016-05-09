@@ -44,7 +44,8 @@
             if (operationError)
             {
                 NSLog(@"Error in populateHoneymoonImages - description: %@, code: %lu, domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
-//                    [self populateHoneymoonImages];
+                NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(populateHoneymoonImages) userInfo:nil repeats:NO];
+                [retryTimer fire];
             }
         };
         

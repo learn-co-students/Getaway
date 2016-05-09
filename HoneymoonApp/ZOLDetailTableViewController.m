@@ -123,52 +123,7 @@
     
     self.navigationController.navigationBar.topItem.title = @"";
     self.dataStore = [ZOLDataStore dataStore];
-    
-    //TODO: Grab the cover image and display that on top
-    CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
-    NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
-    CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
-    NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
-    
-    
-    __weak typeof(self) tmpself = self;
-    [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
-        for (ZOLImage *image in tmpself.localImageArray)
-        {
-            if ([image.imageRecordID isEqual:record.recordID])
-            {
-                UIImage *retrievedImage = [tmpself.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
-                image.picture = retrievedImage;
-                NSUInteger rowOfImage = [tmpself.localImageArray indexOfObject:image];
-                NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [tmpself.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
-                }];
-            }
-        }
-    }
-        completionBlock:^(CKQueryCursor *cursor, NSError *error)
-    {
-        NSLog(@"Detail image query done");
-        if (error)
-        {
-            NSLog(@"(1)Error with detail image query. Here is the errorCode: %ld", error.code);
-            NSLog(@"Here is the CLOUDKIT error (CKerrorInternalError)%ld", CKErrorInternalError);
-            
-            //NSNumber *secondsToRetry = error.userInfo[CKErrorRetryAfterKey];
-            if (CKErrorRetryAfterKey)
-            {
-                NSLog(@"Retrying the image Query from View Did Load DJFGLKFDJGKLDFJD");
-                [self retryQueryRecordsWithQueryMethod];
-            }
-        }
-        
-        else
-        {
-            NSLog(@"No error completing the cursor queue");
-        }
-     
-    }];
+    [self populateImages];
 }
 
 - (void) flaggedHoneymoon {
@@ -200,6 +155,42 @@
     cell.image.image = thisImage.picture;
     cell.text.text = thisImage.caption;
     return cell;
+}
+
+-(void)populateImages
+{
+    CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
+    NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
+    CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
+    NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
+    
+    __weak typeof(self) tmpself = self;
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record)
+    {
+        for (ZOLImage *image in tmpself.localImageArray)
+        {
+            if ([image.imageRecordID isEqual:record.recordID])
+            {
+                UIImage *retrievedImage = [tmpself.dataStore.client retrieveUIImageFromAsset:record[@"Picture"]];
+                image.picture = retrievedImage;
+                NSUInteger rowOfImage = [tmpself.localImageArray indexOfObject:image];
+                NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [tmpself.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
+                }];
+            }
+        }
+    }
+        completionBlock:^(CKQueryCursor *cursor, NSError *error)
+     {
+         NSLog(@"Detail image query done");
+         if (error)
+         {
+             NSLog(@"Error getting images for a honeymoon: %@", error.localizedDescription);
+             NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(populateImages) userInfo:nil repeats:NO];
+             [retryTimer fire];
+         }
+     }];
 }
 
 -(void)retryQueryRecordsWithQueryMethod

@@ -50,8 +50,10 @@
             {
                 NSLog(@"Error searching for user honeymoon, description: %@, and code: %lu, and heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
                 
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"HoneymoonError" object:nil];
+//                [[NSNotificationCenter defaultCenter]postNotificationName:@"HoneymoonError" object:nil];
 
+                NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(getAllTheRecords) userInfo:nil repeats:NO];
+                [retryTimer fire];
                 errorOccured = YES;
             }
             
@@ -59,7 +61,7 @@
             {
                 [self createBlankHoneymoon];
             }
-            else
+            else if (userHoneyMoon)
             {
                 [self.userHoneymoon populateHoneymoonImages];
             }

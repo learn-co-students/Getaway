@@ -126,9 +126,6 @@
                 }
 
 //                    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentRecordFetchErrorAlert:) name:@"HoneymoonError" object:nil];
-                    
-//                    NSLog(@"'presentRecordFetchErrorAlert'. objects involved in FIRST of two calls: dataStore: %@\n USER:%@\n userName:%@", self.dataStore, self.dataStore.user, self.dataStore.user.username);
-//                    NSLog(@"presentRecordFetchErrorAlert'. objects involved in SECOND call--> userHoneymoon:%@ \n userName.honeymoon:%@", self.dataStore.user.userHoneymoon, self.dataStore.user.userHoneymoon.userName);
                 
                 [self.dataStore.user getAllTheRecords];
                 [self populateMainFeed];
@@ -157,12 +154,21 @@
 -(void)populateMainFeed
 {
     [self.dataStore populateMainFeedWithCompletion:^(NSError *error){
-       if (error.code == 3)
-       {
-           [self networkHandler];
-       }
-
-        [self presentNextVC];
+//       if (error.code == 3)
+//       {
+//           [self networkHandler];
+//       }
+        
+        if (error)
+        {
+            NSLog(@"Error populating Main Feed: %@", error.localizedDescription);
+            NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(populateMainFeed) userInfo:nil repeats:NO];
+            [retryTimer fire];
+        }
+        else
+        {
+            [self presentNextVC];
+        }
     }];
 }
 

@@ -21,10 +21,6 @@
 
 @implementation ZOLMainTableViewController
 
-//-(void)viewWillAppear:(BOOL)animated
-//{
-//}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -33,6 +29,9 @@
     
     if (self.dataStore.mainFeed.count > 0) {
         [self fetchCoverPhotos];
+    }
+    else {
+        [self handleMainFeedError];
     }
     
     [self.tableView reloadData];
@@ -84,7 +83,7 @@
     else
     {
         cell.userLabel.text = @"";
-        cell.headlineLabel.text = @"";
+        cell.headlineLabel.text = @"Loading...";
         cell.dateLabel.text = @"";
         cell.cellRating = 0;
         [cell drawStarRating];
@@ -113,21 +112,7 @@
     //Grab the next honeymoons in the main feed query
     if (self.dataStore.mainFeed.count == 0)
     {
-        [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
-            if (error)
-            {
-                NSLog(@"Error refreshing main feed");
-                [self.refreshControl endRefreshing];
-            }
-            else
-            {
-                [self.refreshControl endRefreshing];
-                [self fetchCoverPhotos];
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                });
-            }
-        }];
+        [self handleMainFeedError];
     }
     else
     {
@@ -190,6 +175,21 @@
     [self.refreshControl endRefreshing];
 }
 
+-(void)handleMainFeedError
+{
+    [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
+        if (error)
+        {
+            NSLog(@"Error refreshing main feed");
+            NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(handleMainFeedError) userInfo:nil repeats:NO];
+            [retryTimer fire];
+        }
+        else
+        {
+            [self fetchCoverPhotos];
+        }
+    }];
+}
 
 -(void)fetchCoverPhotos
 {
@@ -198,7 +198,7 @@
     NSArray *relevantKeys = @[@"CoverPicture", @"Published"];
     
     __weak typeof(self) tmpself = self;
-    [self.dataStore.client queryRecordsWithQuery:honeymoonImageQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record)
+    [self.dataStore.client queryRecordsWithQuery:honeymoonImageQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInteractive everyRecord:^(CKRecord *record)
     {
         //Put the image we get into the relevant cell
         for (ZOLHoneymoon *honeymoon in tmpself.dataStore.mainFeed)
@@ -219,7 +219,15 @@
         if (error)
         {
             NSLog(@"Error loading images for main feed: %@", error.localizedDescription);
-            [self retryFetchCoverPhotos];
+            NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(fetchCoverPhotos) userInfo:nil repeats:NO];
+            [retryTimer fire];
+//            [self retryFetchCoverPhotos];
+        }
+        else
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
         }
         NSLog(@"Honeymoon CoverImage query done");
     }];
