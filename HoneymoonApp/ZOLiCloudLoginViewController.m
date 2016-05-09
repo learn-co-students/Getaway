@@ -162,8 +162,11 @@
         if (error)
         {
             NSLog(@"Error populating Main Feed: %@", error.localizedDescription);
-            NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(populateMainFeed) userInfo:nil repeats:NO];
-            [retryTimer fire];
+            NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(populateMainFeed) userInfo:nil repeats:NO];
+//            [retryTimer fire];
+            NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
+            [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
+            [currentLoop run];
         }
         else
         {

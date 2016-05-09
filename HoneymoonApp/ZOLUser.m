@@ -52,8 +52,11 @@
                 
 //                [[NSNotificationCenter defaultCenter]postNotificationName:@"HoneymoonError" object:nil];
 
-                NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(getAllTheRecords) userInfo:nil repeats:NO];
-                [retryTimer fire];
+                NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(getAllTheRecords) userInfo:nil repeats:NO];
+//                [retryTimer fire];
+                NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
+                [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
+                [currentLoop run];
                 errorOccured = YES;
             }
             

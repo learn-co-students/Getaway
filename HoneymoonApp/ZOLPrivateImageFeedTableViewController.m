@@ -67,8 +67,11 @@
         if (error)
         {
             NSLog(@"Error loading user's images: %@", error.localizedDescription);
-            NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(populateImages) userInfo:nil repeats:NO];
-            [retryTimer fire];
+            NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(populateImages) userInfo:nil repeats:NO];
+//            [retryTimer fire];
+            NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
+            [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
+            [currentLoop run];
         }
         else
         {

@@ -31,7 +31,7 @@
     }
     else
     {
-        [self.dataStore.user getAllTheRecords];
+//        [self.dataStore.user getAllTheRecords];
     }
     
     if (self.isComingFromCamera) {

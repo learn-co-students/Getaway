@@ -187,8 +187,13 @@
          if (error)
          {
              NSLog(@"Error getting images for a honeymoon: %@", error.localizedDescription);
-             NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(populateImages) userInfo:nil repeats:NO];
-             [retryTimer fire];
+//             NSDate *waitTime = [NSDate dateWithTimeIntervalSinceNow: 2];
+//             NSTimer *retryTimer = [[NSTimer alloc]initWithFireDate:waitTime interval:2 target:self selector:@selector(populateImages) userInfo:nil repeats:NO];
+             NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(populateImages) userInfo:nil repeats:NO];
+             NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
+             [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
+             [currentLoop run];
+//             [retryTimer fire];
          }
      }];
 }

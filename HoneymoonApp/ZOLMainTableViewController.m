@@ -182,7 +182,10 @@
         {
             NSLog(@"Error refreshing main feed");
             NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(handleMainFeedError) userInfo:nil repeats:NO];
-            [retryTimer fire];
+//            [retryTimer fire];
+            NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
+            [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
+            [currentLoop run];
         }
         else
         {
@@ -220,7 +223,10 @@
         {
             NSLog(@"Error loading images for main feed: %@", error.localizedDescription);
             NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(fetchCoverPhotos) userInfo:nil repeats:NO];
-            [retryTimer fire];
+//            [retryTimer fire];
+            NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
+            [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
+            [currentLoop run];
 //            [self retryFetchCoverPhotos];
         }
         else
