@@ -124,12 +124,6 @@
                     </tabBarItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="i7i-Di-Glg">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <connections>
-                            <action selector="mainFeedPullToRefresh:" destination="Htp-yT-qfH" eventType="valueChanged" id="0AQ-F3-Csg"/>
-                        </connections>
-                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cya-27-Ngt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -310,12 +304,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="HrV-gQ-SZS">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <connections>
-                            <action selector="privatePullToRefresh:" destination="WjM-OO-sYS" eventType="valueChanged" id="9zC-eI-u3Z"/>
-                        </connections>
-                    </refreshControl>
                     <connections>
                         <outlet property="publishButton" destination="Bbq-DP-BYB" id="Lbe-cD-9Ke"/>
                     </connections>

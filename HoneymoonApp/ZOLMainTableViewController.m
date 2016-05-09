@@ -36,7 +36,7 @@
     
     [self.tableView reloadData];
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRefreshSpin:) name:@"QueryRefreshIssue" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRefreshSpin:) name:@"QueryRefreshIssue" object:nil];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -108,72 +108,72 @@
     }
 }
 
-- (IBAction)mainFeedPullToRefresh:(UIRefreshControl *)sender {
-    //Grab the next honeymoons in the main feed query
-    if (self.dataStore.mainFeed.count == 0)
-    {
-        [self handleMainFeedError];
-    }
-    else
-    {
-        [self.dataStore.client queryRecordsWithQuery:nil orCursor:self.dataStore.mainFeedCursor fromDatabase:self.dataStore.client.database forKeys:nil withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
-            ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
-            
-            CKAsset *coverPictureAsset = record[@"CoverPicture"];
-            UIImage *coverPic = [self.dataStore.client retrieveUIImageFromAsset:coverPictureAsset];
-            thisHoneymoon.coverPicture = coverPic;
-            
-            NSNumber *ratingVal = record[@"RatingStars"];
-            thisHoneymoon.rating = [ratingVal floatValue];
-            
-            thisHoneymoon.honeymoonDescription = record[@"Description"];
-            thisHoneymoon.honeymoonID = record.recordID;
-            
-            //Populate the honeymoon with basic info about its images
-            CKReference *honeymoonRef = [[CKReference alloc]initWithRecordID:thisHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
-            NSPredicate *findImages = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", honeymoonRef];
-            CKQuery *findImagesQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
-            NSArray *captionKey = @[@"Caption", @"Honeymoon"];
-            
-            [self.dataStore.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:captionKey withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
-                
-                ZOLImage *thisImage = [[ZOLImage alloc]init];
-                thisImage.caption = record[@"Caption"];
-                thisImage.imageRecordID = record.recordID;
-                
-                [thisHoneymoon.honeymoonImages addObject:thisImage];
-            } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
-                if (error)
-                {
-                    NSLog(@"Error finding images for a honeymoon: %@", error.localizedDescription);
-                }
-            }];
+//- (IBAction)mainFeedPullToRefresh:(UIRefreshControl *)sender {
+//    //Grab the next honeymoons in the main feed query
+//    if (self.dataStore.mainFeed.count == 0)
+//    {
+//        [self handleMainFeedError];
+//    }
+//    else
+//    {
+//        [self.dataStore.client queryRecordsWithQuery:nil orCursor:self.dataStore.mainFeedCursor fromDatabase:self.dataStore.client.database forKeys:nil withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
+//            ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
+//            
+//            CKAsset *coverPictureAsset = record[@"CoverPicture"];
+//            UIImage *coverPic = [self.dataStore.client retrieveUIImageFromAsset:coverPictureAsset];
+//            thisHoneymoon.coverPicture = coverPic;
+//            
+//            NSNumber *ratingVal = record[@"RatingStars"];
+//            thisHoneymoon.rating = [ratingVal floatValue];
+//            
+//            thisHoneymoon.honeymoonDescription = record[@"Description"];
+//            thisHoneymoon.honeymoonID = record.recordID;
+//            
+//            //Populate the honeymoon with basic info about its images
+//            CKReference *honeymoonRef = [[CKReference alloc]initWithRecordID:thisHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
+//            NSPredicate *findImages = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", honeymoonRef];
+//            CKQuery *findImagesQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
+//            NSArray *captionKey = @[@"Caption", @"Honeymoon"];
+//            
+//            [self.dataStore.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:captionKey withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
+//                
+//                ZOLImage *thisImage = [[ZOLImage alloc]init];
+//                thisImage.caption = record[@"Caption"];
+//                thisImage.imageRecordID = record.recordID;
+//                
+//                [thisHoneymoon.honeymoonImages addObject:thisImage];
+//            } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+//                if (error)
+//                {
+//                    NSLog(@"Error finding images for a honeymoon: %@", error.localizedDescription);
+//                }
+//            }];
+//
+//            //Add the honeymoon to the main feed
+//            [self.dataStore.mainFeed insertObject:thisHoneymoon atIndex:0];
+//
+//        } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+//            if (error)
+//            {
+//                NSLog(@"Error reloading main feed data: %@", error.localizedDescription);
+//            }
+//            else
+//            {
+//                self.dataStore.mainFeedCursor = cursor;
+//            }
+//            
+//            [self.tableView reloadData];
+//            [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+//                [sender endRefreshing];
+//            }];
+//        }];
+//    }
+//}
 
-            //Add the honeymoon to the main feed
-            [self.dataStore.mainFeed insertObject:thisHoneymoon atIndex:0];
-
-        } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
-            if (error)
-            {
-                NSLog(@"Error reloading main feed data: %@", error.localizedDescription);
-            }
-            else
-            {
-                self.dataStore.mainFeedCursor = cursor;
-            }
-            
-            [self.tableView reloadData];
-            [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-                [sender endRefreshing];
-            }];
-        }];
-    }
-}
-
--(void)stopRefreshSpin: (NSNotification *)notification
-{
-    [self.refreshControl endRefreshing];
-}
+//-(void)stopRefreshSpin: (NSNotification *)notification
+//{
+//    [self.refreshControl endRefreshing];
+//}
 
 -(void)handleMainFeedError
 {
@@ -223,11 +223,9 @@
         {
             NSLog(@"Error loading images for main feed: %@", error.localizedDescription);
             NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(fetchCoverPhotos) userInfo:nil repeats:NO];
-//            [retryTimer fire];
             NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
             [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
             [currentLoop run];
-//            [self retryFetchCoverPhotos];
         }
         else
         {
@@ -237,41 +235,6 @@
         }
         NSLog(@"Honeymoon CoverImage query done");
     }];
-}
-
--(void)retryFetchCoverPhotos{
-    
-    NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
-    CKQuery *honeymoonImageQuery = [[CKQuery alloc] initWithRecordType:@"Honeymoon" predicate:imagePredicate];
-    NSArray *relevantKeys = @[@"CoverPicture", @"Published"];
-    
-    __weak typeof(self) tmpself = self;
-    [self.dataStore.client queryRecordsWithQuery:honeymoonImageQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:relevantKeys withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record)
-    {
-        //Put the image we get into the relevant cell
-        for (ZOLHoneymoon *honeymoon in tmpself.dataStore.mainFeed)
-        {
-            if ([honeymoon.honeymoonID.recordName isEqualToString:record.recordID.recordName])
-            {
-                UIImage *retrievedImage = [tmpself.dataStore.client retrieveUIImageFromAsset:record[@"CoverPicture"]];
-                honeymoon.coverPicture = retrievedImage;
-                NSUInteger rowOfHoneymoon = [tmpself.dataStore.mainFeed indexOfObject:honeymoon];
-                NSIndexPath *indexPathForHoneymoon = [NSIndexPath indexPathForRow:rowOfHoneymoon inSection:0];
-                
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [tmpself.tableView reloadRowsAtIndexPaths:@[indexPathForHoneymoon] withRowAnimation:UITableViewRowAnimationNone];
-                }];
-            }
-        }
-    } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
-        if (error)
-        {
-            NSLog(@"Error loading images IN RETRY METHOD for main feed: %@", error.localizedDescription);
-            NSLog(@"Prompt user to refesh app???");
-        }
-        NSLog(@"Honeymoon CoverImage query done IN RETRY COVER IMAGE METHOD");
-    }];
-    
 }
 
 //-(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
