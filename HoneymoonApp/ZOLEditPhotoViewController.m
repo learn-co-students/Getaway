@@ -33,7 +33,7 @@
     
     self.acceptedImageView.image = self.acceptedImage;
     
-    NSAttributedString *locationPlaceholder = [[NSAttributedString alloc] initWithString:@"Add location..." attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
+//    NSAttributedString *locationPlaceholder = [[NSAttributedString alloc] initWithString:@"Add location..." attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
     
     NSAttributedString *descriptionPlaceholder = [[NSAttributedString alloc] initWithString:@"Add photo description..." attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
     
@@ -77,37 +77,68 @@
     NSLog(@"Photo description: %@",photoDescription);
     
     ZOLDataStore *sharedDatastore = [ZOLDataStore dataStore];
-    NSURL *imageURL = [sharedDatastore.client writeImage:self.acceptedImage toTemporaryDirectoryWithQuality:0];
-   
-    ZOLImage *newImage = [[ZOLImage alloc]init];
-    newImage.picture = self.acceptedImage;
-    newImage.caption = photoDescription;
     
-    [sharedDatastore.user.userHoneymoon.honeymoonImages insertObject:newImage atIndex:0];
-    
-    CKRecord *newImageRecord = [[CKRecord alloc] initWithRecordType:@"Image"];
-    CKAsset *newImageAsset = [[CKAsset alloc] initWithFileURL:imageURL];
-    CKReference *honeymoonReference = [[CKReference alloc]initWithRecordID:sharedDatastore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
-    
-    [newImageRecord setObject:newImageAsset forKey:@"Picture"];
-    [newImageRecord setObject:photoDescription forKey:@"Caption"];
-    [newImageRecord setObject:honeymoonReference forKey:@"Honeymoon"];
-    
-    [sharedDatastore.client saveRecord:newImageRecord toDataBase:sharedDatastore.client.database];
-    
+    if (sharedDatastore.user.userHoneymoon.honeymoonID)
+    {
+        NSURL *imageURL = [sharedDatastore.client writeImage:self.acceptedImage toTemporaryDirectoryWithQuality:0];
+        
+        ZOLImage *newImage = [[ZOLImage alloc]init];
+        newImage.picture = self.acceptedImage;
+        newImage.caption = photoDescription;
+        
+        [sharedDatastore.user.userHoneymoon.honeymoonImages insertObject:newImage atIndex:0];
+        
+        CKRecord *newImageRecord = [[CKRecord alloc] initWithRecordType:@"Image"];
+        CKAsset *newImageAsset = [[CKAsset alloc] initWithFileURL:imageURL];
+        CKReference *honeymoonReference = [[CKReference alloc]initWithRecordID:sharedDatastore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
+        
+        [newImageRecord setObject:newImageAsset forKey:@"Picture"];
+        [newImageRecord setObject:photoDescription forKey:@"Caption"];
+        [newImageRecord setObject:honeymoonReference forKey:@"Honeymoon"];
+        
+        [sharedDatastore.client saveRecord:newImageRecord toDataBase:sharedDatastore.client.database];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(performQueuedSaveOnNotification:) name:@"UserHoneymoonFound" object:nil];
+    }
+
     [self performSegueWithIdentifier:@"unwindToPersonalFeed" sender:self];
+}
+
+-(void)performQueuedSaveOnNotification: (NSNotification *)notification
+{
+    ZOLDataStore *sharedDatastore = [ZOLDataStore dataStore];
+    NSString *photoDescription = self.descriptionTextField.text;
+    
+    if (sharedDatastore.user.userHoneymoon.honeymoonID)
+    {
+        NSURL *imageURL = [sharedDatastore.client writeImage:self.acceptedImage toTemporaryDirectoryWithQuality:0];
+        
+        ZOLImage *newImage = [[ZOLImage alloc]init];
+        newImage.picture = self.acceptedImage;
+        newImage.caption = photoDescription;
+        
+        [sharedDatastore.user.userHoneymoon.honeymoonImages insertObject:newImage atIndex:0];
+        
+        CKRecord *newImageRecord = [[CKRecord alloc] initWithRecordType:@"Image"];
+        CKAsset *newImageAsset = [[CKAsset alloc] initWithFileURL:imageURL];
+        CKReference *honeymoonReference = [[CKReference alloc]initWithRecordID:sharedDatastore.user.userHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
+        
+        [newImageRecord setObject:newImageAsset forKey:@"Picture"];
+        [newImageRecord setObject:photoDescription forKey:@"Caption"];
+        [newImageRecord setObject:honeymoonReference forKey:@"Honeymoon"];
+        
+        [sharedDatastore.client saveRecord:newImageRecord toDataBase:sharedDatastore.client.database];
+    }
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
 
     if ([segue.identifier isEqualToString: @"unwindToPersonalFeed"]) {
-    
         ZOLProfileViewController *destinationVC = segue.destinationViewController;
-        
         destinationVC.isComingFromCamera = YES;
-    
     }
-    
 }
 
 /*

@@ -59,6 +59,10 @@
                 [currentLoop run];
                 errorOccured = YES;
             }
+            else
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"UserHoneymoonFound" object:nil];
+            }
             
             if (!userHoneyMoon && !errorOccured)
             {

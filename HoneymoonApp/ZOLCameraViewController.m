@@ -12,7 +12,6 @@
 #import "ZOLTabBarViewController.h"
 
 
-
 @interface ZOLCameraViewController ()
 
 @property (strong,nonatomic) UIImagePickerController *imagePickerController;
@@ -22,9 +21,6 @@
 @property(nonatomic)UIImagePickerControllerCameraFlashMode flashMode;
 @property (strong, nonatomic) IBOutlet UIButton *flashButtonIcon;
 @property (strong, nonatomic) IBOutlet UIButton *switchCameraDirectionButtonTapped;
-
-
-
 
 @end
 
