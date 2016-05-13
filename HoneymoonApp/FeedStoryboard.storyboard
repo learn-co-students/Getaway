@@ -970,7 +970,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2pe-Fw-hI6" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="QDT-wG-tcn" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="84" y="-1353"/>
+            <point key="canvasLocation" x="-142" y="-1286"/>
         </scene>
         <!--Your photos-->
         <scene sceneID="00o-L1-vSb">

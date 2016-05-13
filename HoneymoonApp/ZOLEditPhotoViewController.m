@@ -12,6 +12,7 @@
 #import "ZOLSimulatedFeedData.h"
 #import "ZOLScrollViewController.h"
 #import "ZOLProfileViewController.h"
+#import "ZOLCameraViewController.h"
 
 
 @interface ZOLEditPhotoViewController () <UITextFieldDelegate>
@@ -137,7 +138,7 @@
 
     if ([segue.identifier isEqualToString: @"unwindToPersonalFeed"]) {
         ZOLProfileViewController *destinationVC = segue.destinationViewController;
-        destinationVC.isComingFromCamera = YES;
+        destinationVC.isComingFromCamera = NO;
     }
 }
 

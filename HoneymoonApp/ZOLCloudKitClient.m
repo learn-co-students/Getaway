@@ -91,22 +91,23 @@
                  everyRecord: (void(^)(CKRecord *record))recordBlock
              completionBlock: (void(^)(CKQueryCursor *cursor, NSError *error))completionBlock
 {
-    CKQueryOperation *operation;
-    
-    if (query && !cursor)
-    {
-        operation = [[CKQueryOperation alloc] initWithQuery: query];
-        
-    }
-    else if (cursor && !query)
-    {
-        operation = [[CKQueryOperation alloc] initWithCursor: cursor];
-    }
-    else
-    {
-        NSLog(@"queryRecordsWithQuery needs a query OR cursor, not both or neither");
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"QueryRefreshIssue" object:nil];
-    }
+    CKQueryOperation *operation = [[CKQueryOperation alloc]initWithQuery:query];
+//    CKQueryOperation *operation;
+//    
+//    if (query && !cursor)
+//    {
+//        operation = [[CKQueryOperation alloc] initWithQuery: query];
+//        
+//    }
+//    else if (cursor && !query)
+//    {
+//        operation = [[CKQueryOperation alloc] initWithCursor: cursor];
+//    }
+//    else
+//    {
+//        NSLog(@"queryRecordsWithQuery needs a query OR cursor, not both or neither");
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"QueryRefreshIssue" object:nil];
+//    }
     
     operation.qualityOfService = serviceQuality;
     operation.desiredKeys = keys;
