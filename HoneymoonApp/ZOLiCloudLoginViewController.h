@@ -19,6 +19,8 @@
 - (void)presentNextVC;
 - (void)zolaAppWillWaitForYou;
 - (void)tellAppDelegateTheUserDoesntHaveiCloudAccount;
+//-(void)EULA;
+//-(void)EULAWithCompletion:(BOOL (^)(BOOL))userAgreement;
 
 
 

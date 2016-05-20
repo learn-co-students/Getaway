@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="oxB-wh-Leb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="oxB-wh-Leb">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -50,13 +51,102 @@
                     </view>
                     <navigationItem key="navigationItem" id="aA2-1r-aOF"/>
                     <connections>
+                        <outlet property="EULAScrollView" destination="qBN-tU-ldf" id="EyX-v4-vIt"/>
+                        <outlet property="acceptButton" destination="Xfd-ya-evc" id="Nb9-V4-7lc"/>
                         <outlet property="activityIndicator" destination="9gj-Xu-ThQ" id="tVA-h5-gto"/>
+                        <outlet property="declineButton" destination="2dg-hV-OHh" id="vce-NE-GwT"/>
                         <outlet property="logInButton" destination="yeK-da-Z9w" id="QmR-M7-wlY"/>
+                        <segue destination="4SO-1F-Sdl" kind="presentation" identifier="EULASegue" id="VNo-RS-0vZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SYs-wZ-kag" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1355" y="472"/>
+            <point key="canvasLocation" x="1362" y="473"/>
+        </scene>
+        <!--End User License Agreement-->
+        <scene sceneID="NNi-jz-ICf">
+            <objects>
+                <viewController id="4SO-1F-Sdl" customClass="ZOLEndUserLicenseAgreement" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="JGh-hk-Ic8"/>
+                        <viewControllerLayoutGuide type="bottom" id="yG9-Wi-Gie"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="IgC-WN-K9c">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView autoresizesSubviews="NO" clipsSubviews="YES" contentMode="center" showsHorizontalScrollIndicator="NO" indicatorStyle="white" maximumZoomScale="5" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qBN-tU-ldf" userLabel="EULAScrollView">
+                                <rect key="frame" x="0.0" y="-13" width="560" height="560"/>
+                                <subviews>
+                                    <imageView autoresizesSubviews="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Getaway1.5 EULA Agreement " translatesAutoresizingMaskIntoConstraints="NO" id="QVX-pf-g7n">
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="560"/>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="center" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="HuR-zI-dRl">
+                                        <rect key="frame" x="8" y="522" width="544" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xfd-ya-evc">
+                                                <rect key="frame" x="0.0" y="0.0" width="270" height="30"/>
+                                                <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                <state key="normal" title="Accept">
+                                                    <color key="titleColor" red="0.25098040700000002" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="EULAAgreeTapped:" destination="oxB-wh-Leb" eventType="touchUpInside" id="7B1-z0-BX7"/>
+                                                    <action selector="acceptButtonTapped:" destination="4SO-1F-Sdl" eventType="touchUpInside" id="BwX-hf-p4g"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2dg-hV-OHh">
+                                                <rect key="frame" x="275" y="0.0" width="269" height="30"/>
+                                                <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                <state key="normal" title="Decline">
+                                                    <color key="titleColor" red="0.25098040700000002" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="EULADissagreeTapped:" destination="oxB-wh-Leb" eventType="touchUpInside" id="ebK-3t-JoV"/>
+                                                    <action selector="declineButtonTapped:" destination="4SO-1F-Sdl" eventType="touchUpInside" id="aeU-Eh-egu"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="2dg-hV-OHh" firstAttribute="leading" secondItem="Xfd-ya-evc" secondAttribute="trailing" constant="5" id="0tg-Sd-XYo"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="QVX-pf-g7n" secondAttribute="bottom" id="3eu-mk-IOr"/>
+                                    <constraint firstItem="HuR-zI-dRl" firstAttribute="width" secondItem="qBN-tU-ldf" secondAttribute="width" id="9rn-l3-WA1"/>
+                                    <constraint firstItem="QVX-pf-g7n" firstAttribute="centerY" secondItem="qBN-tU-ldf" secondAttribute="centerY" id="FB2-LH-GAD"/>
+                                    <constraint firstItem="QVX-pf-g7n" firstAttribute="leading" secondItem="qBN-tU-ldf" secondAttribute="leading" id="IzG-vj-KpR"/>
+                                    <constraint firstItem="HuR-zI-dRl" firstAttribute="leading" secondItem="qBN-tU-ldf" secondAttribute="leadingMargin" id="JsB-ni-gHi"/>
+                                    <constraint firstItem="QVX-pf-g7n" firstAttribute="top" secondItem="qBN-tU-ldf" secondAttribute="top" id="Jzh-CP-NsH"/>
+                                    <constraint firstItem="HuR-zI-dRl" firstAttribute="centerX" secondItem="QVX-pf-g7n" secondAttribute="centerX" id="Rgw-5J-3Ul"/>
+                                    <constraint firstItem="HuR-zI-dRl" firstAttribute="bottom" secondItem="qBN-tU-ldf" secondAttribute="bottomMargin" id="Uaa-pV-YFK"/>
+                                    <constraint firstAttribute="trailing" secondItem="QVX-pf-g7n" secondAttribute="trailing" id="scD-7u-PGM"/>
+                                    <constraint firstItem="QVX-pf-g7n" firstAttribute="centerX" secondItem="qBN-tU-ldf" secondAttribute="centerX" id="xst-SK-HgP"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="9rn-l3-WA1"/>
+                                    </mask>
+                                </variation>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="qBN-tU-ldf" firstAttribute="leading" secondItem="IgC-WN-K9c" secondAttribute="leading" id="EFA-iU-q0C"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="qBN-tU-ldf" secondAttribute="trailing" constant="20" id="WsH-Ub-lS4"/>
+                            <constraint firstItem="qBN-tU-ldf" firstAttribute="top" secondItem="IgC-WN-K9c" secondAttribute="topMargin" constant="-13" id="fF9-ae-ZOa"/>
+                            <constraint firstItem="yG9-Wi-Gie" firstAttribute="top" secondItem="qBN-tU-ldf" secondAttribute="bottom" constant="53" id="taw-5p-kJK"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="EULAScrollView" destination="qBN-tU-ldf" id="ArL-Yu-NzX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZIw-Bn-h8L" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2020" y="473"/>
         </scene>
         <!--Register View Controller-->
         <scene sceneID="ZSc-U4-SCp">
@@ -153,6 +243,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Getaway1.5 EULA Agreement " width="612" height="792"/>
         <image name="GetawayLogoText.v1" width="512" height="91"/>
     </resources>
 </document>

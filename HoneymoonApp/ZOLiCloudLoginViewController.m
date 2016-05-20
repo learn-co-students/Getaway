@@ -10,6 +10,8 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 #import "ZOLTabBarViewController.h"
 #import "AppDelegate.h"
+#import "ZOLUser.h"
+#import "ZOLEndUserLicenseAgreement.h"
 
 @interface ZOLiCloudLoginViewController ()
 
@@ -17,6 +19,9 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *logInButton;
 @property (nonatomic, strong) CKRecordID *idForUserClassFile;
+//@property (weak, nonatomic) IBOutlet UIScrollView *EULAScrollView;
+//@property (weak, nonatomic) IBOutlet UIButton *acceptButton;
+//@property (weak, nonatomic) IBOutlet UIButton *declineButton;
 
 @end
 
@@ -26,13 +31,36 @@
 {
     [super viewDidLoad];
 
-    NSLog(@"self.newUserHasAnaccount = %@", self.newUserHasAnAccount ? @"YES" : @"NO");
+  //  self.EULAScrollView.hidden = YES;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recievedNotificationFromAppDelegate:) name:@"USER_RETURNED_MID_LOGIN" object:nil];
+    NSLog(@"self.newUserHasAnaccount = %@", self.newUserHasAnAccount ? @"YES" : @"NO");
+    
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recievedNotificationFromAppDelegate:) name:@"USER_RETURNED_MID_LOGIN" object:nil];
+    }];
 }
+
+-(void)EULASegue:(UIStoryboardSegue *)EULASegue sender: (id)sender
+{
+
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^
+    {
+        UIStoryboard *loginStoryboard =[UIStoryboard storyboardWithName:@"LoginScreen" bundle:nil];
+        
+        ZOLEndUserLicenseAgreement *EULAVC = [loginStoryboard instantiateViewControllerWithIdentifier:@"EULASB"];
+        
+        [self presentViewController:EULAVC animated:YES completion:nil];
+        
+    }];
+
+};
 
 - (void)recievedNotificationFromAppDelegate:(NSNotification *)aNotification
 {
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:@"EULAAccepted" object:nil];
+    
     [self networkHandler];
 }
 
@@ -42,7 +70,6 @@
     [self.activityIndicator startAnimating];
     [self networkHandler];
 };
-
 
 - (void)checkAndHandleiCloudStatus
 {
@@ -98,12 +125,10 @@
             {
                 if (error)
                 {
-                    NSLog(@"Error fetching User Record ID: %@, code: %lu, domain: %@", error.localizedDescription, error.code, error.domain);
+                    NSLog(@"Error fetching User Record ID: %@, code: %ld, domain: %@", error.localizedDescription, error.code, error.domain);
                     [self networkHandler];
                 }
-                
-//                else if (error == nil)
-//                {
+
                 self.idForUser = recordID;
                 self.dataStore = [ZOLDataStore dataStore];
                 
@@ -117,7 +142,7 @@
                     for (NSUInteger i = 0; i < 10; i++)
                     {
                         NSUInteger randomNum = arc4random_uniform(10);
-                        [uniqueNum appendString:[NSString stringWithFormat:@"%lu", randomNum]];
+                        [uniqueNum appendString:[NSString stringWithFormat:@"%lu", (unsigned long)randomNum]];
                     }
                     NSString *defaultUsername = [NSString stringWithFormat:@"User%@", uniqueNum];
                     self.dataStore.user.username = defaultUsername;
@@ -125,13 +150,11 @@
                     [[NSUserDefaults standardUserDefaults] setObject:defaultUsername forKey:@"username"];
                 }
 
-//                    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentRecordFetchErrorAlert:) name:@"HoneymoonError" object:nil];
-                
                 [self.dataStore.user getAllTheRecords];
                 [self populateMainFeed];
-//                };
             }];
         }
+        
         else if (accountStatus == CKAccountStatusRestricted)
         {
             [[NSOperationQueue mainQueue] addOperationWithBlock:^
@@ -151,9 +174,11 @@
     }];
 }
 
+
 -(void)populateMainFeed
 {
-    [self.dataStore populateMainFeedWithCompletion:^(NSError *error){
+    [self.dataStore populateMainFeedWithCompletion:^(NSError *error)
+    {
 //       if (error.code == 3)
 //       {
 //           [self networkHandler];
@@ -186,7 +211,6 @@
         UIAlertAction *recordErrorAction = [UIAlertAction actionWithTitle:@"Retry"  style:UIAlertActionStyleDefault
                                                                   handler:^(UIAlertAction * _Nonnull action)
         {
-            //[self checkAndHandleiCloudStatus];
             [self.dataStore.user getAllTheRecords];
         }];
         [recordErrorAlert addAction:recordErrorAction];
@@ -272,5 +296,14 @@
         }];
     }
 }
+
+//-(void)callEULASegue:(UIStoryboardSegue *)EULASegue sender: (id)sender
+//{
+//    if ([EULASegue.identifier isEqualToString:@"EULASegue"])
+//    {
+//        ZOLiCloudLoginViewController *loginVC = EULASegue.destinationViewController;
+//    }
+//    
+//}
 
 @end

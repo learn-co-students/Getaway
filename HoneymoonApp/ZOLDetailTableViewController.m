@@ -231,7 +231,7 @@
 	    {
             if (error)
             {
-                NSLog(@"Experienced error in 'retryQueryRecordsWithQueryMethod' method error code: %lu", error.code);
+                NSLog(@"Experienced error in 'retryQueryRecordsWithQueryMethod' method error code: %lu", (long)error.code);
                 
                 UIAlertController *secondTryError = [UIAlertController alertControllerWithTitle:@"Refresh Needed"
                                                                                         message:@"In order to retrieve this content the app needs to be refreshed. Please go back to the main feed and reselect this honeymoon." preferredStyle:UIAlertControllerStyleAlert];

@@ -25,6 +25,7 @@
 		06738B561CADA1B000E5E692 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B531CADA1B000E5E692 /* User+CoreDataProperties.m */; };
 		06738B571CADA1B000E5E692 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 06738B551CADA1B000E5E692 /* User.m */; };
 		06E73DBD1CB85CDB000E860A /* ZOLHoneymoon.m in Sources */ = {isa = PBXBuildFile; fileRef = 06E73DBC1CB85CDB000E860A /* ZOLHoneymoon.m */; };
+		2B6636A71CEEE74900CC4D50 /* ZOLEndUserLicenseAgreement.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6636A61CEEE74900CC4D50 /* ZOLEndUserLicenseAgreement.m */; };
 		2B8636751CAEF7FE00909683 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8636741CAEF7FE00909683 /* CloudKit.framework */; };
 		2B9563BBCB99DA517B93FBBF /* libPods-HoneymoonApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42870E96C55F7F5E8DB9B4B2 /* libPods-HoneymoonApp.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		2BB5E6B61CBF58C80090C264 /* ZOLiCloudLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB5E6B51CBF58C80090C264 /* ZOLiCloudLoginViewController.m */; };
@@ -87,6 +88,8 @@
 		06738B551CADA1B000E5E692 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		06E73DBB1CB85CDB000E860A /* ZOLHoneymoon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLHoneymoon.h; sourceTree = "<group>"; };
 		06E73DBC1CB85CDB000E860A /* ZOLHoneymoon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLHoneymoon.m; sourceTree = "<group>"; };
+		2B6636A51CEEE74900CC4D50 /* ZOLEndUserLicenseAgreement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLEndUserLicenseAgreement.h; sourceTree = "<group>"; };
+		2B6636A61CEEE74900CC4D50 /* ZOLEndUserLicenseAgreement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZOLEndUserLicenseAgreement.m; sourceTree = "<group>"; };
 		2B8636731CAEF7F700909683 /* HoneymoonApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HoneymoonApp.entitlements; sourceTree = "<group>"; };
 		2B8636741CAEF7FE00909683 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		2BB5E6B41CBF58C80090C264 /* ZOLiCloudLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZOLiCloudLoginViewController.h; sourceTree = "<group>"; };
@@ -249,6 +252,8 @@
 				2DE6273A1CB8409E00A48F64 /* ZOLTabBarViewController.m */,
 				2BB5E6B41CBF58C80090C264 /* ZOLiCloudLoginViewController.h */,
 				2BB5E6B51CBF58C80090C264 /* ZOLiCloudLoginViewController.m */,
+				2B6636A51CEEE74900CC4D50 /* ZOLEndUserLicenseAgreement.h */,
+				2B6636A61CEEE74900CC4D50 /* ZOLEndUserLicenseAgreement.m */,
 				06738B4C1CAD793600E5E692 /* ZOLRegisterViewController.h */,
 				06738B4D1CAD793600E5E692 /* ZOLRegisterViewController.m */,
 				2DF8B98D1CB58A15002533F0 /* ZOLRatingViewController.h */,
@@ -496,6 +501,7 @@
 				2D3759071CB40E56001BD7AE /* ZOLSimulatedFeedData.m in Sources */,
 				4B2BC4CA1CB6FFC700984844 /* ZOLScrollViewController.m in Sources */,
 				063301D21CBD6B0400BF383A /* ZOLPrivateImageFeedTableViewController.m in Sources */,
+				2B6636A71CEEE74900CC4D50 /* ZOLEndUserLicenseAgreement.m in Sources */,
 				0644D1AC1CAAEE3100510F19 /* main.m in Sources */,
 				2D3759011CB40CED001BD7AE /* ZOLMainTableViewController.m in Sources */,
 				06738B511CAD9B5600E5E692 /* ZOLDataStore.m in Sources */,

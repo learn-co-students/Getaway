@@ -48,7 +48,7 @@
             
             if (operationError)
             {
-                NSLog(@"Error searching for user honeymoon, description: %@, and code: %lu, and heres the domain: %@", operationError.localizedDescription, operationError.code, operationError.domain);
+                NSLog(@"Error searching for user honeymoon, description: %@, and code: %lu, and heres the domain: %@", operationError.localizedDescription, (long)operationError.code, operationError.domain);
                 
 //                [[NSNotificationCenter defaultCenter]postNotificationName:@"HoneymoonError" object:nil];
 
@@ -66,6 +66,7 @@
             
             if (!userHoneyMoon && !errorOccured)
             {
+               // [ZOLiCloudLoginViewController EULA];
                 [self createBlankHoneymoon];
             }
             else if (userHoneyMoon)
@@ -88,5 +89,40 @@
     [self.client saveRecord:newHoneymoon toDataBase:self.client.database];
     self.userHoneymoon.honeymoonID = newHoneymoon.recordID;
 }
+
+//-(void)EULA
+//{
+//    [self EULAAlert];
+//
+//
+//}
+
+
+//-(void)EULAAlert
+//{
+//    NSString* messageString = @"long string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\nlong string\n";
+//    
+//    UIAlertController *EULAAlert = [UIAlertController alertControllerWithTitle:@"EULA Agreement"
+//                                                                             message:messageString
+//                                                                      preferredStyle:UIAlertControllerStyleAlert];
+//    
+//    EULAAlert.view.frame = [[[UIApplication sharedApplication] keyWindow] frame];
+//    UIAlertAction *EULAAction = [UIAlertAction actionWithTitle:@"I Agree" style:UIAlertActionStyleDefault handler:nil];
+//    [EULAAlert addAction:EULAAction];
+//    //[self presentViewController: EULAAction animated: YES completion: nil];
+//    
+//   // UIAlertAction *cancelEULAAction = [UIAlertAction];
+////    [EULAAlert addAction:[UIAlertAction actionWithTitle:@"OK"
+////                                                        style:UIAlertActionStyleDefault
+////                                                      handler:^(UIAlertAction *action){
+////                                                          [self okButtonTapped];
+////                                                      }]];
+//}
+//
+//- (void) okButtonTapped
+//{
+//    NSLog(@"OK Tapped");
+//
+//};
 
 @end
