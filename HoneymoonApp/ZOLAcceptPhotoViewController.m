@@ -26,7 +26,7 @@
     self.currentImageView.image = self.currentImage;
 }
 
--(void)dismissVC
+- (void)dismissVC
 {
     NSLog(@"dismiss VC");
     [self dismissViewControllerAnimated:NO completion:nil];
@@ -44,22 +44,12 @@
     ZOLEditPhotoViewController *editViewController = [storyboard instantiateViewControllerWithIdentifier:@"editPhotoViewController"];
     
     editViewController.acceptedImage = self.currentImage;
-//    editViewController.acceptedImageURL = self.currentImageURL;    
+//  editViewController.acceptedImageURL = self.currentImageURL;    
     
-    [self presentViewController:editViewController animated:NO completion:^{
-        
+    [self presentViewController:editViewController animated:NO completion:^
+    {
+     //does anything else need to happen here?
     }];
 }
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -13,6 +13,5 @@
 
 @property (nonatomic, strong) NSMutableArray *ratingArray;
 @property (nonatomic, strong) ZOLDataStore *dataStore;
-//@property (strong, nonatomic) IBOutlet UIRefreshControl *refreshControl;
 
 @end

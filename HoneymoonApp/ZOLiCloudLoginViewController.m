@@ -102,8 +102,6 @@
                     [self networkHandler];
                 }
                 
-//                else if (error == nil)
-//                {
                 self.idForUser = recordID;
                 self.dataStore = [ZOLDataStore dataStore];
                 
@@ -125,11 +123,9 @@
                     [[NSUserDefaults standardUserDefaults] setObject:defaultUsername forKey:@"username"];
                 }
 
-//                    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(presentRecordFetchErrorAlert:) name:@"HoneymoonError" object:nil];
-                
                 [self.dataStore.user getAllTheRecords];
                 [self populateMainFeed];
-//                };
+
             }];
         }
         else if (accountStatus == CKAccountStatusRestricted)
@@ -151,9 +147,10 @@
     }];
 }
 
--(void)populateMainFeed
+- (void)populateMainFeed
 {
-    [self.dataStore populateMainFeedWithCompletion:^(NSError *error){
+    [self.dataStore populateMainFeedWithCompletion:^(NSError *error)
+    {
 //       if (error.code == 3)
 //       {
 //           [self networkHandler];
@@ -163,7 +160,7 @@
         {
             NSLog(@"Error populating Main Feed: %@", error.localizedDescription);
             NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(populateMainFeed) userInfo:nil repeats:NO];
-//            [retryTimer fire];
+
             NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
             [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
             [currentLoop run];

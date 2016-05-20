@@ -52,7 +52,8 @@
     
     dispatch_semaphore_t recordSem = dispatch_semaphore_create(0);
     
-    [self.database fetchRecordWithID:recordID completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+    [self.database fetchRecordWithID:recordID completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error)
+    {
         if (error)
         {
             NSLog(@"There was an error fetching the HoneyMoon public record. Error type: %@", error.localizedDescription);
@@ -72,7 +73,8 @@
 -(void)saveRecord:(CKRecord *)record toDataBase:(CKDatabase *)database
 {
     CKModifyRecordsOperation *saveRecordOp = [[CKModifyRecordsOperation alloc]initWithRecordsToSave:@[record] recordIDsToDelete:nil];
-    saveRecordOp.modifyRecordsCompletionBlock = ^(NSArray <CKRecord *> *savedRecords, NSArray <CKRecordID *> *deletedRecordIDs, NSError *operationError){
+    saveRecordOp.modifyRecordsCompletionBlock = ^(NSArray <CKRecord *> *savedRecords, NSArray <CKRecordID *> *deletedRecordIDs, NSError *operationError)
+    {
         if (operationError)
         {
             NSLog(@"Error saving a record: %@", operationError.localizedDescription);
@@ -92,6 +94,7 @@
              completionBlock: (void(^)(CKQueryCursor *cursor, NSError *error))completionBlock
 {
     CKQueryOperation *operation = [[CKQueryOperation alloc]initWithQuery:query];
+    
 //    CKQueryOperation *operation;
 //    
 //    if (query && !cursor)

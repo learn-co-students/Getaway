@@ -21,7 +21,8 @@
 
 @implementation ZOLProfileViewController
 
--(void)viewDidAppear:(BOOL)animated {
+-(void)viewDidAppear:(BOOL)animated
+{
     
     self.dataStore = [ZOLDataStore dataStore];
     
@@ -34,13 +35,15 @@
 //        [self.dataStore.user getAllTheRecords];
     }
     
-    if (self.isComingFromCamera) {
+    if (self.isComingFromCamera)
+    {
         [self performSegueWithIdentifier:@"profileToFeed" sender:nil];
         self.isComingFromCamera = NO;
     }
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     
     [super viewDidLoad];
     
@@ -68,7 +71,8 @@
 }
 
 //Allows you to reload an image from the documents directory.
--(UIImage *)loadImageWithFileName:(NSString *)fileName ofType:(NSString *)extension inDirectory:(NSString *)directoryPath {
+-(UIImage *)loadImageWithFileName:(NSString *)fileName ofType:(NSString *)extension inDirectory:(NSString *)directoryPath
+{
     UIImage * result = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.%@", directoryPath, fileName, [extension lowercaseString]]];
     
     return result;
@@ -76,8 +80,6 @@
 
 - (IBAction)addProfilePicButtonTapped:(UIButton *)sender
 {
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"Coming From Profile Page" object:nil];
- 
     NSString *messageToCamera = @"Profile Photo";
     
     NSDictionary* userInfo = @{@"key": messageToCamera};
@@ -85,14 +87,17 @@
     [[NSNotificationCenter defaultCenter]postNotificationName:@"Coming From Profile Page" object:self userInfo:userInfo];
 }
 
-- (IBAction)changeUsernameTapped:(id)sender {
+- (IBAction)changeUsernameTapped:(id)sender
+{
     UIAlertController *changeUsername = [UIAlertController alertControllerWithTitle:@"Change User Name" message:@"Select a new User Name" preferredStyle:UIAlertControllerStyleAlert];
     
-    [changeUsername addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+    [changeUsername addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField)
+    {
         textField.placeholder = @"New User Name";
     }];
     
-    UIAlertAction *changeName = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *changeName = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+    {
         [[NSUserDefaults standardUserDefaults] setObject:changeUsername.textFields.lastObject.text forKey:@"username"];
         self.dataStore.user.username = changeUsername.textFields.lastObject.text;
         self.username.text = changeUsername.textFields.lastObject.text;
@@ -109,16 +114,18 @@
 }
 
 
-//#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"profileToCamera"]) {
+#pragma mark - Navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"profileToCamera"])
+    {
         ZOLCameraViewController *cameraVC = segue.destinationViewController;
         cameraVC.isComingFromProfilePage = YES;
     }
 }
 
--(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
+-(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue
+{
     
 
 }

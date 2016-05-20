@@ -18,6 +18,6 @@
 @property (nonatomic, strong) HCSStarRatingView *starRatingView;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 
--(void)drawStarRating;
+- (void)drawStarRating;
 
 @end

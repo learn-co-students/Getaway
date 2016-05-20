@@ -12,7 +12,8 @@
 @implementation User
 
 
--(void)createAnAssetLibrary: (CKAsset *)anAsset{
+-(void)createAnAssetLibrary: (CKAsset *)anAsset
+{
     
     
 }

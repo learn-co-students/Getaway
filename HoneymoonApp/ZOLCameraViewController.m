@@ -11,7 +11,6 @@
 #import "ZOLProfileViewController.h"
 #import "ZOLTabBarViewController.h"
 
-
 @interface ZOLCameraViewController ()
 
 @property (strong,nonatomic) UIImagePickerController *imagePickerController;
@@ -34,7 +33,8 @@
     self.openCam = YES;
 }
 
-+(void)openCamFunction {
++(void)openCamFunction
+{
     
    ZOLCameraViewController *ZOLVC = [ZOLCameraViewController new];
     ZOLVC.openCam = YES;
@@ -42,7 +42,8 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    if(self.openCam) {
+    if(self.openCam)
+    {
         animated = NO;
         UIImagePickerController *cameraController = [[UIImagePickerController alloc] init];
         cameraController.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -63,14 +64,14 @@
     
     //    TODO: if user coming from profile page automatically switch camera to selfie mode.
     //[self.switchCameraDirectionButtonTapped sendActionsForControlEvents: UIControlEventTouchUpInside];
-    
 }
 
 - (IBAction)photoLibraryButtonTapped:(UIButton *)sender
 {
     self.isCameraModeOn = NO;
     
-    [self dismissViewControllerAnimated:NO completion:^{
+    [self dismissViewControllerAnimated:NO completion:^
+    {
        
         UIImagePickerController *libraryController = [[UIImagePickerController alloc] init];
         libraryController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -78,9 +79,11 @@
         //Setting the library controller to the delegate allows the image picked in the library to call the didFinishPickingMediaWithInfo method and select the photo.
         libraryController.delegate = self;
         
-        [self presentViewController:libraryController animated:NO completion:^{
+        [self presentViewController:libraryController animated:NO completion:^
+        {
             self.openCam =YES;
         }];
+        
     }];
 }
 
@@ -89,6 +92,7 @@
     [self.imagePickerController takePicture];
     self.openCam = YES;
 }
+
 //Hitting cancel from camera
 - (IBAction)cancelButtonTapped:(UIButton *)sender
 {
@@ -96,8 +100,8 @@
     if (self.isComingFromProfilePage == YES)
     {
         self.openCam = NO;
-        [self dismissViewControllerAnimated:NO completion:^{
-            
+        [self dismissViewControllerAnimated:NO completion:^
+        {
             UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
             ZOLTabBarViewController *tabBarViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
             
@@ -109,24 +113,27 @@
             [self presentViewController: tabBarViewController animated:YES completion:nil];
         }];
         
-    } else {
+    }
+    
+    else
+    {
         [self.tabBarController setSelectedIndex:0];
-        
-        [self.tabBarController dismissViewControllerAnimated:NO completion:^{
+        [self.tabBarController dismissViewControllerAnimated:NO completion:^
+        {
             self.openCam = YES;
         }];
     }
 }
 
 //Hitting cancel from the photo library
--(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     //If user is canceling from the camera from the profile page
     if (self.isComingFromProfilePage == YES)
     {
         self.openCam = NO;
-        [self dismissViewControllerAnimated:NO completion:^{
-        
+        [self dismissViewControllerAnimated:NO completion:^
+        {
             UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
             ZOLTabBarViewController *tabBarViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
             
@@ -140,7 +147,8 @@
         
     } else {
             self.openCam = NO;
-            [self.tabBarController dismissViewControllerAnimated:NO completion:^{
+            [self.tabBarController dismissViewControllerAnimated:NO completion:^
+        {
                 
                 UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
                 ZOLTabBarViewController *tabBarViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
@@ -150,8 +158,6 @@
                 [tabBarViewController setSelectedIndex:1];
                 
                 [self presentViewController: tabBarViewController animated:YES completion:nil];
-            
-            
         }];
     }
 }
@@ -171,7 +177,8 @@
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
-- (IBAction)flashButtonTapped:(UIButton *)sender {
+- (IBAction)flashButtonTapped:(UIButton *)sender
+{
     self.openCam = YES;
     if (self.flashMode == -1)
     {
@@ -185,7 +192,7 @@
         [self.flashButtonIcon setImage:[UIImage imageNamed:@"FlashActive"] forState:UIControlStateNormal];
         
     }
-    else if(self.flashMode == 1)
+    else if (self.flashMode == 1)
     {
         NSLog(@"flash is off!");
         [self.flashButtonIcon setImage:[UIImage imageNamed:@"FlashInactive"] forState:UIControlStateNormal];
@@ -198,11 +205,19 @@
 }
 
 //Saving image to documents directory
--(void)saveImage:(UIImage *)image withFileName:(NSString *)imageName ofType:(NSString *)extension inDirectory:(NSString *)directoryPath {
-    if ([[extension lowercaseString] isEqualToString:@"png"]) {
+- (void)saveImage:(UIImage *)image
+     withFileName:(NSString *)imageName
+           ofType:(NSString *)extension
+      inDirectory:(NSString *)directoryPath
+{
+    if ([[extension lowercaseString] isEqualToString:@"png"])
+    {
         [UIImagePNGRepresentation(image) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"png"]] options:NSAtomicWrite error:nil];
-    } else if ([[extension lowercaseString] isEqualToString:@"jpg"] || [[extension lowercaseString] isEqualToString:@"jpeg"]) {
+    
+    } else if ([[extension lowercaseString] isEqualToString:@"jpg"] || [[extension lowercaseString] isEqualToString:@"jpeg"])
+    {
         [UIImageJPEGRepresentation(image, 1.0) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"jpg"]] options:NSAtomicWrite error:nil];
+    
     } else {
         NSLog(@"Image Save Failed\nExtension: (%@) is not recognized, use (PNG/JPG)", extension);
     }
@@ -228,7 +243,8 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
         //Transition back to the profile page
         self.openCam = NO;
 
-        [self dismissViewControllerAnimated:NO completion:^{
+        [self dismissViewControllerAnimated:NO completion:^
+        {
             
             UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
             ZOLTabBarViewController *tabBarViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"TabBarVC"];
@@ -262,8 +278,8 @@ didFinishPickingMediaWithInfo:(NSDictionary<NSString *,
             }];
         }
         self.openCam = NO;
-        [self.tabBarController dismissViewControllerAnimated:NO completion:^{
-   
+        [self.tabBarController dismissViewControllerAnimated:NO completion:^
+        {
             UIStoryboard *feedStoryboard = [UIStoryboard storyboardWithName:@"FeedStoryboard" bundle:nil];
             ZOLAcceptPhotoViewController *acceptViewController = [feedStoryboard instantiateViewControllerWithIdentifier:@"acceptPhotoViewController"];
                     acceptViewController.currentImage = image;

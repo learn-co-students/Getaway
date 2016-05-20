@@ -26,10 +26,12 @@
     return self;
 }
 
-- (void)getAllTheRecords {
+- (void)getAllTheRecords
+{
     
     NSLog(@"get all the records");
-    if (self.userID) {
+    if (self.userID)
+    {
         
         CKReference *referenceToUser = [[CKReference alloc]initWithRecordID:self.userID action:CKReferenceActionDeleteSelf];
         NSPredicate *userSearch = [NSPredicate predicateWithFormat:@"%K == %@", @"User", referenceToUser];
@@ -38,7 +40,8 @@
         findHMOp.resultsLimit = 1;
 
         __block CKRecord *userHoneyMoon;
-        findHMOp.recordFetchedBlock = ^(CKRecord *record){
+        findHMOp.recordFetchedBlock = ^(CKRecord *record)
+        {
             userHoneyMoon = record;
             self.userHoneymoon.honeymoonID = record.recordID;
         };
@@ -58,8 +61,8 @@
                 [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
                 [currentLoop run];
                 errorOccured = YES;
-            }
-            else
+           
+            }else
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"UserHoneymoonFound" object:nil];
             }

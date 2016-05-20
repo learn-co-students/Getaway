@@ -10,7 +10,6 @@
 #import "ZOLDataStore.h"
 #import <MXParallaxHeader/MXParallaxHeader.h>
 
-
 @interface ZOLDetailTableViewController : UITableViewController
 
 @property (nonatomic,strong) NSMutableArray *localImageArray;
@@ -20,7 +19,5 @@
 @property (nonatomic,strong) NSString * titleString;
 @property (nonatomic,strong) UIImage * parralaxHeaderImage;
 @property (nonatomic,strong) UIView * parralaxView;
-
-
 
 @end

@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "ZOLDataStore.h"
 
-
 @interface ZOLEditPhotoViewController : UIViewController
 
 @property (nonatomic, strong) UIImage *acceptedImage;

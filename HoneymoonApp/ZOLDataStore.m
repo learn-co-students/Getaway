@@ -13,12 +13,12 @@
 @implementation ZOLDataStore
 
 # pragma mark - Singleton
-
 + (instancetype)dataStore
 {
     static ZOLDataStore *_sharedDataStore = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^
+    {
         NSLog(@"about to init data store for the first time.");
         _sharedDataStore = [[ZOLDataStore alloc] init];
     });
@@ -46,7 +46,8 @@
     CKQuery *intializeMainFeed = [[CKQuery alloc]initWithRecordType:@"Honeymoon" predicate:publishedHoneymoons];
     NSArray *keysNeeded = @[@"Description", @"Published", @"RatingStars", @"Name"];
     
-    [self.client queryRecordsWithQuery:intializeMainFeed orCursor:nil fromDatabase:self.client.database forKeys:keysNeeded withQoS:NSQualityOfServiceDefault everyRecord:^(CKRecord *record) {
+    [self.client queryRecordsWithQuery:intializeMainFeed orCursor:nil fromDatabase:self.client.database forKeys:keysNeeded withQoS:NSQualityOfServiceDefault everyRecord:^(CKRecord *record)
+    {
         ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
         
         CKAsset *coverPictureAsset = record[@"CoverPicture"];
@@ -65,13 +66,15 @@
         CKQuery *findImagesQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
         NSArray *captionKey = @[@"Caption", @"Honeymoon"];
         
-        [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database forKeys:captionKey withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
+        [self.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.client.database forKeys:captionKey withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record)
+        {
             ZOLImage *thisImage = [[ZOLImage alloc]init];
             thisImage.caption = record[@"Caption"];
             thisImage.imageRecordID = record.recordID;
             
             [thisHoneymoon.honeymoonImages addObject:thisImage];
-        } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+        } completionBlock:^(CKQueryCursor *cursor, NSError *error)
+        {
             if (error)
             {
                 NSLog(@"Error finding images for a honeymoon: %@", error.localizedDescription);
@@ -79,7 +82,8 @@
         }];
         
         [self.mainFeed addObject:thisHoneymoon];
-    } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+    } completionBlock:^(CKQueryCursor *cursor, NSError *error)
+    {
         if (error)
         {
             NSLog(@"Error initializing main feed: %@", error.localizedDescription);
@@ -108,9 +112,7 @@
     [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:genericErrorAlert animated:YES completion:nil];
 }
 
-
 # pragma mark - Core Data stack
-
 //@synthesize managedObjectContext = _managedObjectContext;
 //@synthesize managedObjectModel = _managedObjectModel;
 //@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;

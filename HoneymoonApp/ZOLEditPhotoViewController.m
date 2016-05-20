@@ -31,19 +31,16 @@
     [super viewDidLoad];
     
     self.photosArray = [[NSMutableArray alloc] init];
-    
     self.acceptedImageView.image = self.acceptedImage;
-    
-//    NSAttributedString *locationPlaceholder = [[NSAttributedString alloc] initWithString:@"Add location..." attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
     
     NSAttributedString *descriptionPlaceholder = [[NSAttributedString alloc] initWithString:@"Add photo description..." attributes:@{ NSForegroundColorAttributeName : [UIColor whiteColor] }];
     
     self.descriptionTextField.attributedPlaceholder = descriptionPlaceholder;
-    
     self.descriptionTextField.delegate = self;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
     [textField resignFirstResponder];
     return YES;
 }
@@ -107,7 +104,7 @@
     [self performSegueWithIdentifier:@"unwindToPersonalFeed" sender:self];
 }
 
--(void)performQueuedSaveOnNotification: (NSNotification *)notification
+- (void)performQueuedSaveOnNotification: (NSNotification *)notification
 {
     ZOLDataStore *sharedDatastore = [ZOLDataStore dataStore];
     NSString *photoDescription = self.descriptionTextField.text;
@@ -134,22 +131,14 @@
     }
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
 
-    if ([segue.identifier isEqualToString: @"unwindToPersonalFeed"]) {
+    if ([segue.identifier isEqualToString: @"unwindToPersonalFeed"])
+    {
         ZOLProfileViewController *destinationVC = segue.destinationViewController;
         destinationVC.isComingFromCamera = NO;
     }
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
