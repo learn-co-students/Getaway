@@ -39,7 +39,8 @@
         NSArray *captionKey = @[@"Caption", @"Honeymoon"];
         findHMOp.desiredKeys = captionKey;
         
-        findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError) {
+        findHMOp.queryCompletionBlock = ^(CKQueryCursor *cursor, NSError *operationError)
+        {
             NSLog(@"honeymoon images populated");
             if (operationError)
             {
@@ -52,7 +53,8 @@
             }
         };
         
-        findHMOp.recordFetchedBlock = ^(CKRecord *record){
+        findHMOp.recordFetchedBlock = ^(CKRecord *record)
+        {
             ZOLImage *imageToAdd = [[ZOLImage alloc]init];
             NSString *captionText = record[@"Caption"];
 

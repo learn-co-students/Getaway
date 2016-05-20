@@ -11,7 +11,6 @@
 #import "ZOLSimulatedFeedData.h"
 #import "ZOLDetailCell.h"
 
-
 @interface ZOLDetailTableViewController ()
 
 @property (nonatomic,strong) NSLayoutConstraint *labelYConstraint;
@@ -19,30 +18,33 @@
 
 @end
 
-
 @implementation ZOLDetailTableViewController
 
-- (IBAction)back:(id)sender {
+- (IBAction)back:(id)sender
+{
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
-- (IBAction)flagged:(id)sender {
+- (IBAction)flagged:(id)sender
+{
     UIAlertController *flagUserAlertController = [UIAlertController alertControllerWithTitle:@"Report inappropriate or offensive content"
                                                                              message:@"Would you like to report this user?"
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                            style:UIAlertActionStyleDefault
-                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                         handler:^(UIAlertAction * _Nonnull action)
+    {
                                                              self.flaggedButton.tintColor = [UIColor whiteColor];
                                                          
-                                                         }];
+    }];
     
     
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Report"
                                                        style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction * _Nonnull action) {
+                                                     handler:^(UIAlertAction * _Nonnull action)
+    {
                                                          //Flag this user
                                                          NSLog(@"USER FLAGGED");
                                                          
@@ -51,14 +53,16 @@
                                             self.flaggedButton.tintColor = [UIColor redColor];
                                                          
                                                          
-                                                     }];
+    }];
+    
     [flagUserAlertController addAction:cancelAction];
     [flagUserAlertController addAction:okAction];
     [self presentViewController:flagUserAlertController animated:YES completion:nil];
     
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.tableView.contentInset = UIEdgeInsetsMake(-44, 0, 0, 0);
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
@@ -126,9 +130,11 @@
     [self populateImages];
 }
 
-- (void) flaggedHoneymoon {
+- (void)flaggedHoneymoon
+{
     CKRecord *flaggedHoneymoonRecord = [self.dataStore.client fetchRecordWithRecordID:self.selectedHoneymoonID];
     flaggedHoneymoonRecord[@"Flagged"] = @"YES";
+    
     CKModifyRecordsOperation *flaggedRecord = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:@[flaggedHoneymoonRecord] recordIDsToDelete:nil];
     [self.dataStore.client.database addOperation:flaggedRecord];
 }
@@ -187,6 +193,7 @@
          if (error)
          {
              NSLog(@"Error getting images for a honeymoon: %@", error.localizedDescription);
+             
 //             NSDate *waitTime = [NSDate dateWithTimeIntervalSinceNow: 2];
 //             NSTimer *retryTimer = [[NSTimer alloc]initWithFireDate:waitTime interval:2 target:self selector:@selector(populateImages) userInfo:nil repeats:NO];
              NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(populateImages) userInfo:nil repeats:NO];
@@ -201,6 +208,7 @@
 -(void)retryQueryRecordsWithQueryMethod
 {
     CKReference *selectedHoneymoonReference = [[CKReference alloc]initWithRecordID:self.selectedHoneymoonID action:CKReferenceActionDeleteSelf];
+    
     NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", selectedHoneymoonReference];
     CKQuery *honeymoonImagesQuery = [[CKQuery alloc] initWithRecordType:@"Image" predicate:imagePredicate];
     NSArray *relevantKeys = @[@"Picture", @"Honeymoon"];
@@ -222,9 +230,10 @@
                  NSUInteger rowOfImage = [tmpself.localImageArray indexOfObject:image];
                  NSIndexPath *indexPathForImage = [NSIndexPath indexPathForRow:rowOfImage inSection:0];
                  [[NSOperationQueue mainQueue] addOperationWithBlock:^
-	                 {
+	               
+                  {
                          [tmpself.tableView reloadRowsAtIndexPaths:@[indexPathForImage] withRowAnimation:UITableViewRowAnimationNone];
-                     }];
+                  }];
              }
          }
      } completionBlock:^(CKQueryCursor *cursor, NSError *error)
@@ -245,49 +254,5 @@
             }
         }];
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

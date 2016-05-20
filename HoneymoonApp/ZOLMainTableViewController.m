@@ -21,22 +21,23 @@
 
 @implementation ZOLMainTableViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.dataStore = [ZOLDataStore dataStore];
     self.imagesToPush = [[NSMutableArray alloc]init];
     
-    if (self.dataStore.mainFeed.count > 0) {
+    if (self.dataStore.mainFeed.count > 0)
+    {
         [self fetchCoverPhotos];
     }
-    else {
+    else
+    {
         [self handleMainFeedError];
     }
     
     [self.tableView reloadData];
-    
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRefreshSpin:) name:@"QueryRefreshIssue" object:nil];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -44,12 +45,13 @@
     return UIStatusBarStyleLightContent;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     if (self.dataStore.mainFeed.count == 0)
     {
         return 3;
@@ -60,7 +62,8 @@
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     ZOLMainCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellMain" forIndexPath:indexPath];
     
     if (self.dataStore.mainFeed.count > 0)
@@ -80,6 +83,7 @@
         cell.dateLabel.text = dateString;
         cell.headlineLabel.text = thisHoneymoon.honeymoonDescription;
     }
+    
     else
     {
         cell.userLabel.text = @"";
@@ -93,8 +97,10 @@
     return cell;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqual: @"feedSegue"]) {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqual: @"feedSegue"])
+    {
         UINavigationController *destinationVC = [segue destinationViewController];
         ZOLDetailTableViewController *tableVC = (ZOLDetailTableViewController*)destinationVC.topViewController;
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
@@ -108,81 +114,15 @@
     }
 }
 
-//- (IBAction)mainFeedPullToRefresh:(UIRefreshControl *)sender {
-//    //Grab the next honeymoons in the main feed query
-//    if (self.dataStore.mainFeed.count == 0)
-//    {
-//        [self handleMainFeedError];
-//    }
-//    else
-//    {
-//        [self.dataStore.client queryRecordsWithQuery:nil orCursor:self.dataStore.mainFeedCursor fromDatabase:self.dataStore.client.database forKeys:nil withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
-//            ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
-//            
-//            CKAsset *coverPictureAsset = record[@"CoverPicture"];
-//            UIImage *coverPic = [self.dataStore.client retrieveUIImageFromAsset:coverPictureAsset];
-//            thisHoneymoon.coverPicture = coverPic;
-//            
-//            NSNumber *ratingVal = record[@"RatingStars"];
-//            thisHoneymoon.rating = [ratingVal floatValue];
-//            
-//            thisHoneymoon.honeymoonDescription = record[@"Description"];
-//            thisHoneymoon.honeymoonID = record.recordID;
-//            
-//            //Populate the honeymoon with basic info about its images
-//            CKReference *honeymoonRef = [[CKReference alloc]initWithRecordID:thisHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
-//            NSPredicate *findImages = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", honeymoonRef];
-//            CKQuery *findImagesQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
-//            NSArray *captionKey = @[@"Caption", @"Honeymoon"];
-//            
-//            [self.dataStore.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:captionKey withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
-//                
-//                ZOLImage *thisImage = [[ZOLImage alloc]init];
-//                thisImage.caption = record[@"Caption"];
-//                thisImage.imageRecordID = record.recordID;
-//                
-//                [thisHoneymoon.honeymoonImages addObject:thisImage];
-//            } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
-//                if (error)
-//                {
-//                    NSLog(@"Error finding images for a honeymoon: %@", error.localizedDescription);
-//                }
-//            }];
-//
-//            //Add the honeymoon to the main feed
-//            [self.dataStore.mainFeed insertObject:thisHoneymoon atIndex:0];
-//
-//        } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
-//            if (error)
-//            {
-//                NSLog(@"Error reloading main feed data: %@", error.localizedDescription);
-//            }
-//            else
-//            {
-//                self.dataStore.mainFeedCursor = cursor;
-//            }
-//            
-//            [self.tableView reloadData];
-//            [[NSOperationQueue mainQueue]addOperationWithBlock:^{
-//                [sender endRefreshing];
-//            }];
-//        }];
-//    }
-//}
-
-//-(void)stopRefreshSpin: (NSNotification *)notification
-//{
-//    [self.refreshControl endRefreshing];
-//}
-
--(void)handleMainFeedError
+- (void)handleMainFeedError
 {
-    [self.dataStore populateMainFeedWithCompletion:^(NSError *error) {
+    [self.dataStore populateMainFeedWithCompletion:^(NSError *error)
+    {
         if (error)
         {
             NSLog(@"Error refreshing main feed");
             NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(handleMainFeedError) userInfo:nil repeats:NO];
-//            [retryTimer fire];
+
             NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
             [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
             [currentLoop run];
@@ -194,7 +134,7 @@
     }];
 }
 
--(void)fetchCoverPhotos
+- (void)fetchCoverPhotos
 {
     NSPredicate *imagePredicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"Published", @"YES"];
     CKQuery *honeymoonImageQuery = [[CKQuery alloc] initWithRecordType:@"Honeymoon" predicate:imagePredicate];
@@ -213,12 +153,15 @@
                 NSUInteger rowOfHoneymoon = [tmpself.dataStore.mainFeed indexOfObject:honeymoon];
                 NSIndexPath *indexPathForHoneymoon = [NSIndexPath indexPathForRow:rowOfHoneymoon inSection:0];
                 
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^
+                {
                     [tmpself.tableView reloadRowsAtIndexPaths:@[indexPathForHoneymoon] withRowAnimation:UITableViewRowAnimationNone];
                 }];
             }
         }
-    } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+    }
+                                 completionBlock:^(CKQueryCursor *cursor, NSError *error)
+    {
         if (error)
         {
             NSLog(@"Error loading images for main feed: %@", error.localizedDescription);
@@ -227,9 +170,11 @@
             [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
             [currentLoop run];
         }
+        
         else
         {
-            dispatch_sync(dispatch_get_main_queue(), ^{
+            dispatch_sync(dispatch_get_main_queue(), ^
+            {
                 [self.tableView reloadData];
             });
         }
@@ -237,13 +182,73 @@
     }];
 }
 
-//-(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
-//}
-
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
+//Previous code:
+/*
+- (IBAction)mainFeedPullToRefresh:(UIRefreshControl *)sender {
+    //Grab the next honeymoons in the main feed query
+    if (self.dataStore.mainFeed.count == 0)
+    {
+        [self handleMainFeedError];
+    }
+    else
+    {
+        [self.dataStore.client queryRecordsWithQuery:nil orCursor:self.dataStore.mainFeedCursor fromDatabase:self.dataStore.client.database forKeys:nil withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
+            ZOLHoneymoon *thisHoneymoon = [[ZOLHoneymoon alloc]init];
 
+            CKAsset *coverPictureAsset = record[@"CoverPicture"];
+            UIImage *coverPic = [self.dataStore.client retrieveUIImageFromAsset:coverPictureAsset];
+            thisHoneymoon.coverPicture = coverPic;
+
+            NSNumber *ratingVal = record[@"RatingStars"];
+            thisHoneymoon.rating = [ratingVal floatValue];
+
+            thisHoneymoon.honeymoonDescription = record[@"Description"];
+            thisHoneymoon.honeymoonID = record.recordID;
+
+            //Populate the honeymoon with basic info about its images
+            CKReference *honeymoonRef = [[CKReference alloc]initWithRecordID:thisHoneymoon.honeymoonID action:CKReferenceActionDeleteSelf];
+            NSPredicate *findImages = [NSPredicate predicateWithFormat:@"%K == %@", @"Honeymoon", honeymoonRef];
+            CKQuery *findImagesQuery = [[CKQuery alloc]initWithRecordType:@"Image" predicate:findImages];
+            NSArray *captionKey = @[@"Caption", @"Honeymoon"];
+
+            [self.dataStore.client queryRecordsWithQuery:findImagesQuery orCursor:nil fromDatabase:self.dataStore.client.database forKeys:captionKey withQoS:NSQualityOfServiceUserInitiated everyRecord:^(CKRecord *record) {
+
+                ZOLImage *thisImage = [[ZOLImage alloc]init];
+                thisImage.caption = record[@"Caption"];
+                thisImage.imageRecordID = record.recordID;
+
+                [thisHoneymoon.honeymoonImages addObject:thisImage];
+            } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+                if (error)
+                {
+                    NSLog(@"Error finding images for a honeymoon: %@", error.localizedDescription);
+                }
+            }];
+
+            //Add the honeymoon to the main feed
+            [self.dataStore.mainFeed insertObject:thisHoneymoon atIndex:0];
+
+        } completionBlock:^(CKQueryCursor *cursor, NSError *error) {
+            if (error)
+            {
+                NSLog(@"Error reloading main feed data: %@", error.localizedDescription);
+            }
+            else
+            {
+                self.dataStore.mainFeedCursor = cursor;
+            }
+
+            [self.tableView reloadData];
+            [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+                [sender endRefreshing];
+            }];
+        }];
+    }
+}
+*/
 @end

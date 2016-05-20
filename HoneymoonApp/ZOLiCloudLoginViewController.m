@@ -152,6 +152,7 @@
 
                 [self.dataStore.user getAllTheRecords];
                 [self populateMainFeed];
+
             }];
         }
         
@@ -174,8 +175,7 @@
     }];
 }
 
-
--(void)populateMainFeed
+- (void)populateMainFeed
 {
     [self.dataStore populateMainFeedWithCompletion:^(NSError *error)
     {
@@ -188,7 +188,7 @@
         {
             NSLog(@"Error populating Main Feed: %@", error.localizedDescription);
             NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(populateMainFeed) userInfo:nil repeats:NO];
-//            [retryTimer fire];
+
             NSRunLoop *currentLoop = [NSRunLoop currentRunLoop];
             [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
             [currentLoop run];

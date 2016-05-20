@@ -30,7 +30,6 @@
 //@property(nonatomic, assign) NSUInteger cursorLimit; only implement this if the auto limit doesn't do the job.
 @property (readwrite) double doubleValue;
 
-
 //CORE DATA
 //- (void)saveContext;
 //- (void)fetchData;
@@ -40,7 +39,5 @@
 -(void)populateMainFeedWithCompletion:(void (^)(NSError *error))completionBlock;
 -(void)displayGenericError;
 //-(void) populateMainFeed;
-
-
 
 @end

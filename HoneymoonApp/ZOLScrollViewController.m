@@ -29,31 +29,28 @@ static const BOOL loggingEnabled = NO;
 
 @implementation ZOLScrollViewController
 
-//TODO create setup section with setup methods
 #pragma mark - Lifecycle
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.imagesArray = [[NSMutableArray alloc] init];
     self.dataStore = [ZOLDataStore dataStore];
-    
-    
-    //TODO Create datastore H file method to return honeymoon images
     //If no images how do you fail?
     
-    for (ZOLImage *zolImage in self.dataStore.user.userHoneymoon.honeymoonImages) {
+    for (ZOLImage *zolImage in self.dataStore.user.userHoneymoon.honeymoonImages)
+    {
         UIImage *imageToAdd = zolImage.picture;
         [self.imagesArray addObject:imageToAdd];
     }
     
     //Do you know that item 0 exists??
-    if (self.imagesArray.count > 0) {
+    if (self.imagesArray.count > 0)
+    {
         self.selectedImage = self.imagesArray[0];
     }
     
-    
-    for (UIImage *image in self.imagesArray) {
+    for (UIImage *image in self.imagesArray)
+    {
         UIImageView *view = [[UIImageView alloc] initWithImage:image];
         //Do imageViews default to userInteractionEnabled? If so remove line below.
         view.userInteractionEnabled = YES;
@@ -154,14 +151,16 @@ static const BOOL loggingEnabled = NO;
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok"
                                                        style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction * _Nonnull action) {
+                                                     handler:^(UIAlertAction * _Nonnull action)
+    {
                                                          //Set the selected image to outside/data property here.
                                                          NSLog(@"Image: %@", self.selectedImage);
                                                          //Go to next publish option.
                                                          self.dataStore.user.userHoneymoon.coverPicture = self.selectedImage;
                                                          
                                                          [self performSegueWithIdentifier:@"ratingSegue" sender:self];
-                                                     }];
+    }];
+    
     [alertController addAction:cancelAction];
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -208,7 +207,6 @@ static const BOOL loggingEnabled = NO;
 }
 
 #pragma mark - UIScrollViewDelegate
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     NSUInteger pageNumber = self.scrollView.contentOffset.x /
@@ -226,17 +224,20 @@ static const BOOL loggingEnabled = NO;
         {
             self.rightArrow.hidden = YES;
             self.leftArrow.hidden = NO;
-        } else if (offsetX < screenWidth)
+        }
+        else if (offsetX < screenWidth)
         {
             self.rightArrow.hidden = NO;
             self.leftArrow.hidden = YES;
-        } else {
-            
+        }
+        else
+        {
             self.rightArrow.hidden = NO;
             self.leftArrow.hidden = NO;
         }
 
-    if (loggingEnabled) {
+    if (loggingEnabled)
+    {
         NSLog(@"totalWidth:%f",totalWidth);
         NSLog(@"offSetX:%f",offsetX);
         NSLog(@"screenWidth:%f",screenWidth);
@@ -244,16 +245,16 @@ static const BOOL loggingEnabled = NO;
 }
 
 #pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"ratingSegue"]) {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"ratingSegue"])
+    {
         ZOLRatingViewController *ratingViewController = segue.destinationViewController;
         ratingViewController.coverImage = self.selectedImage;
     }
 }
 
 #pragma mark - Setup
-
 - (void)setupButtons
 {
     

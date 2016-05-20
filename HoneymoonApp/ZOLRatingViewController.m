@@ -18,7 +18,8 @@
 
 @implementation ZOLRatingViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.dataStore = [ZOLDataStore dataStore];
@@ -48,24 +49,22 @@
     
     self.dataStore.user.userHoneymoon.coverPicture = self.coverImage;
 }
-- (IBAction)didChangeValue:(HCSStarRatingView *)sender {
+
+- (IBAction)didChangeValue:(HCSStarRatingView *)sender
+{
     self.rating = sender.value;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-
 #pragma mark - Navigation
-
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     self.dataStore.user.userHoneymoon.rating = self.rating;
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
 
 

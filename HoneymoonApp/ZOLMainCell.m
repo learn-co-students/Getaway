@@ -10,7 +10,8 @@
 
 @implementation ZOLMainCell
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
     // Initialization code
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(0, 0, 50, 10)];
@@ -20,10 +21,10 @@
     self.starRatingView.backgroundColor = [UIColor clearColor];
     self.starRatingView.tintColor = [UIColor whiteColor];
     self.starRatingView.userInteractionEnabled = NO;
-    
 }
 
--(void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
     self.heightConstraint.constant = -0.5f;
     self.starRatingView.translatesAutoresizingMaskIntoConstraints = false;
@@ -35,18 +36,15 @@
     self.headlineLabel.adjustsFontSizeToFitWidth = YES;
 }
 
-
-
-
--(void)drawStarRating
+- (void)drawStarRating
 {
     self.starRatingView.value = self.cellRating;
     [self.contentView addSubview:self.starRatingView];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
-
     // Configure the view for the selected state
 }
 

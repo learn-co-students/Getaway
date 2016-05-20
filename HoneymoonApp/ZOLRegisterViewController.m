@@ -41,54 +41,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)registerTapped:(id)sender
-{
-//    if ([self usernameValid] && [self passwordValid] && [self confirmPasswordValid])
-//    {
-//        User *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.dataStore.managedObjectContext];
-//        newUser.username = self.usernameTextField.text;
-//        newUser.password = self.passwordTextField.text;
-//        
-//        [self.dataStore saveContext];
-//        
-//        CKRecordID *userID = [[CKRecordID alloc] initWithRecordName:self.usernameTextField.text];
-//        CKRecord *newUserRecord = [[CKRecord alloc] initWithRecordType:@"User" recordID:userID];
-//        
-//        [newUserRecord setObject:self.passwordTextField.text forKey:@"Password"];
-//        
-//        [self.dataStore.database saveRecord:newUserRecord completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
-//            NSLog(@"%@, and also: %ld", error, error.code);
-//        }];
-//        
-//        [self dismissViewControllerAnimated:YES completion:nil];
-//    }
-//    else
-//    {
-//        NSMutableString *errorString = [NSMutableString new];
-//        
-//        BOOL usernameValid = [self usernameValid];
-//        if (!usernameValid)
-//        {
-//            [errorString appendString:@"Usernames must be at least 1 character and cannot begin with a space\n"];
-//        }
-//        
-//        BOOL passwordValid = [self passwordValid];
-//        if (!passwordValid)
-//        {
-//            [errorString appendString:@"\nPasswords must be at least 8 characters in length\n"];
-//        }
-//        
-//        BOOL confirmPasswordValid = [self confirmPasswordValid];
-//        if(!confirmPasswordValid)
-//        {
-//            [errorString appendString:@"\nPasswords do not match"];
-//        }
-//        
-//        [self createAlertWithTitle:@"Please Resolve Issues:" andMessage:errorString];
-//    }
-}
-
--(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     for (UIView *view in self.view.subviews)
     {
@@ -99,14 +52,13 @@
     }
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
     return YES;
 }
 
 #pragma mark - Validate text fields
-
 //-(void)textFieldDidEndEditing:(UITextField *)textField
 //{
 //    if ([self.usernameTextField isEqual:textField])
@@ -124,7 +76,7 @@
 //    }
 //}
 
--(BOOL)usernameValid
+- (BOOL)usernameValid
 {
     NSString *selectedName = self.usernameTextField.text;
     
@@ -140,7 +92,7 @@
     }
 }
 
--(BOOL)passwordValid
+- (BOOL)passwordValid
 {
     NSString *selectedPassword = self.passwordTextField.text;
     
@@ -156,7 +108,7 @@
     }
 }
 
--(BOOL)confirmPasswordValid
+- (BOOL)confirmPasswordValid
 {
     NSString *selectedPassword = self.confirmPasswordTextField.text;
     
@@ -172,23 +124,25 @@
     }
 }
 
--(void)animateBackgroundForTextField: (UITextField *) textField WithValidation: (BOOL)isValid
+- (void)animateBackgroundForTextField: (UITextField *) textField WithValidation: (BOOL)isValid
 {
     if (!isValid)
     {
-        [UIView animateWithDuration:1 animations:^{
+        [UIView animateWithDuration:1 animations:^
+        {
             textField.backgroundColor = [UIColor redColor];
         }];
     }
     else
     {
-        [UIView animateWithDuration:1 animations:^{
+        [UIView animateWithDuration:1 animations:^
+        {
             textField.backgroundColor = [UIColor whiteColor];
         }];
     }
 }
 
--(void)createAlertWithTitle: (NSString *)title andMessage: (NSString *)message
+- (void)createAlertWithTitle: (NSString *)title andMessage: (NSString *)message
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
@@ -198,13 +152,54 @@
 
     [self presentViewController:alertController animated:YES completion:nil];
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+//Previous code:
+/*
+- (IBAction)registerTapped:(id)sender
+{
+        if ([self usernameValid] && [self passwordValid] && [self confirmPasswordValid])
+        {
+            User *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:self.dataStore.managedObjectContext];
+            newUser.username = self.usernameTextField.text;
+            newUser.password = self.passwordTextField.text;
+    
+            [self.dataStore saveContext];
+    
+            CKRecordID *userID = [[CKRecordID alloc] initWithRecordName:self.usernameTextField.text];
+            CKRecord *newUserRecord = [[CKRecord alloc] initWithRecordType:@"User" recordID:userID];
+    
+            [newUserRecord setObject:self.passwordTextField.text forKey:@"Password"];
+    
+            [self.dataStore.database saveRecord:newUserRecord completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+                NSLog(@"%@, and also: %ld", error, error.code);
+            }];
+    
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            NSMutableString *errorString = [NSMutableString new];
+    
+            BOOL usernameValid = [self usernameValid];
+            if (!usernameValid)
+            {
+                [errorString appendString:@"Usernames must be at least 1 character and cannot begin with a space\n"];
+            }
+    
+            BOOL passwordValid = [self passwordValid];
+            if (!passwordValid)
+            {
+                [errorString appendString:@"\nPasswords must be at least 8 characters in length\n"];
+            }
+    
+            BOOL confirmPasswordValid = [self confirmPasswordValid];
+            if(!confirmPasswordValid)
+            {
+                [errorString appendString:@"\nPasswords do not match"];
+            }
+            
+            [self createAlertWithTitle:@"Please Resolve Issues:" andMessage:errorString];
+        }
 }
 */
 

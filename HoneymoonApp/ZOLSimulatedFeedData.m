@@ -12,10 +12,12 @@
 
 @implementation ZOLSimulatedFeedData
 
-+ (instancetype)sharedDatastore {
++ (instancetype)sharedDatastore
+{
     static ZOLSimulatedFeedData *_sharedDatastore = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^
+    {
         _sharedDatastore = [[ZOLSimulatedFeedData alloc] init];
     });
     return _sharedDatastore;
@@ -24,7 +26,8 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         _imageArray = [[NSMutableArray alloc] init];
         _textArray = [[NSMutableArray alloc]init];
         
@@ -32,7 +35,7 @@
         _imageArray2 = [[NSMutableArray alloc]init];
         
        // _imageArray3 = [NSMutableArray new];
-
+        
         _mainTextArray =[[NSMutableArray alloc]init];
         _mainImageArray = [[NSMutableArray alloc]init];
         
@@ -59,8 +62,6 @@
     [self.textArray addObject:str4];
     
     //generate simulated array 2
-
-    
     UIImage *A2img1 = [UIImage imageNamed:@"A2 img1.png"];
     UIImage *A2img2 = [UIImage imageNamed:@"A2 img2.png"];
     UIImage *A2img3 = [UIImage imageNamed:@"A2 img3.png"];
@@ -82,18 +83,14 @@
     [self.textArray2 addObject:A2str4];
     
    //generate main array
-    
-    
     [self.mainImageArray addObject:self.imageArray];
     [self.mainImageArray addObject:self.imageArray2];
    // [self.mainImageArray addObject:self.imageArray3];
     
     [self.mainTextArray addObject:self.textArray];
     [self.mainTextArray addObject:self.textArray2];
-
    
    // NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:filePath];
-
     
     return self;
 }

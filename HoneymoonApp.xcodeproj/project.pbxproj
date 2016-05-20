@@ -172,6 +172,8 @@
 				06738B531CADA1B000E5E692 /* User+CoreDataProperties.m */,
 				06738B541CADA1B000E5E692 /* User.h */,
 				06738B551CADA1B000E5E692 /* User.m */,
+				06738B4C1CAD793600E5E692 /* ZOLRegisterViewController.h */,
+				06738B4D1CAD793600E5E692 /* ZOLRegisterViewController.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -252,10 +254,7 @@
 				2DE6273A1CB8409E00A48F64 /* ZOLTabBarViewController.m */,
 				2BB5E6B41CBF58C80090C264 /* ZOLiCloudLoginViewController.h */,
 				2BB5E6B51CBF58C80090C264 /* ZOLiCloudLoginViewController.m */,
-				2B6636A51CEEE74900CC4D50 /* ZOLEndUserLicenseAgreement.h */,
-				2B6636A61CEEE74900CC4D50 /* ZOLEndUserLicenseAgreement.m */,
-				06738B4C1CAD793600E5E692 /* ZOLRegisterViewController.h */,
-				06738B4D1CAD793600E5E692 /* ZOLRegisterViewController.m */,
+
 				2DF8B98D1CB58A15002533F0 /* ZOLRatingViewController.h */,
 				2DF8B98E1CB58A15002533F0 /* ZOLRatingViewController.m */,
 				2DB4CEB21CB59A80002DB3B9 /* ZOLHeadlineEditViewController.h */,
