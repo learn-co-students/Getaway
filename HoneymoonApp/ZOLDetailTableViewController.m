@@ -22,14 +22,15 @@
 
 @implementation ZOLDetailTableViewController
 
-- (IBAction)back:(id)sender {
+- (IBAction)back:(id)sender
+{
     [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
-- (IBAction)flagged:(id)sender {
-    UIAlertController *flagUserAlertController = [UIAlertController alertControllerWithTitle:@"Report inappropriate or offensive content"
-                                                                             message:@"Would you like to report this user?"
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
+- (IBAction)flagged:(id)sender
+{
+    UIAlertController *flagAndBlockUserAlertController = [UIAlertController alertControllerWithTitle:@"Inappropriate or offensive content?" message:@"Flag content or block user" preferredStyle:UIAlertControllerStyleActionSheet
+                                                                             ];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                            style:UIAlertActionStyleDefault
@@ -38,23 +39,36 @@
                                                          
                                                          }];
     
-    
-    
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Report"
+    UIAlertAction *reportAction = [UIAlertAction actionWithTitle:@"Report content"
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction * _Nonnull action) {
-                                                         //Flag this user
+                                                         //Block this user
                                                          NSLog(@"USER FLAGGED");
+                                                         self.flaggedButton.tintColor = [UIColor redColor];
+                                                         
+                                                         [self blockedUser];
+                                                         
+                                                        }];
+    
+    
+    
+    
+    UIAlertAction *blockAction = [UIAlertAction actionWithTitle:@"Block user"
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+                                                         //Flag this content
+                                                         NSLog(@"USER BLOCKED");
                                                          
                                                          [self flaggedHoneymoon];
                                                          
-                                            self.flaggedButton.tintColor = [UIColor redColor];
+                                                         self.flaggedButton.tintColor = [UIColor redColor];
+                                                        }];
+    
+    [flagAndBlockUserAlertController addAction:cancelAction];
+    [flagAndBlockUserAlertController addAction:reportAction];
+    [flagAndBlockUserAlertController addAction:blockAction];
                                                          
-                                                         
-                                                     }];
-    [flagUserAlertController addAction:cancelAction];
-    [flagUserAlertController addAction:okAction];
-    [self presentViewController:flagUserAlertController animated:YES completion:nil];
+    [self presentViewController:flagAndBlockUserAlertController animated:YES completion:nil];
     
 }
 
@@ -126,11 +140,21 @@
     [self populateImages];
 }
 
-- (void) flaggedHoneymoon {
+
+- (void) flaggedHoneymoon
+{
     CKRecord *flaggedHoneymoonRecord = [self.dataStore.client fetchRecordWithRecordID:self.selectedHoneymoonID];
     flaggedHoneymoonRecord[@"Flagged"] = @"YES";
     CKModifyRecordsOperation *flaggedRecord = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:@[flaggedHoneymoonRecord] recordIDsToDelete:nil];
     [self.dataStore.client.database addOperation:flaggedRecord];
+}
+
+- (void) blockedUser
+{
+    CKRecord *blockedUserRecord = [self.dataStore.client fetchRecordWithRecordID:self.selectedHoneymoonID];
+    blockedUserRecord[@"ReportAbusiveUser"] = @"YES";
+    CKModifyRecordsOperation *blockedRecord = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:@[blockedUserRecord] recordIDsToDelete:nil];
+    [self.dataStore.client.database addOperation:blockedRecord];
 }
 
 - (void)didReceiveMemoryWarning
