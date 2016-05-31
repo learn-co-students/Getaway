@@ -19,9 +19,6 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *logInButton;
 @property (nonatomic, strong) CKRecordID *idForUserClassFile;
-//@property (weak, nonatomic) IBOutlet UIScrollView *EULAScrollView;
-//@property (weak, nonatomic) IBOutlet UIButton *acceptButton;
-//@property (weak, nonatomic) IBOutlet UIButton *declineButton;
 
 @end
 
@@ -31,8 +28,6 @@
 {
     [super viewDidLoad];
 
-  //  self.EULAScrollView.hidden = YES;
-
     NSLog(@"self.newUserHasAnaccount = %@", self.newUserHasAnAccount ? @"YES" : @"NO");
     
     [[NSOperationQueue mainQueue] addOperationWithBlock:^
@@ -40,21 +35,6 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(recievedNotificationFromAppDelegate:) name:@"USER_RETURNED_MID_LOGIN" object:nil];
     }];
 }
-
--(void)EULASegue:(UIStoryboardSegue *)EULASegue sender: (id)sender
-{
-
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^
-    {
-        UIStoryboard *loginStoryboard =[UIStoryboard storyboardWithName:@"LoginScreen" bundle:nil];
-        
-        ZOLEndUserLicenseAgreement *EULAVC = [loginStoryboard instantiateViewControllerWithIdentifier:@"EULASB"];
-        
-        [self presentViewController:EULAVC animated:YES completion:nil];
-        
-    }];
-
-};
 
 - (void)recievedNotificationFromAppDelegate:(NSNotification *)aNotification
 {
@@ -68,8 +48,42 @@
 {
     self.logInButton.hidden = YES;
     [self.activityIndicator startAnimating];
-    [self networkHandler];
-};
+    
+   //[self networkHandler];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    
+    UIStoryboard *loginStoryboard =[UIStoryboard storyboardWithName:@"LoginScreen" bundle:nil];
+    ZOLEndUserLicenseAgreement *EULAVC = [loginStoryboard instantiateViewControllerWithIdentifier:@"EULAVC"];
+    
+    [self presentViewController:EULAVC animated:YES completion:nil];
+
+    //grab iCloudLI object and add the EULAVC in EULA class method.
+    //[self.viewWillLayoutSubviews]
+    
+//    [ZOLEndUserLicenseAgreement EULA];
+//    UIStoryboard *loginStoryboard =[UIStoryboard storyboardWithName:@"LoginScreen" bundle:nil];
+//    ZOLEndUserLicenseAgreement *EULAVC = [loginStoryboard instantiateViewControllerWithIdentifier:@"EULAVC"];
+    
+    
+    // if no user default is set for "terms"
+        // present terms
+        // if terms accepted
+            // save acceptance as bool in user defaults
+            // [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"terms"];
+        // else
+            // alert user they can't use app and close app
+    // else if user is true for "terms"
+        // call [self networkHandler]
+    // else
+        // kick user out of app
+    
+   // [self addChildViewController: self.EULAViewController];
+    //[self.view addSubview: self.EVC];
+    
+}
 
 - (void)checkAndHandleiCloudStatus
 {
@@ -296,14 +310,5 @@
         }];
     }
 }
-
-//-(void)callEULASegue:(UIStoryboardSegue *)EULASegue sender: (id)sender
-//{
-//    if ([EULASegue.identifier isEqualToString:@"EULASegue"])
-//    {
-//        ZOLiCloudLoginViewController *loginVC = EULASegue.destinationViewController;
-//    }
-//    
-//}
 
 @end

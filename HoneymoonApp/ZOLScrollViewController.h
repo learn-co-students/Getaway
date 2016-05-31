@@ -11,7 +11,6 @@
 @class ZOLDataStore;
 
 @interface ZOLScrollViewController : UIViewController
-
 @property (nonatomic, strong) ZOLDataStore *dataStore;
 
 @end

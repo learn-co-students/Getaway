@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CloudKit/CloudKit.h>
+#import "ZOLEndUserLicenseAgreement.h"
 
 @class ZOLDataStore;
 
@@ -15,13 +16,10 @@
 
 @property (strong, nonatomic) ZOLDataStore *dataStore;
 @property (nonatomic, strong) CKRecordID *idForUser;
+@property (nonatomic, weak) ZOLEndUserLicenseAgreement *EULAViewController;
 
 - (void)presentNextVC;
 - (void)zolaAppWillWaitForYou;
 - (void)tellAppDelegateTheUserDoesntHaveiCloudAccount;
-//-(void)EULA;
-//-(void)EULAWithCompletion:(BOOL (^)(BOOL))userAgreement;
-
-
 
 @end

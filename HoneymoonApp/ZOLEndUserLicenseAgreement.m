@@ -9,7 +9,6 @@
 #import "ZOLEndUserLicenseAgreement.h"
 
 @interface ZOLEndUserLicenseAgreement ()
-
 @end
 
 @implementation ZOLEndUserLicenseAgreement
@@ -18,22 +17,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-
-+(void)EULA
++ (void)EULA
 {
-    //self.EULAScrollView.hidden = NO;
-    // self.EULAScrollView.scrollEnabled = YES;
+//    [[NSOperationQueue mainQueue] addOperationWithBlock:^
+//     {
+//         NSLog(@"GO FOR SEGUEEEE");
+//         
+//         UIStoryboard *loginStoryboard =[UIStoryboard storyboardWithName:@"LoginScreen" bundle:nil];
+//         ZOLEndUserLicenseAgreement *EULAVC = [loginStoryboard instantiateViewControllerWithIdentifier:@"EULAVC"];
+//     
+//        [ presentViewController: EULAVC animated: YES completion: nil];
+//
+//         [currentViewController presentViewController: EULAVC animated: YES completion: nil];
+//     }];
     
-}
+};
 
 - (IBAction)acceptButtonTapped:(id)sender
 {
@@ -52,6 +57,7 @@
     UIAlertController *complianceAlert = [UIAlertController alertControllerWithTitle:@"User Compliance" message:@"All individuals using this app must agree to the Getaway Policy.\n Accept the policy to continue (basically just be a good person)" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *complianceAlertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                           
                                             {
                                                 [ZOLEndUserLicenseAgreement EULA];
                                                 
@@ -67,15 +73,5 @@
      }];
     
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

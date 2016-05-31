@@ -11,7 +11,10 @@
 @interface ZOLEndUserLicenseAgreement : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIScrollView *EULAScrollView;
+@end
 
-+(void)EULA;
+@implementation ZOLEndUserLicenseAgreement
+
+- (void)EULA;
 
 @end

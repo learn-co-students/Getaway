@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface ZOLEndUserLicenseAgreement : UIViewController
-
 @property (weak, nonatomic) IBOutlet UIScrollView *EULAScrollView;
+//@property (nonatomic, weak) ZOLEndUserLicenseAgreement *EULAViewController;
 
-+(void)EULA;
-
+//+(void)EULAwithCompletion:(void(^)(BOOL))didGrabEULA;
++(void) EULA;
 @end
+

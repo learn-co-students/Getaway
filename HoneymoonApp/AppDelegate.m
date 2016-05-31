@@ -28,15 +28,10 @@
     return YES;
 }
 
-<<<<<<< HEAD
-// Called as part of the transition from the background to the active state;
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-=======
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
->>>>>>> master
+    
     if (self.userDidntHaveiCloudAccountAtLogIn)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"USER_RETURNED_MID_LOGIN" object:nil];

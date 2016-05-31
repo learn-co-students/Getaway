@@ -7,6 +7,7 @@
 //
 
 #import "ZOLUser.h"
+#import "ZOLEndUserLicenseAgreement.h"
 
 
 @implementation ZOLUser
@@ -61,15 +62,25 @@
                 [currentLoop addTimer:retryTimer forMode:NSDefaultRunLoopMode];
                 [currentLoop run];
                 errorOccured = YES;
-           
-            }else
+            }
+            else
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"UserHoneymoonFound" object:nil];
             }
             
             if (!userHoneyMoon && !errorOccured)
             {
-               // [ZOLiCloudLoginViewController EULA];
+
+                //[[NSOperationQueue mainQueue] addOperationWithBlock:^
+                // {
+                     NSLog(@"GO FOR SEGUEEEE");
+                [ZOLEndUserLicenseAgreement EULA];
+                
+//                     UIStoryboard *loginStoryboard =[UIStoryboard storyboardWithName:@"LoginScreen" bundle:nil];
+//                     ZOLEndUserLicenseAgreement *EULAVC = [loginStoryboard instantiateViewControllerWithIdentifier:@"EULAVC"];
+//                     [self presentViewController: EULAVC animated: YES completion: nil];
+//                 }];
+                
                 [self createBlankHoneymoon];
             }
             else if (userHoneyMoon)
